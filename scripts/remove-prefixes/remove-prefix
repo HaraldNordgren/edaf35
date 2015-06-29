@@ -1,0 +1,4 @@
+#!/usr/bin/vim -S
+
+edit ${1}
+$2

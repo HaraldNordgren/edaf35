@@ -1,0 +1,3 @@
+#!/bin/bash
+
+./remove-prefix $1 "%s/${2}realloc/realloc/g"

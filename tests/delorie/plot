@@ -1,0 +1,61 @@
+#!/bin/perl5
+# -*- perl -*-
+# Copyright (C) 1997 DJ Delorie, see COPYING.DJ for details
+
+$r = "";
+$r = "r" if shift eq "-r";
+
+@t = ("test0", "ntest", "mtest", "gtest", "dtest",
+      "test1", "test2", "test3", "test4", "test5", "test6");
+
+%t = ("test0", "baseline",
+      "ntest" => "native",
+      "mtest" => "libmalloc",
+      "gtest" => "gnu",
+      "dtest" => "djgpp",
+      );
+
+open(P, "| gnuplot -geometry 500x500 -pointsize 2");
+select(P); $| = 1; select(STDOUT);
+
+$maxx = $maxy = 0;
+for $p (@t) {
+    open(Q, "$p.${r}out");
+    while (<Q>) {
+	next if /^#/;
+	($x,$y) = split(' ');
+	$maxx = $x if $maxx < $x;
+	$maxy = $y if $maxy < $y;
+    }
+    close(Q);
+}
+
+if ($maxx < 10) {
+    $maxx = int($maxx+1);
+    print P "set xtics 0,1\n";
+} else {
+    $maxx = int(($maxx+10) / 10)*10;
+    print P "set xtics 0,5\n";
+}
+$maxy = int(($maxy+1000) / 1000)*1000;
+
+print "maxx=$maxx maxy=$maxy\n";
+
+print P "set xrange [0:$maxx]\n";
+print P "set yrange [0:$maxy]\n";
+print P "set ytics 0,500\n";
+print P "set grid\n";
+
+print P "plot 'ideal.${r}out' title 'ideal' with linespoints";
+
+for $p (@t) {
+    if ( -f "$p.${r}out") {
+	$t = $p;
+	$t = $t{$p} if $t{$p};
+	print P ",  '$p.${r}out' title '$t' with linespoints";
+    }
+}
+print P "\n";
+
+sleep(600000);
+close(P);

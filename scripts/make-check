@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo
+
+if [ -n "$1" ]
+then
+    export LD_PRELOAD="$PWD/$1"
+    echo "## Preloaded library $1 ##"
+else
+    echo "## Testing with standard library ##"
+fi
+
+echo
+
+cd /home/harald/courses/edaf35/project/gawk/gawk-3.1.8
+#cd /home/harald/courses/edaf35/project/gawk/gawk-4.1.3
+
+make check
