@@ -15,71 +15,78 @@ typedef struct list_t list_t;
 struct list_t {
     size_t  size;
     list_t  *next;
-    char    *addr;
+    char    data[];
 };
 
-#define LIST_SIZE sizeof(list_t)
+#define LIST_T sizeof(list_t)
 #define SIZE_T sizeof(size_t)
 
 static list_t *avail = NULL;
 static size_t *memory_start;
 
-void init_print() {
-    memory_start = sbrk(0);
-}
-
 void print_memory() {
     size_t i;
 
     printf("\n");
+
+#if 1
     for (i = 0; i < 10; i++) {
-        printf("%p:\t%016zx\n", memory_start + i,
-                *(memory_start + i));
+        printf("%p:\t%016zx\n", memory_start + i, memory_start[i]);
     }
+#endif
+
+#if 0
+    for (i = 0; i < 0x10; i++) {
+        char *nbr = (char*) memory_start + i;
+        printf("%p:\t%016x\n", nbr, nbr[i]);
+    }
+#endif
+
 }
 
 #if MY_MALLOC
 void *malloc(size_t size) {
-    list_t *p, *prev;
-    size_t *new, segment_size;
+    list_t *prev, *p, *mem_segment;
+    size_t *new, min_size;
     
     if (size <= 0) {
         return NULL; 
     }
 
-    p = avail;
     prev = NULL;
+    p = avail;
 
-    segment_size = size + SIZE_T;
+    min_size = size + LIST_T;
 
-    while (p != NULL && p->size < segment_size) {
+    while (p != NULL && p->size < min_size) {
         prev = p;
         p = p->next;
     }
 
     if (p == NULL) {
-        new = sbrk(segment_size);
-        *new = segment_size;
-        return new + 1;
+        mem_segment = sbrk(min_size);
+        mem_segment->size = min_size;
+        
+        return mem_segment->data;
     }
     
-    if (p->size >= segment_size + 2 * LIST_SIZE) {
+    if (p->size >= min_size + LIST_T + 8) {
         printf("large segment\n");
         
-        list_t list_entry = *p;
+        /*list_t list_entry = *p;
 
         new = (size_t*) p;
-        *new = segment_size;
+        *new = min_size;
         
 
-        list_entry.size = list_entry.size - segment_size;
-        list_entry.addr = list_entry.addr +  segment_size;
+        list_entry.size = list_entry.size - min_size;
+        list_entry.addr = list_entry.addr + min_size;
 
         if (prev != NULL) {
             prev->next = (list_t*) list_entry.addr;
         }
 
-        return new + 1;
+        return new + 1;*/
     }
      
     if (prev != NULL) {
@@ -91,73 +98,83 @@ void *malloc(size_t size) {
         prev->next = p->next;
     }
     
-    new = (size_t*) p;
-    *new = p->size;
-    
     if (p == avail) {
-        printf("\navail:\t\t%p\n", avail);
+        printf("\nmalloc:\n");
+        printf("avail:\t\t%p\t\n", avail);
         printf("avail->next:\t%p\n", avail->next);
 
         avail = avail->next;
     }
 
-    return new + 1;
+    return p->data;
 }
 
 void free(void *ptr) {
-    list_t  *p, *prev, list_entry;
+    list_t  *p, *prev, list_entry, *mem_segment;
     size_t  size;
     char    *addr;
 
-    list_entry.addr = (char*) ptr - SIZE_T;
-    list_entry.size = *list_entry.addr;
-    /* Size of mallocked memory, not freed block! */
-
-    list_entry.next = NULL;
+    mem_segment = (list_t*) ( (char*) ptr - LIST_T );
 
     if (avail == NULL) {
-        avail = (list_t*) list_entry.addr;
-        *avail = list_entry;
+        avail = mem_segment;
         
-        printf("\navail:\t\t%p\n", avail);
+        printf("\nfree:\n");
+        printf("avail:\t\t%p\n", avail);
         printf("avail->next:\t%p\n", avail->next);
         
         return;
     }
 
+    prev = NULL;
     p = avail;
-
-    while (p != NULL && p->addr < list_entry.addr) {
+    
+    while (p != NULL && p < mem_segment) {
         prev = p;
         p = p->next;
     }
 
-    if (p == NULL) {
-        *(prev->next) = list_entry;
+    if (prev == NULL) {
+        list_t *tmp = avail;
+
+        avail = p;
+        p->next = tmp;
+        
         return;
     }
-    
-    list_entry.next = p;
-    *(prev->next) = list_entry;
+
+
+    if (p == NULL) {
+        printf("\nhej\n");
+        prev->next = mem_segment;
+        return;
+    }
+ 
+    mem_segment->next = p;
+    prev->next = mem_segment;
 }
 #endif
 
 int main() {
 
-    init_print();
+    memory_start = sbrk(0);
 
 #if 1
     size_t *p, *q;
     
-    printf("\nbefore first malloc\n");
+    printf("before first malloc\n");
     printf(" p:\t%p\n", p);
     
-    p = malloc(2);
-    /**p = 0xffffffffffffffff;*/
+    p = malloc(8*10);
     
     printf("\nafter first malloc\n");
     printf(" p:\t%p\n", p);
     print_memory();
+    
+    printf("\nafter filling p\n");
+    *p = 0x1122;
+    print_memory();
+    
     
     free(p);
     printf("\nafter free\n");
@@ -165,9 +182,9 @@ int main() {
     
 #if 1
     p = malloc(3);
-    /**p = 0xffffffffffffffff;*/
+    *p = 0x3344;
     
-    printf("\nafter second malloc\n");
+    printf("\nafter second malloc and filling p\n");
     printf(" p:\t%p\n", p);
     print_memory();
 #endif
