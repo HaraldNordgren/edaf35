@@ -1,14 +1,16 @@
 #!/bin/bash
 
-REPOS="Buddy-System-Malloc bedrinejl chintanparikh/malloc-implementation danluu daveho/malloc fouady fredrik-appelros freedrikp itganesan/Malloc michael-hobo pbos sebastien-cs/malloc snaipe tomelm/C-Malloc-Implementation"
+REPOS="chintanparikh/malloc-implementation danluu daveho/malloc fouady fredrik-appelros freedrikp itganesan/Malloc michael-hobo pbos sebastien-cs/malloc snaipe tomelm/C-Malloc-Implementation"
 
 BASE="$HOME/courses/edaf35/project"
 
 for word in $REPOS
 do
     cd $BASE
-    cd "repos/$word"
-    rm .git -rf
-    echo Removed .git from $PWD
+    git rm --cached "repos/$word/"
+
+    #cd "repos/$word"
+    #rm .git -rf
+    #echo Removed .git from $PWD
 done
 

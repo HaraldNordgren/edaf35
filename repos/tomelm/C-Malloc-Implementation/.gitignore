@@ -1,0 +1,8 @@
+*.pdf
+*.nfo
+*.o
+*.sw?
+*.a
+hw13-test
+hw13-debug
+hw13-verifier

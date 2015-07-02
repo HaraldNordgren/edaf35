@@ -1,0 +1,177 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[swedish]{babel} 
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhead{}
+\fancyfoot{}
+
+\fancyhead[L]{Laboration 3: malloc\\}
+\fancyhead[R]{pbos@kth.se\\ rasmusgo@kth.se}
+\fancyfoot[C]{Operativsystem, ID2006}
+\fancyfoot[R]{\thepage}
+
+\usepackage{fancyvrb}
+\usepackage{listings}
+\lstset{language=C,
+	basicstyle=\footnotesize,
+	numbers=left,
+	numberstyle=\footnotesize,
+	title=\lstname,
+	showstringspaces=false,
+	fancyvrb=true,
+	extendedchars=true,
+	breaklines=true,
+	breakatwhitespace=true,
+	tabsize=4}
+
+\lstset{ % För att å, ä och ö ska funka inuti lstlistings, kan behövas för andra symboler också..
+	literate={ö}{{\"o}}1
+		{ä}{{\"a}}1
+		{å}{{\aa}}1
+	}
+
+\title{Operativsystem -- Laboration 3\\\vspace{4pt}\normalsize malloc}
+\author{Peter Boström -- \emph{pbos@kth.se}\\
+	Rasmus Göransson -- \emph{rasmusgo@kth.se}}
+
+\begin{document}
+\maketitle
+\pagestyle{fancyplain}
+
+\section*{Problembeskrivning}
+
+Implementera malloc, free och realloc enligt C-standarden.
+Laborationen omfattar förståelse för alignment av minnesblock samt användandning av sbrk().
+Vi använde även K\&R:s kod så för oss innebar det även att förstå deras icke-självförklarande kod.
+
+\section*{Programbeteende, lösning}
+
+Programmet bygger till stor del på Kerrigan och Richies kod från boken The C Programming Language. I deras lösning ligger headerblock om lott med den minnesarea som allokeras i en länkad lista samt annat minne som allokerats med hjälp av sbrk().
+Fria headrar formar en cirkulär länkad lista med fria block.
+Denna cirkulära lista är sorterad i minnesadressordning. Vår implementation av quick-fit är ett undantag där ett endast block som är tillräckligt stora ligger i denna cirkulära lista.
+För block som är allokerade ligger headern kvar för att det ska gå att avgöra hur stort blocket som används var när det sedan, via free(), ska eventuellt slås ihop samt göras tillgängligt för senare anrop till malloc().
+Dessa block blir en multipel av alignment-typen, vilket är en double.
+På 64-bitarssystem kommer headern i de flesta fallen att vara större, men fortfarande en multipel av alignmenttypen.
+
+Alla block som allokeras är en multipel av headerstorleken. Detta för att tvinga fram alignment, så att alla typer säkert kan placeras där. När ett block allokeras delas det upp ifall det finns mer plats i blocket. Detta gäller för alla algoritmer utom de block som ligger i quick fit:s quicklistor.
+
+\subsection*{First fit}
+
+First fit går igenom den cirkulära buffern och tar helt enkelt det första block som passar. Finns det mer plats i blocket så splittas det upp.
+
+\subsection*{Best fit}
+
+Best fit fungerar strukturmessigt lika dant som first fit. Att sortera listan så att små block ligger först och att optimala blocket går att hitta snabbare hade varit attraktivt. Däremot så innebär det att sammanslagning av redan allokerade block både tar längre tid och blir mer komplicerat. Den tid som man hade sparat under malloc hade istället hamnat under free.
+
+Därför går best fit helt enkelt igenom alla fria block och hittar det minsta som rymmer det block som ska allokeras. Finns inget sånt så skapas ett nytt på samma sätt som first fit. Blocken delas fortfarande upp till mindre. Detta för att små blockstorlekar inte ska behöva ta löjligt mycket plats.
+
+\subsection*{Worst fit}
+
+Worst fit är identisk med best fit förutom att programmet letar efter det största blocket där datan får plats istället för det minsta.
+
+\subsection*{Quick fit}
+
+Vår quick fit-implementation är egentligen ett tillägg till first fit. Den använder sig av first fit för alla block som är för stora för att få plats i någon av quick-listorna.
+
+Med quick fit så finns det ett antal olika listor, "quick-listor", med block där 8, 16, 32, 64.. osv. header-enheter får plats. Hur många som finns beror på en kompileringsflagga.
+
+Implementationen har ett tillägg i free och malloc som före first fit körs kollar om blocket i fråga är tillräckligt litet för att hanteras via quick-listorna. I så fall letar koden upp vilken lista de ska ligga i respektive tas ifrån och tar/lägger tillbaka blocket direkt. Ifall blocket skulle tas ifrån en lista där det inte finns så skapas ett nytt block via morecore(), delas upp och stoppas in i quick-listan.
+
+Målet är att små block ska gå snabbare att hitta och användas mer effektivt.
+
+\section*{Testning}
+
+För de olika strategiernas korrekthet användes främst de testprogram som givits ut i samband med laborationen. Implementationerna klarar inte av felaktiga skrivningar utanför minnesblocken.
+
+För att halvt testa verkliga användningsscenarion modifierades tstalgorithms.h för att få deterministiskt beteende. Detta gjorde genom att byta ut srand()-anropet som tidigare använde systemtid mot srand(42), en godtycklig variabel som inte förändras mellan körningar. Dessa görs med slumpmässiga blocksorteringar.
+
+Ett andra test, 'benchmark.c', skapades för att allokera och avallokera block av samma storlek om lott för att även testa scenario där block ofta slås ihop. Testet är också väldigt stort och ger komplexitetsproblem då länkade listan av fria block blir väldigt stor. Testet ska simulera användning av en länkad lista där saker tas bort och läggs till utspritt i listan.
+
+Dessa tester kördes för varje strategi, inklusive systemets egna malloc, och profilerades för att se hur mycket av programmets tid som spenderades inne i free, realloc samt malloc tillsammans.
+
+glibc:s implementation av malloc tar förmodligen hand om flera specialfall i free och realloc som vår inte gör och använder förmodligen en effektivare metod.
+
+\subsection*{Testresultat}
+
+\subsubsection*{benchmark.c}
+\begin{tabular}{|c||l|l|l|l|l|}
+	\hline
+	Test & glibc & First fit & Best fit & Worst fit & Quick fit \\
+	\hline
+	Minnesanvändning & 100\% & 99\% & 99\% & 99\% & 263\% \\
+	Körtid & 100\% & 305\% & 17400\% & 58900\% & 52\%\\
+	\hline
+\end{tabular}
+
+\subsubsection*{Diskussion}
+
+Quick fits minnesprestanda i 'benchmark.c' kan förklaras av att den egentligen vill allokera 3 enheter, men enligt labbspecen är minsta quicklistan 8 enheter stor, därför kommer en del överflödigt minne att användas.
+
+Att first fit får sämre prestanda än quick fit i 'benchmark.c' är för att first fit går igenom alla friade block i free() för att försöka merge:a. Detta undersöktes och bekräftades genom att profilera first fit och se att över 90\% av körtiden låg i free().
+
+Att best fit och worst fit är så mycket sämre beror på att de alltid är linjära, även i bästa fall. Det gör att det här programmet får tidskomplexitet $\Theta(n^2)$ med dessa implementationer, vilket kraftigt påverkar prestanda i större instanser.
+
+Denna linjäritet blir betydligt värre med hur många iterationer man låter programmet köra. Först lät vi programmet ha 10 gånger fler iterationer, men då tog det över en minut för first fit (som var relativt snabb) att köra klart. glibc:s implementation tog enbart under en sekund då.
+
+Att quick fit är så mycket snabbare än glibc:s implementation beror på att det här testet är ett specialfall som enbart använder en blockstorlek som gynnar quick fit väldigt mycket.
+
+\subsubsection*{Deterministisk tstalgorithms.c}
+Programmet skiljer sig enbart från labbpekets tstalgorithms.c med att srand()-anropet bytts mot srand(42) för att generera samma testfall för alla algoritmer.\\
+
+\begin{tabular}{|c||l|l|l|l|l|}
+	\hline
+	Test & glibc & First fit & Best fit & Worst fit & Quick fit \\
+	\hline
+	Minnesanvändning & 100\% & 103\% & 91\% & 129\% & 105\% \\
+	Körtid & 100\% & 272\% & 480\% & 804\% & 230\%\\
+	\hline
+\end{tabular}
+
+\subsubsection*{Diskussion}
+
+Att körtiden skiljer sig mer rimligt än förra exemplet beror på att det inte alls är lika många block som allokeras, och därför skiljer det inte lika mycket mellan att algoritmerna är linjära och glibc:s implementation.
+
+Att quick fit inte är lika gynnsam (men fortfarande gynnsam!) beror på att flera mindre block går in under quick fits snabbare hantering. För detta test användes 4 quicklists, det är möjligt att flera listor hade givit ett bättre resultat.
+
+\section*{Instuderingsfråga}
+
+Följande instuderingsfråga besvarades från labbpeket.
+
+\begin{enumerate}
+	\item Hur mycket minne slösas bort i medel och i värsta fallet i de block som allokeras via malloc() ur "Quick fit"-listorna?
+	\begin{itemize}
+		\item I värsta fall slösas strax under hälften bort. Värsta fall uppstår när det behövs plats för en header mer än vad som får plats i själva listan. Om användaren t.ex. vill allokera minne som motsvarar plats för 8 headers kommer systemet att lägga på en extra header och leta efter ett block där 9 headers får plats. Då kommer det att läggas i ett block med plats för 16 headers. I medelfall så kastas en ungefär fjärdedel bort. Ser vi t.ex. på block med plats för 32 headers. Där kommer mellan 17 och 32 block att användas. I medelfall kommer 24.5 block allokeras, vilket är c:a 75\% av blockets kapacitet. Ju större block som används desto närmare kommer man 50\% respektive 75\% i dessa fall. Detta gäller förutom om man allokerar t.ex. en char. En char är betydligt mindre än minsta quick fit-blocket och kommer därför enbart ta upp 25\% av det blocket.
+	\end{itemize}
+\end{enumerate}
+
+\section*{Program}
+
+Förutom koden som inkluderas här är de testprogram som ingår i labbkursen även relevanta för att testa programmet.
+Koden finns även tillfälligt på \url{http://lemming.ceri.se/tmp/os11-hw3.tar}. Kontakta annars någon av oss.
+
+\subsection*{benchmark.c}
+\lstinputlisting{benchmark.c}
+
+\clearpage
+\subsection*{malloc.h}
+\lstinputlisting{malloc.h}
+
+\subsection*{malloc.c}
+\lstinputlisting{malloc.c}
+
+\section*{Lärdomar}
+
+Kerrigan och Richies kod var svårläst p.g.a. variabelnamn. Även om det inte återspeglas helt i vår kod så har vi sett hur viktigt det kan vara att välja variabelnamn som är enklare att läsa.
+
+Vi har lärt oss hur sbrk fungerar samt att heapen inte ligger utspridd i minnet utan begränsas med sbrk. Vi känner också att vi har lärt oss att det är krångligt att arbeta direkt med heapen.
+
+Vi kan förstå vissa fördelar med designvalet i Java att inte ha med nakna pekare. Då kan man ha möjlighet att packa data bättre och därför även kunna ge tillbaka från heaputrymmet till operativsystemet. I C har vi inte samma möjlighet att flytta allokerat minne, då programmeraren refererar till detta minne med enbart en minnesaddress.
+
+\end{document}
+
