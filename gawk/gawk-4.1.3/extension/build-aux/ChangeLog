@@ -1,0 +1,45 @@
+2015-05-19         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.1.3: Release tar ball made.
+
+2015-04-29         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.1.2: Release tar ball made.
+
+2015-03-18         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* config.guess, config.sub, ltmain.sh: Updated, from libtool 2.4.6.
+
+2014-04-08         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.1.1: Release tar ball made.
+
+2014-01-03         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* config.guess, config.rpath, config.sub, depcomp,
+	install-sh: Updated.
+
+2013-12-24         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* config.guess: Updated.
+
+2013-12-21         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* ltmain.sh: Updated to libtool 2.4.2.418.
+
+2013-05-09         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.1.0: Release tar ball made.
+
+2013-04-22         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* missing: Updated from Automake 1.13.1.
+
+2012-07-30         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* config.rpath: New file.
+
+2012-05-21         Andrew J. Schorr     <aschorr@telemetry-investments.com>
+
+	* ar-lib, config.guess, config.sub, depcomp, install-sh, ltmain.sh,
+	missing: New files related to autoconf and libtool.

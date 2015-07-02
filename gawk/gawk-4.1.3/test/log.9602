@@ -1,0 +1,41 @@
+==9602== Memcheck, a memory error detector
+==9602== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==9602== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==9602== Command: ../gawk -f longsub.awk
+==9602== Parent PID: 9601
+==9602== 
+==9602== 
+==9602== HEAP SUMMARY:
+==9602==     in use at exit: 542,511 bytes in 508 blocks
+==9602==   total heap usage: 623 allocs, 115 frees, 1,335,122 bytes allocated
+==9602== 
+==9602== 159 bytes in 21 blocks are possibly lost in loss record 117 of 151
+==9602==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9602==    by 0x459454: make_str_node (awk.h:1786)
+==9602==    by 0x46DA4D: load_symbols (symbol.c:590)
+==9602==    by 0x40B366: main (main.c:471)
+==9602== 
+==9602== 4,800 bytes in 1 blocks are possibly lost in loss record 143 of 151
+==9602==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9602==    by 0x458E45: more_blocks (awk.h:1786)
+==9602==    by 0x46C84A: str_lookup (str_array.c:171)
+==9602==    by 0x40AF90: main (main.c:880)
+==9602== 
+==9602== 7,200 bytes in 1 blocks are possibly lost in loss record 148 of 151
+==9602==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9602==    by 0x458E45: more_blocks (awk.h:1786)
+==9602==    by 0x45951A: make_str_node (node.c:368)
+==9602==    by 0x46DA4D: load_symbols (symbol.c:590)
+==9602==    by 0x40B366: main (main.c:471)
+==9602== 
+==9602== LEAK SUMMARY:
+==9602==    definitely lost: 0 bytes in 0 blocks
+==9602==    indirectly lost: 0 bytes in 0 blocks
+==9602==      possibly lost: 12,159 bytes in 23 blocks
+==9602==    still reachable: 530,352 bytes in 485 blocks
+==9602==         suppressed: 0 bytes in 0 blocks
+==9602== Reachable blocks (those to which a pointer was found) are not shown.
+==9602== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9602== 
+==9602== For counts of detected and suppressed errors, rerun with: -v
+==9602== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

@@ -1,0 +1,93 @@
+==10371== Memcheck, a memory error detector
+==10371== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10371== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10371== Command: ../gawk -f zeroe0.awk
+==10371== Parent PID: 10370
+==10371== 
+==10371== 
+==10371== HEAP SUMMARY:
+==10371==     in use at exit: 67,549 bytes in 437 blocks
+==10371==   total heap usage: 457 allocs, 20 frees, 86,820 bytes allocated
+==10371== 
+==10371== 5 bytes in 1 blocks are possibly lost in loss record 22 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x459454: make_str_node (awk.h:1786)
+==10371==    by 0x46C926: install (symbol.c:305)
+==10371==    by 0x412577: install_builtins (awkgram.y:5693)
+==10371==    by 0x40B352: main (main.c:463)
+==10371== 
+==10371== 7 bytes in 1 blocks are possibly lost in loss record 31 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x459454: make_str_node (awk.h:1786)
+==10371==    by 0x46D98D: load_symbols (symbol.c:574)
+==10371==    by 0x40B366: main (main.c:471)
+==10371== 
+==10371== 8 bytes in 1 blocks are possibly lost in loss record 36 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x459454: make_str_node (awk.h:1786)
+==10371==    by 0x46D961: load_symbols (symbol.c:572)
+==10371==    by 0x40B366: main (main.c:471)
+==10371== 
+==10371== 9 bytes in 1 blocks are possibly lost in loss record 41 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x459454: make_str_node (awk.h:1786)
+==10371==    by 0x46D9A3: load_symbols (symbol.c:575)
+==10371==    by 0x40B366: main (main.c:471)
+==10371== 
+==10371== 12 bytes in 1 blocks are possibly lost in loss record 47 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x456E12: estrdup (awk.h:1786)
+==10371==    by 0x46D920: load_symbols (symbol.c:568)
+==10371==    by 0x40B366: main (main.c:471)
+==10371== 
+==10371== 13 bytes in 1 blocks are possibly lost in loss record 49 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x459454: make_str_node (awk.h:1786)
+==10371==    by 0x46D849: load_symbols (symbol.c:556)
+==10371==    by 0x40B366: main (main.c:471)
+==10371== 
+==10371== 538 bytes in 71 blocks are possibly lost in loss record 74 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x459454: make_str_node (awk.h:1786)
+==10371==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10371==    by 0x40B366: main (main.c:471)
+==10371== 
+==10371== 1,016 bytes in 1 blocks are possibly lost in loss record 77 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x46C544: grow_table (awk.h:1786)
+==10371==    by 0x46C804: str_lookup (str_array.c:135)
+==10371==    by 0x46DA5C: load_symbols (symbol.c:591)
+==10371==    by 0x40B366: main (main.c:471)
+==10371== 
+==10371== 4,800 bytes in 1 blocks are possibly lost in loss record 83 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x458E45: more_blocks (awk.h:1786)
+==10371==    by 0x46C84A: str_lookup (str_array.c:171)
+==10371==    by 0x40AF90: main (main.c:880)
+==10371== 
+==10371== 4,800 bytes in 1 blocks are possibly lost in loss record 84 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x458E45: more_blocks (awk.h:1786)
+==10371==    by 0x46C84A: str_lookup (str_array.c:171)
+==10371==    by 0x46DA5C: load_symbols (symbol.c:591)
+==10371==    by 0x40B366: main (main.c:471)
+==10371== 
+==10371== 7,200 bytes in 1 blocks are possibly lost in loss record 89 of 89
+==10371==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10371==    by 0x458E45: more_blocks (awk.h:1786)
+==10371==    by 0x45951A: make_str_node (node.c:368)
+==10371==    by 0x46C926: install (symbol.c:305)
+==10371==    by 0x412577: install_builtins (awkgram.y:5693)
+==10371==    by 0x40B352: main (main.c:463)
+==10371== 
+==10371== LEAK SUMMARY:
+==10371==    definitely lost: 0 bytes in 0 blocks
+==10371==    indirectly lost: 0 bytes in 0 blocks
+==10371==      possibly lost: 18,408 bytes in 81 blocks
+==10371==    still reachable: 49,141 bytes in 356 blocks
+==10371==         suppressed: 0 bytes in 0 blocks
+==10371== Reachable blocks (those to which a pointer was found) are not shown.
+==10371== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10371== 
+==10371== For counts of detected and suppressed errors, rerun with: -v
+==10371== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 0 from 0)

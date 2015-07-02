@@ -1,1 +1,1 @@
-vim -p open-all Makefile alloc.c alloc.c alloc.c
+vim -p alloc.c alloc.c alloc.c Makefile open-all

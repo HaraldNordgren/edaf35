@@ -1,0 +1,41 @@
+==10117== Memcheck, a memory error detector
+==10117== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10117== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10117== Command: ../gawk -f rstest5.awk
+==10117== Parent PID: 10116
+==10117== 
+==10117== 
+==10117== HEAP SUMMARY:
+==10117==     in use at exit: 74,295 bytes in 492 blocks
+==10117==   total heap usage: 566 allocs, 74 frees, 118,118 bytes allocated
+==10117== 
+==10117== 175 bytes in 23 blocks are possibly lost in loss record 116 of 145
+==10117==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10117==    by 0x459454: make_str_node (awk.h:1786)
+==10117==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10117==    by 0x40B366: main (main.c:471)
+==10117== 
+==10117== 4,800 bytes in 1 blocks are possibly lost in loss record 140 of 145
+==10117==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10117==    by 0x458E45: more_blocks (awk.h:1786)
+==10117==    by 0x46C84A: str_lookup (str_array.c:171)
+==10117==    by 0x40AF90: main (main.c:880)
+==10117== 
+==10117== 7,200 bytes in 1 blocks are possibly lost in loss record 145 of 145
+==10117==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10117==    by 0x458E45: more_blocks (awk.h:1786)
+==10117==    by 0x45951A: make_str_node (node.c:368)
+==10117==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10117==    by 0x40B366: main (main.c:471)
+==10117== 
+==10117== LEAK SUMMARY:
+==10117==    definitely lost: 0 bytes in 0 blocks
+==10117==    indirectly lost: 0 bytes in 0 blocks
+==10117==      possibly lost: 12,175 bytes in 25 blocks
+==10117==    still reachable: 62,120 bytes in 467 blocks
+==10117==         suppressed: 0 bytes in 0 blocks
+==10117== Reachable blocks (those to which a pointer was found) are not shown.
+==10117== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10117== 
+==10117== For counts of detected and suppressed errors, rerun with: -v
+==10117== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

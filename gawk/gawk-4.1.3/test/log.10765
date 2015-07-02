@@ -1,0 +1,41 @@
+==10765== Memcheck, a memory error detector
+==10765== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10765== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10765== Command: ../gawk -f fpat2.awk
+==10765== Parent PID: 10764
+==10765== 
+==10765== 
+==10765== HEAP SUMMARY:
+==10765==     in use at exit: 76,781 bytes in 487 blocks
+==10765==   total heap usage: 563 allocs, 76 frees, 124,813 bytes allocated
+==10765== 
+==10765== 183 bytes in 24 blocks are possibly lost in loss record 110 of 140
+==10765==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10765==    by 0x459454: make_str_node (awk.h:1786)
+==10765==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10765==    by 0x40B366: main (main.c:471)
+==10765== 
+==10765== 4,800 bytes in 1 blocks are possibly lost in loss record 135 of 140
+==10765==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10765==    by 0x458E45: more_blocks (awk.h:1786)
+==10765==    by 0x46C84A: str_lookup (str_array.c:171)
+==10765==    by 0x40AF90: main (main.c:880)
+==10765== 
+==10765== 7,200 bytes in 1 blocks are possibly lost in loss record 140 of 140
+==10765==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10765==    by 0x458E45: more_blocks (awk.h:1786)
+==10765==    by 0x45951A: make_str_node (node.c:368)
+==10765==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10765==    by 0x40B366: main (main.c:471)
+==10765== 
+==10765== LEAK SUMMARY:
+==10765==    definitely lost: 0 bytes in 0 blocks
+==10765==    indirectly lost: 0 bytes in 0 blocks
+==10765==      possibly lost: 12,183 bytes in 26 blocks
+==10765==    still reachable: 64,598 bytes in 461 blocks
+==10765==         suppressed: 0 bytes in 0 blocks
+==10765== Reachable blocks (those to which a pointer was found) are not shown.
+==10765== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10765== 
+==10765== For counts of detected and suppressed errors, rerun with: -v
+==10765== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

@@ -1,0 +1,28 @@
+==10203== Memcheck, a memory error detector
+==10203== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10203== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10203== Command: ../gawk -f strtod.awk
+==10203== Parent PID: 10202
+==10203== 
+==10203== 
+==10203== HEAP SUMMARY:
+==10203==     in use at exit: 68,128 bytes in 441 blocks
+==10203==   total heap usage: 499 allocs, 58 frees, 87,037 bytes allocated
+==10203== 
+==10203== 4,800 bytes in 1 blocks are possibly lost in loss record 92 of 97
+==10203==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10203==    by 0x458E45: more_blocks (awk.h:1786)
+==10203==    by 0x46C84A: str_lookup (str_array.c:171)
+==10203==    by 0x40AF90: main (main.c:880)
+==10203== 
+==10203== LEAK SUMMARY:
+==10203==    definitely lost: 0 bytes in 0 blocks
+==10203==    indirectly lost: 0 bytes in 0 blocks
+==10203==      possibly lost: 4,800 bytes in 1 blocks
+==10203==    still reachable: 63,328 bytes in 440 blocks
+==10203==         suppressed: 0 bytes in 0 blocks
+==10203== Reachable blocks (those to which a pointer was found) are not shown.
+==10203== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10203== 
+==10203== For counts of detected and suppressed errors, rerun with: -v
+==10203== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

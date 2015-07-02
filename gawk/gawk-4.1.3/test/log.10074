@@ -1,0 +1,49 @@
+==10074== Memcheck, a memory error detector
+==10074== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10074== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10074== Command: ../gawk /^[^a]/;\ END{\ print\ NR\ }
+==10074== Parent PID: 10071
+==10074== 
+==10074== 
+==10074== HEAP SUMMARY:
+==10074==     in use at exit: 76,191 bytes in 485 blocks
+==10074==   total heap usage: 542 allocs, 57 frees, 102,037 bytes allocated
+==10074== 
+==10074== 56 bytes in 1 blocks are possibly lost in loss record 93 of 145
+==10074==    at 0x4C2CE8E: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10074==    by 0x434352: realloc_trans_if_necessary (xalloc.h:158)
+==10074==    by 0x4387BF: build_state (dfa.c:2960)
+==10074==    by 0x439553: dfaexec_sb (dfa.c:3357)
+==10074==    by 0x45D0A4: research (re.c:292)
+==10074==    by 0x43E772: r_interpret (interpret.h:1009)
+==10074==    by 0x40B3BF: main (main.c:505)
+==10074== 
+==10074== 2,048 bytes in 1 blocks are possibly lost in loss record 134 of 145
+==10074==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10074==    by 0x44D5DE: xmalloc (awk.h:1786)
+==10074==    by 0x438784: build_state (dfa.c:2950)
+==10074==    by 0x439553: dfaexec_sb (dfa.c:3357)
+==10074==    by 0x45D0A4: research (re.c:292)
+==10074==    by 0x43E772: r_interpret (interpret.h:1009)
+==10074==    by 0x40B3BF: main (main.c:505)
+==10074== 
+==10074== 2,048 bytes in 1 blocks are possibly lost in loss record 135 of 145
+==10074==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10074==    by 0x44D5DE: xmalloc (awk.h:1786)
+==10074==    by 0x438784: build_state (dfa.c:2950)
+==10074==    by 0x439506: dfaexec_sb (dfa.c:3532)
+==10074==    by 0x45D0A4: research (re.c:292)
+==10074==    by 0x43E772: r_interpret (interpret.h:1009)
+==10074==    by 0x40B3BF: main (main.c:505)
+==10074== 
+==10074== LEAK SUMMARY:
+==10074==    definitely lost: 0 bytes in 0 blocks
+==10074==    indirectly lost: 0 bytes in 0 blocks
+==10074==      possibly lost: 4,152 bytes in 3 blocks
+==10074==    still reachable: 72,039 bytes in 482 blocks
+==10074==         suppressed: 0 bytes in 0 blocks
+==10074== Reachable blocks (those to which a pointer was found) are not shown.
+==10074== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10074== 
+==10074== For counts of detected and suppressed errors, rerun with: -v
+==10074== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

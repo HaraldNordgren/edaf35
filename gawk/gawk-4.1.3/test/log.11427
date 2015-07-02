@@ -1,0 +1,126 @@
+==11427== Memcheck, a memory error detector
+==11427== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==11427== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==11427== Command: ../gawk -f sortu.awk
+==11427== Parent PID: 11426
+==11427== 
+==11427== 
+==11427== HEAP SUMMARY:
+==11427==     in use at exit: 117,728 bytes in 768 blocks
+==11427==   total heap usage: 1,982 allocs, 1,214 frees, 218,278 bytes allocated
+==11427== 
+==11427== 3 bytes in 1 blocks are possibly lost in loss record 15 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x4585FE: r_format_val (awk.h:1786)
+==11427==    by 0x41ABEA: format_tree (awk.h:1755)
+==11427==    by 0x41E096: printf_common (builtin.c:1611)
+==11427==    by 0x41E270: do_printf (builtin.c:1674)
+==11427==    by 0x43F20A: r_interpret (interpret.h:975)
+==11427==    by 0x40B3BF: main (main.c:505)
+==11427== 
+==11427== 11 bytes in 1 blocks are possibly lost in loss record 56 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x459454: make_str_node (awk.h:1786)
+==11427==    by 0x44225C: r_interpret (interpret.h:884)
+==11427==    by 0x40B3BF: main (main.c:505)
+==11427== 
+==11427== 62 bytes in 8 blocks are possibly lost in loss record 104 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x459454: make_str_node (awk.h:1786)
+==11427==    by 0x46DA4D: load_symbols (symbol.c:590)
+==11427==    by 0x40B366: main (main.c:471)
+==11427== 
+==11427== 64 bytes in 1 blocks are possibly lost in loss record 109 of 183
+==11427==    at 0x4C2CE8E: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x434352: realloc_trans_if_necessary (xalloc.h:158)
+==11427==    by 0x4387BF: build_state (dfa.c:2960)
+==11427==    by 0x439553: dfaexec_sb (dfa.c:3357)
+==11427==    by 0x45D0A4: research (re.c:292)
+==11427==    by 0x43E62E: r_interpret (interpret.h:1009)
+==11427==    by 0x40C81E: sort_user_func (array.c:1222)
+==11427==    by 0x537C344: msort_with_tmp.part.0 (msort.c:105)
+==11427==    by 0x537C221: msort_with_tmp.part.0 (msort.c:45)
+==11427==    by 0x537C77B: qsort_r (msort.c:45)
+==11427==    by 0x40D93E: assoc_list (array.c:1353)
+==11427==    by 0x40DBF9: asort_actual (array.c:843)
+==11427== 
+==11427== 256 bytes in 1 blocks are possibly lost in loss record 138 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x426334: tree_lookup (awk.h:1786)
+==11427==    by 0x40DF3D: asort_actual (array.c:898)
+==11427==    by 0x43F755: r_interpret (interpret.h:940)
+==11427==    by 0x40B3BF: main (main.c:505)
+==11427== 
+==11427== 256 bytes in 1 blocks are possibly lost in loss record 139 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x426637: tree_lookup (awk.h:1786)
+==11427==    by 0x40DF3D: asort_actual (array.c:898)
+==11427==    by 0x43F755: r_interpret (interpret.h:940)
+==11427==    by 0x40B3BF: main (main.c:505)
+==11427== 
+==11427== 2,048 bytes in 1 blocks are possibly lost in loss record 166 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x44D5DE: xmalloc (awk.h:1786)
+==11427==    by 0x438784: build_state (dfa.c:2950)
+==11427==    by 0x439553: dfaexec_sb (dfa.c:3357)
+==11427==    by 0x45D0A4: research (re.c:292)
+==11427==    by 0x43E62E: r_interpret (interpret.h:1009)
+==11427==    by 0x40C81E: sort_user_func (array.c:1222)
+==11427==    by 0x537C344: msort_with_tmp.part.0 (msort.c:105)
+==11427==    by 0x537C221: msort_with_tmp.part.0 (msort.c:45)
+==11427==    by 0x537C77B: qsort_r (msort.c:45)
+==11427==    by 0x40D93E: assoc_list (array.c:1353)
+==11427==    by 0x40DBF9: asort_actual (array.c:843)
+==11427== 
+==11427== 2,048 bytes in 1 blocks are possibly lost in loss record 167 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x44D5DE: xmalloc (awk.h:1786)
+==11427==    by 0x438784: build_state (dfa.c:2950)
+==11427==    by 0x439506: dfaexec_sb (dfa.c:3532)
+==11427==    by 0x45D0A4: research (re.c:292)
+==11427==    by 0x43E62E: r_interpret (interpret.h:1009)
+==11427==    by 0x40C81E: sort_user_func (array.c:1222)
+==11427==    by 0x537C344: msort_with_tmp.part.0 (msort.c:105)
+==11427==    by 0x537C221: msort_with_tmp.part.0 (msort.c:45)
+==11427==    by 0x537C77B: qsort_r (msort.c:45)
+==11427==    by 0x40D93E: assoc_list (array.c:1353)
+==11427==    by 0x40DBF9: asort_actual (array.c:843)
+==11427== 
+==11427== 4,800 bytes in 1 blocks are possibly lost in loss record 176 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x458E45: more_blocks (awk.h:1786)
+==11427==    by 0x46C84A: str_lookup (str_array.c:171)
+==11427==    by 0x40AF90: main (main.c:880)
+==11427== 
+==11427== 7,200 bytes in 1 blocks are possibly lost in loss record 182 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x458E45: more_blocks (awk.h:1786)
+==11427==    by 0x45951A: make_str_node (node.c:368)
+==11427==    by 0x46DA4D: load_symbols (symbol.c:590)
+==11427==    by 0x40B366: main (main.c:471)
+==11427== 
+==11427== 7,200 bytes in 1 blocks are possibly lost in loss record 183 of 183
+==11427==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11427==    by 0x458E45: more_blocks (awk.h:1786)
+==11427==    by 0x43C9FC: setup_frame (eval.c:1389)
+==11427==    by 0x43FA43: r_interpret (interpret.h:1147)
+==11427==    by 0x40C81E: sort_user_func (array.c:1222)
+==11427==    by 0x537C344: msort_with_tmp.part.0 (msort.c:105)
+==11427==    by 0x537C221: msort_with_tmp.part.0 (msort.c:45)
+==11427==    by 0x537C77B: qsort_r (msort.c:45)
+==11427==    by 0x40D93E: assoc_list (array.c:1353)
+==11427==    by 0x40DBF9: asort_actual (array.c:843)
+==11427==    by 0x43F755: r_interpret (interpret.h:940)
+==11427==    by 0x40B3BF: main (main.c:505)
+==11427== 
+==11427== LEAK SUMMARY:
+==11427==    definitely lost: 0 bytes in 0 blocks
+==11427==    indirectly lost: 0 bytes in 0 blocks
+==11427==      possibly lost: 23,948 bytes in 18 blocks
+==11427==    still reachable: 93,780 bytes in 750 blocks
+==11427==         suppressed: 0 bytes in 0 blocks
+==11427== Reachable blocks (those to which a pointer was found) are not shown.
+==11427== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==11427== 
+==11427== For counts of detected and suppressed errors, rerun with: -v
+==11427== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 0 from 0)

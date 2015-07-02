@@ -1,0 +1,22 @@
+==9738== Memcheck, a memory error detector
+==9738== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==9738== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==9738== Command: ../gawk {} no/such/file
+==9738== Parent PID: 9737
+==9738== 
+==9738== 
+==9738== HEAP SUMMARY:
+==9738==     in use at exit: 83,878 bytes in 427 blocks
+==9738==   total heap usage: 448 allocs, 21 frees, 85,790 bytes allocated
+==9738== 
+==9738== LEAK SUMMARY:
+==9738==    definitely lost: 0 bytes in 0 blocks
+==9738==    indirectly lost: 0 bytes in 0 blocks
+==9738==      possibly lost: 0 bytes in 0 blocks
+==9738==    still reachable: 83,878 bytes in 427 blocks
+==9738==         suppressed: 0 bytes in 0 blocks
+==9738== Reachable blocks (those to which a pointer was found) are not shown.
+==9738== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9738== 
+==9738== For counts of detected and suppressed errors, rerun with: -v
+==9738== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

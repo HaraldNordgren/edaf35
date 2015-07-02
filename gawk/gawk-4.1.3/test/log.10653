@@ -1,0 +1,22 @@
+==10653== Memcheck, a memory error detector
+==10653== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10653== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10653== Command: ../gawk -v BINMODE=3 BEGIN\ {\ print\ BINMODE\ }
+==10653== Parent PID: 10652
+==10653== 
+==10653== 
+==10653== HEAP SUMMARY:
+==10653==     in use at exit: 67,477 bytes in 427 blocks
+==10653==   total heap usage: 450 allocs, 23 frees, 85,574 bytes allocated
+==10653== 
+==10653== LEAK SUMMARY:
+==10653==    definitely lost: 0 bytes in 0 blocks
+==10653==    indirectly lost: 0 bytes in 0 blocks
+==10653==      possibly lost: 0 bytes in 0 blocks
+==10653==    still reachable: 67,477 bytes in 427 blocks
+==10653==         suppressed: 0 bytes in 0 blocks
+==10653== Reachable blocks (those to which a pointer was found) are not shown.
+==10653== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10653== 
+==10653== For counts of detected and suppressed errors, rerun with: -v
+==10653== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

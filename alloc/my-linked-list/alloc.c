@@ -29,19 +29,28 @@ void print_memory() {
 
     printf("\n");
 
-#if 1
-    for (i = 0; i < 10; i++) {
+    for (i = 0; i < 2 * 0xa ; i++) {
         printf("%p:\t%016zx\n", memory_start + i, memory_start[i]);
     }
-#endif
+}
 
-#if 0
-    for (i = 0; i < 0x10; i++) {
-        char *nbr = (char*) memory_start + i;
-        printf("%p:\t%016x\n", nbr, nbr[i]);
+void print_avail() {
+    list_t *p = avail;
+    
+    printf("\navail:\t%p\n", p);
+
+    if (p == NULL) {
+        return;
     }
-#endif
 
+    while (p->next != NULL) {
+        p = p->next;
+        printf("next:\t%p\n", p);
+    }
+    
+    if (avail != NULL) {
+        printf("next:\t%p\n", p->next);
+    }
 }
 
 #if MY_MALLOC
@@ -72,6 +81,8 @@ void *malloc(size_t size) {
     
     if (p->size >= min_size + LIST_T + 8) {
         printf("large segment\n");
+
+        /*TODO*/
         
         /*list_t list_entry = *p;
 
@@ -99,9 +110,11 @@ void *malloc(size_t size) {
     }
     
     if (p == avail) {
-        printf("\nmalloc:\n");
-        printf("avail:\t\t%p\t\n", avail);
-        printf("avail->next:\t%p\n", avail->next);
+        printf("\nMALLOC");
+        print_avail();
+
+        /*printf("avail:\t\t%p\t\n", avail);
+        printf("avail->next:\t%p\n", avail->next);*/
 
         avail = avail->next;
     }
@@ -119,9 +132,8 @@ void free(void *ptr) {
     if (avail == NULL) {
         avail = mem_segment;
         
-        printf("\nfree:\n");
-        printf("avail:\t\t%p\n", avail);
-        printf("avail->next:\t%p\n", avail->next);
+        printf("\nFREE");
+        print_avail();
         
         return;
     }
@@ -159,8 +171,7 @@ int main() {
 
     memory_start = sbrk(0);
 
-#if 1
-    size_t *p, *q;
+    size_t *p, *q, *r;
     
     printf("before first malloc\n");
     printf(" p:\t%p\n", p);
@@ -171,39 +182,38 @@ int main() {
     printf(" p:\t%p\n", p);
     print_memory();
     
-    printf("\nafter filling p\n");
     *p = 0x1122;
+    *(p+1) = 0x3344;
+    
+    printf("\nafter filling p\n");
     print_memory();
     
+    r = malloc(8);
+    *r = 0x5566;
+    
+    printf("\nafter second malloc and filling r\n");
+    printf(" r:\t%p\n", r);
+    print_memory();
     
     free(p);
-    printf("\nafter free\n");
+    printf("\nafter freeing p (%p)\n", p);
     print_memory();
     
-#if 1
-    p = malloc(3);
-    *p = 0x3344;
-    
-    printf("\nafter second malloc and filling p\n");
-    printf(" p:\t%p\n", p);
-    print_memory();
-#endif
+    q = malloc(8);
+    *q = 0x7788;
 
-    q = malloc(2);
-    printf("\nafter third malloc\n");
+    printf("\nafter third malloc and filling q\n");
     printf(" q:\t%p\n", q);
     print_memory();
     
-    q = malloc(2);
-    printf("\nafter fourth malloc\n");
-    printf(" q:\t%p\n", q);
-    print_memory();
+    printf("\navail:\t%p\n", avail);
     
-    q = malloc(2);
-    printf("\nafter fifth malloc\n");
-    printf(" q:\t%p\n", q);
-    print_memory();
-#endif
+    q = malloc(8);
+    *q = 0x99aa;
 
+    printf("\nafter fourth malloc and filling q\n");
+    printf(" q:\t%p\n", q);
+    print_memory();
+    
     return 0;
 }

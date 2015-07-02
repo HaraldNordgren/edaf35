@@ -1,0 +1,41 @@
+==10276== Memcheck, a memory error detector
+==10276== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10276== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10276== Command: ../gawk -f uninit3.awk --lint
+==10276== Parent PID: 10275
+==10276== 
+==10276== 
+==10276== HEAP SUMMARY:
+==10276==     in use at exit: 67,923 bytes in 443 blocks
+==10276==   total heap usage: 474 allocs, 31 frees, 86,898 bytes allocated
+==10276== 
+==10276== 144 bytes in 19 blocks are possibly lost in loss record 68 of 94
+==10276==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10276==    by 0x459454: make_str_node (awk.h:1786)
+==10276==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10276==    by 0x40B366: main (main.c:471)
+==10276== 
+==10276== 4,800 bytes in 1 blocks are possibly lost in loss record 89 of 94
+==10276==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10276==    by 0x458E45: more_blocks (awk.h:1786)
+==10276==    by 0x46C84A: str_lookup (str_array.c:171)
+==10276==    by 0x40AF90: main (main.c:880)
+==10276== 
+==10276== 7,200 bytes in 1 blocks are possibly lost in loss record 94 of 94
+==10276==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10276==    by 0x458E45: more_blocks (awk.h:1786)
+==10276==    by 0x45951A: make_str_node (node.c:368)
+==10276==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10276==    by 0x40B366: main (main.c:471)
+==10276== 
+==10276== LEAK SUMMARY:
+==10276==    definitely lost: 0 bytes in 0 blocks
+==10276==    indirectly lost: 0 bytes in 0 blocks
+==10276==      possibly lost: 12,144 bytes in 21 blocks
+==10276==    still reachable: 55,779 bytes in 422 blocks
+==10276==         suppressed: 0 bytes in 0 blocks
+==10276== Reachable blocks (those to which a pointer was found) are not shown.
+==10276== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10276== 
+==10276== For counts of detected and suppressed errors, rerun with: -v
+==10276== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

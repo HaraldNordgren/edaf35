@@ -1,0 +1,69 @@
+==9453== Memcheck, a memory error detector
+==9453== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==9453== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==9453== Command: ../gawk -f getline5.awk
+==9453== Parent PID: 9452
+==9453== 
+==9453== 
+==9453== HEAP SUMMARY:
+==9453==     in use at exit: 68,323 bytes in 445 blocks
+==9453==   total heap usage: 470 allocs, 25 frees, 87,348 bytes allocated
+==9453== 
+==9453== 3 bytes in 1 blocks are possibly lost in loss record 18 of 100
+==9453==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9453==    by 0x459454: make_str_node (awk.h:1786)
+==9453==    by 0x455B6B: do_getline_redir (io.c:2490)
+==9453==    by 0x43F6A2: r_interpret (interpret.h:1162)
+==9453==    by 0x40B3BF: main (main.c:505)
+==9453== 
+==9453== 3 bytes in 1 blocks are possibly lost in loss record 19 of 100
+==9453==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9453==    by 0x4585FE: r_format_val (awk.h:1786)
+==9453==    by 0x41FEBE: do_print (awk.h:1755)
+==9453==    by 0x43F1EA: r_interpret (interpret.h:971)
+==9453==    by 0x40B3BF: main (main.c:505)
+==9453== 
+==9453== 15 bytes in 1 blocks are possibly lost in loss record 57 of 100
+==9453==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9453==    by 0x451915: in_PROCINFO (awk.h:1786)
+==9453==    by 0x4524D6: get_a_record (io.c:3874)
+==9453==    by 0x455B20: do_getline_redir (io.c:2465)
+==9453==    by 0x43F6A2: r_interpret (interpret.h:1162)
+==9453==    by 0x40B3BF: main (main.c:505)
+==9453== 
+==9453== 174 bytes in 23 blocks are possibly lost in loss record 74 of 100
+==9453==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9453==    by 0x459454: make_str_node (awk.h:1786)
+==9453==    by 0x46DA4D: load_symbols (symbol.c:590)
+==9453==    by 0x40B366: main (main.c:471)
+==9453== 
+==9453== 256 bytes in 1 blocks are possibly lost in loss record 81 of 100
+==9453==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9453==    by 0x426637: tree_lookup (awk.h:1786)
+==9453==    by 0x43FCAF: r_interpret (interpret.h:309)
+==9453==    by 0x40B3BF: main (main.c:505)
+==9453== 
+==9453== 4,800 bytes in 1 blocks are possibly lost in loss record 95 of 100
+==9453==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9453==    by 0x458E45: more_blocks (awk.h:1786)
+==9453==    by 0x46C84A: str_lookup (str_array.c:171)
+==9453==    by 0x40AF90: main (main.c:880)
+==9453== 
+==9453== 7,200 bytes in 1 blocks are possibly lost in loss record 100 of 100
+==9453==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9453==    by 0x458E45: more_blocks (awk.h:1786)
+==9453==    by 0x45951A: make_str_node (node.c:368)
+==9453==    by 0x46DA4D: load_symbols (symbol.c:590)
+==9453==    by 0x40B366: main (main.c:471)
+==9453== 
+==9453== LEAK SUMMARY:
+==9453==    definitely lost: 0 bytes in 0 blocks
+==9453==    indirectly lost: 0 bytes in 0 blocks
+==9453==      possibly lost: 12,451 bytes in 29 blocks
+==9453==    still reachable: 55,872 bytes in 416 blocks
+==9453==         suppressed: 0 bytes in 0 blocks
+==9453== Reachable blocks (those to which a pointer was found) are not shown.
+==9453== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9453== 
+==9453== For counts of detected and suppressed errors, rerun with: -v
+==9453== ERROR SUMMARY: 7 errors from 7 contexts (suppressed: 0 from 0)

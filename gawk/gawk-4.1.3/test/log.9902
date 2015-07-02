@@ -1,0 +1,64 @@
+==9902== Memcheck, a memory error detector
+==9902== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==9902== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==9902== Command: ../gawk -f parsefld.awk
+==9902== Parent PID: 9901
+==9902== 
+==9902== 
+==9902== HEAP SUMMARY:
+==9902==     in use at exit: 107,541 bytes in 607 blocks
+==9902==   total heap usage: 855 allocs, 248 frees, 142,590 bytes allocated
+==9902== 
+==9902== 96 bytes in 3 blocks are possibly lost in loss record 83 of 133
+==9902==    at 0x4C2CE8E: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9902==    by 0x434352: realloc_trans_if_necessary (xalloc.h:158)
+==9902==    by 0x4387BF: build_state (dfa.c:2960)
+==9902==    by 0x439553: dfaexec_sb (dfa.c:3357)
+==9902==    by 0x45D0A4: research (re.c:292)
+==9902==    by 0x43E772: r_interpret (interpret.h:1009)
+==9902==    by 0x40B3BF: main (main.c:505)
+==9902== 
+==9902== 112 bytes in 2 blocks are possibly lost in loss record 87 of 133
+==9902==    at 0x4C2CE8E: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9902==    by 0x434352: realloc_trans_if_necessary (xalloc.h:158)
+==9902==    by 0x4387BF: build_state (dfa.c:2960)
+==9902==    by 0x439506: dfaexec_sb (dfa.c:3532)
+==9902==    by 0x45D0A4: research (re.c:292)
+==9902==    by 0x43E772: r_interpret (interpret.h:1009)
+==9902==    by 0x40B3BF: main (main.c:505)
+==9902== 
+==9902== 4,800 bytes in 1 blocks are possibly lost in loss record 124 of 133
+==9902==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9902==    by 0x458E45: more_blocks (awk.h:1786)
+==9902==    by 0x46C84A: str_lookup (str_array.c:171)
+==9902==    by 0x40AF90: main (main.c:880)
+==9902== 
+==9902== 8,192 bytes in 4 blocks are possibly lost in loss record 132 of 133
+==9902==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9902==    by 0x44D5DE: xmalloc (awk.h:1786)
+==9902==    by 0x438784: build_state (dfa.c:2950)
+==9902==    by 0x439506: dfaexec_sb (dfa.c:3532)
+==9902==    by 0x45D0A4: research (re.c:292)
+==9902==    by 0x43E772: r_interpret (interpret.h:1009)
+==9902==    by 0x40B3BF: main (main.c:505)
+==9902== 
+==9902== 10,240 bytes in 5 blocks are possibly lost in loss record 133 of 133
+==9902==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9902==    by 0x44D5DE: xmalloc (awk.h:1786)
+==9902==    by 0x438784: build_state (dfa.c:2950)
+==9902==    by 0x439553: dfaexec_sb (dfa.c:3357)
+==9902==    by 0x45D0A4: research (re.c:292)
+==9902==    by 0x43E772: r_interpret (interpret.h:1009)
+==9902==    by 0x40B3BF: main (main.c:505)
+==9902== 
+==9902== LEAK SUMMARY:
+==9902==    definitely lost: 0 bytes in 0 blocks
+==9902==    indirectly lost: 0 bytes in 0 blocks
+==9902==      possibly lost: 23,440 bytes in 15 blocks
+==9902==    still reachable: 84,101 bytes in 592 blocks
+==9902==         suppressed: 0 bytes in 0 blocks
+==9902== Reachable blocks (those to which a pointer was found) are not shown.
+==9902== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9902== 
+==9902== For counts of detected and suppressed errors, rerun with: -v
+==9902== ERROR SUMMARY: 5 errors from 5 contexts (suppressed: 0 from 0)

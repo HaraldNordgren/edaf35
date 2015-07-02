@@ -1,0 +1,22 @@
+==9433== Memcheck, a memory error detector
+==9433== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==9433== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==9433== Command: ../gawk -f ./getline2.awk ./getline2.awk ./getline2.awk
+==9433== Parent PID: 9432
+==9433== 
+==9433== 
+==9433== HEAP SUMMARY:
+==9433==     in use at exit: 68,174 bytes in 433 blocks
+==9433==   total heap usage: 463 allocs, 30 frees, 87,064 bytes allocated
+==9433== 
+==9433== LEAK SUMMARY:
+==9433==    definitely lost: 0 bytes in 0 blocks
+==9433==    indirectly lost: 0 bytes in 0 blocks
+==9433==      possibly lost: 0 bytes in 0 blocks
+==9433==    still reachable: 68,174 bytes in 433 blocks
+==9433==         suppressed: 0 bytes in 0 blocks
+==9433== Reachable blocks (those to which a pointer was found) are not shown.
+==9433== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9433== 
+==9433== For counts of detected and suppressed errors, rerun with: -v
+==9433== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

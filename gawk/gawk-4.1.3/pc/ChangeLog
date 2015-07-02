@@ -1,0 +1,500 @@
+2015-05-19         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.1.3: Release tar ball made.
+
+2015-05-12         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile.tst: Sync with mainline.
+
+2015-05-04         Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2015-04-29         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.1.2: Release tar ball made.
+
+2015-04-22         Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Don't do 'make diffout' after pass-fail.
+	* negtime: Add expect failure for DJGPP.
+
+2015-04-17  Eli Zaretskii  <eliz@gnu.org>
+
+	* testoutcmp.awk (END): Attempt a series of massages on the actual
+	output to match it to the expected result, when the number of
+	exponent digits is different.  Also, edit "nul" into "null", to
+	account for the difference in the null device name.  This removes
+	"failures" due to Windows-specific issues that do not indicate
+	real problems in Gawk, just some non-portable assumptions about
+	the expected results.
+
+	* Makefile.tst (abs_top_builddir): Define.
+	(negtime): Mark this test as an expected failure with MinGW.
+	(profile5, exit, hsprint, posix, double2, fmttest): Remove the
+	"expect to fail" message for MinGW, and use the testoutcmp.awk
+	script to loosely compare actual output to expected one.
+
+	* Makefile.ext ($(SIMPLE_EXTENSIONS)): Really use -static-libgcc.
+
+2015-04-16         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile.tst: Sync with mainline.
+	* config.h: Sync with mainline.
+
+2015-04-08  Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.ext (fnmatch.$(SOEXT), readdir.$(SOEXT), rwarray.$(SOEXT))
+	(filefuncs.$(SOEXT), time.$(SOEXT), $(SIMPLE_EXTENSIONS)): Use
+	-static-libgcc, to avoid run-time dependency on libgcc DLL.  This
+	makes the extensions independent of non-system DLLs, and also
+	prevents an abort at exit due to a known upstream bug in
+	libgcc_s_dw2-1.dll.
+
+	* Makefile.tst (mpfrmemok1): Use -p- instead of -p/dev/stdout, for
+	more portability.
+
+2015-04-07         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile.tst: Sync with mainline.
+	* config.h: Sync with mainline.
+
+2014-11-21         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile.tst (id): Add an 'expect to fail for DJGPP' message.
+
+2014-11-13         Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2014-10-12         KO Myung-Hun          <komh78@gmail.com>
+
+	Fixes for OS/2:
+
+	* gawkmisc.pc (init_sockets): Add additional checks for __EMX__.
+
+2014-09-23         Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2014-04-17         Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Add readfile2 test.
+
+2014-04-08         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.1.1: Release tar ball made.
+
+2014-02-03   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Include original test/Makefile.in lines as
+	comments.
+
+2014-01-28  Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.tst (strftime): Pass the value of 'date' command
+	through the DATECMD variable.
+	(readdir): Adapt to changes in test/readdir0.awk.
+
+2014-01-20         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile.tst (mbprintf4, backbigs1, backsmalls1): Add warning
+	that the tests are expected to fail with DJGPP.
+
+2014-01-24   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2014-01-20         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile.tst (split_after_fpat, mpfrnegzero): Added, to
+	sync with main test Makefile.
+
+2014-01-15  Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.tst (mbprintf4, profile5, backbigs1, backsmalls1):
+	Announce expected failures.
+	(fts): Fail gracefully, to avoid bailing out of the test suite too
+	early.
+
+	* popen.c (os_system): Use spawnl, and quote the command line, to
+	be consistent with what gawk_popen does.
+	(os_popen) [__MINGW32__]: Don't scriptify the command, to be
+	consistent with gawk_popen.
+	(os_pclose) [__MINGW32__]: Update to match os_open: no need to
+	unlink the script file.
+
+2013-12-10   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* gawkmisc.c (init_sockets): Move into the right part of the
+	file so that it will be compiled for DJGPP also.
+	* Makefile.tst: Sync with mainline.
+
+2013-06-03         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* gawkmisc.c (init_sockets): Rearrange ifdefs.
+
+2013-06-01  Eli Zaretskii  <eliz@gnu.org>
+
+	* popen.h (SIGKILL) [__MINGW32__]: Define.
+	(kill, quote_cmd): New prototypes.
+
+	* popen.c: Include popen.h and errno.h.
+	(popen, pclose, system): Undefine macros.
+	(WIN32_LEAN_AND_MEAN) [__MINGW32__]: Define and include windows.h.
+	(kill, quote_cmd) [!PIPES_SIMULATED]: New functions.
+	(os_popen): Make the function definition match its prototype
+	exactly.
+
+	* gawkmisc.pc [HAVE_SOCKETS]: Include socket.h and windows.h.
+	(socket, setsockopt, bind, connect, listen, accept, recvfrom)
+	(shutdown): Undefine macros.
+	(os_close_on_exec) [__MINGW32__]: Non-trivial implementation.
+	(init_sockets, socket_to_fd, w32_socket, w32_setsockopt)
+	(w32_bind, w32_connect, w32_listen, w32_accept, valid_socket)
+	(w32_closesocket, w32_recvfrom, w32_shutdown) [HAVE_SOCKETS]: New
+	functions for MinGW, emulate Posix sockets specified by file
+	descriptors.
+
+	* config.h (HAVE_GETADDRINFO, HAVE_SOCKADDR_STORAGE)
+	(HAVE_SOCKETS) [__MINGW32__]: Define.
+
+	* config.sed (HAVE_GETADDRINFO, HAVE_SOCKADDR_STORAGE)
+	(HAVE_SOCKETS) [__MINGW32__]: Define.
+
+	* Makefile.tst (fmtspcl): Announce expected failure only if not
+	built with MPFR.
+	(inetecht, inetdayt): For MinGW, warn about time-outs.
+	(beginfile1, clos1way, getlndir): Announce expected failure only
+	with DJGPP.
+	(exit): Describe the failure on MinGW.
+	(readdir): Explain why test might fail with bad ls.exe.
+
+	* Makefile (mingw32, mingw32-readline, mingw32-mpfr)
+	(mingw32-readline-mpfr): Add -lws2_32 to the link flags.
+	(gawkmisc$O): Depend on socket.h.
+	(io$O): Depend on socket.h and in.h.
+	(popen$O): New dependency.
+
+2013-05-27         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* config.h: Remove obsolete HAVE_ST_BLKSIZE.
+
+2013-05-14  Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.tst (AWK): Set AWKLIBPATH so extensions could be found.
+	(LS): New variable.
+	(check): Add back shlib-tests and shlib-msg-end.
+	(readdir): Add a warning regarding inode reporting by ls.exe.
+	(fts, fork, fork2): Add message about expected failure on MinGW.
+
+	* Makefile (install): Install the extensions.
+	(install-strip): Likewise.
+
+	* Makefile.ext: New file.
+
+2013-05-09         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.1.0: Release tar ball made.
+
+2013-05-09   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2013-05-05  Eli Zaretskii  <eliz@gnu.org>
+
+	* config.sed (HAVE_MPFR): Don't #undef; it will be defined by
+	pc/Makefile as needed.
+
+2013-05-04  Eli Zaretskii  <eliz@gnu.org>
+
+	* config.h (HAVE_MPFR): Don't #undef; it will be defined by
+	pc/Makefile as needed.
+
+2013-05-02   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2013-04-29  Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.tst (mpfr-tests, shlib-tests, rsnulbig, rsnulbig2):
+	Insert a space between ' and the following / to prevent MSYS Bash
+	from interpreting that as a Unix-style file name.
+
+2013-04-28  Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.tst (top_srcdir): Define.  This avoids failure in a few
+	tests that use this variable.
+	(testext): Prepend a space before the /regexp/ argument, to
+	prevent MSYS Bash mistaking this for an absolute file name that
+	needs to be converted to the Windows D:/foo/bar form, which fails
+	the test.
+	(check): Remove the shlib tests from 'check', so that they are not
+	run by default, because the extensions are not yet built
+	automatically.
+
+2013-04-22   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2013-04-14   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2013-03-10         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* config.h: Update by manually running make-config.bat steps.
+
+2013-03-10   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile: Sync with mainline.
+
+2013-03-04   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile: Build additional C source files.
+
+2013-03-04  Eli Zaretskii  <eliz@gnu.org>
+
+	* config.sed: Fixes to build on DJGPP.
+
+2013-02-09  Eli Zaretskii  <eliz@gnu.org>
+
+	* gawkmisc.pc (dlopen, dlerror, dlclose, dlsym) [DYNAMIC]: New
+	functions for _WIN32 build.
+
+	* dlfcn.h: New file.
+
+	* Makefile (pkgextensiondir, DEFLIBPATH, SHLIBEXT): New variables.
+	(AWKOBJS4): New sub-list of object files; add gawkapi$O.
+	(ALLOBJS): Include AWKOBJS4.
+	(CFLAGS): Add -DDEFLIBPATH=$(DEFLIBPATH) -DSHLIBEXT=$(SHLIBEXT).
+
+	* config.sed (DYNAMIC): Define for _WIN32 build.
+
+2013-02-07   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline.
+
+2013-01-25         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* config.h: Version bumped.
+
+2012-12-28  Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile (install1): Don't require a Unixy shell and Sed.  Don't
+	edit igawk.bat to point to the igawk script in $(prefix)/bin, as
+	that directory should be on PATH when Gawk is installed.  Create
+	$(prefix)/bin/awk.exe, to emulate a symlink created on Unix.
+	Install documentation in $(prefix)/share.  Install gawkinet.info.
+	(install-strip): New target.
+
+	* install.awk: Install documentation in $prefix/share.
+
+2012-12-24         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.0.2: Release tar ball made.
+
+2012-12-23         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile.tst (paramuninitglobal): New test.
+
+2012-11-22         Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.tst (jarebug): Update.
+	(GREP_OPTIONS): Add.
+
+2012-11-12         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* gawkmisc.pc (os_isreadable): Use correct type for first parameter.
+
+2012-11-04   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst (jarebug, charasbytes): Update.
+
+2012-10-28   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline version.
+
+2012-10-28         Andrew J. Schorr     <aschorr@telemetry-investments.com>
+
+	* Makefile.pc (messages): Adjust to use standard failure test for
+	make diffout.
+
+2012-08-08         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* gawkmisc.pc (os_isreadable): Take IOBUF_PUBLIC instead of fd and
+	use passed in info.
+
+2012-07-29         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* gawkmisc.pc (os_isreadable): Add isdir pointer parameter to be
+	set to true if fd is for a directory.
+
+2012-07-26         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* gawkmisc.pc (os_isreadable): New function.
+
+2012-05-14         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile: Remove second mingw32-readline target. Bad
+	result from branch merging.
+
+2012-05-06         Eli Zaretskii  <eliz@gnu.org>
+
+	* config.sed: Update DJGPP -> __DJGPP__.
+
+2012-04-16  Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.tst (PGAWK): Redefine as "../gawk.exe -p".
+	(MPFR_TESTS): New variable, a list of MPFR-related tests.
+	(mpfr-tests): A new target.
+	(badargs): Reset GREP_OPTIONS to empty, to avoid gratuitous
+	failures when the user has something like -nH there.
+	(mpfrieee, mpfrexprange, mpfrrnd, mpfrnr, mpfrsort, mpfrbigint):
+	New tests.
+
+	* Makefile (default): Add descriptions of mingw32-mpfr and
+	mingw32-libreadline-mpfr targets.
+	(PRSPFILE, DRSPFILE, PRSP, DRSP, PLDRSP, DLDRSP, DO_PLNK)
+	(DO_PBIND, DO_DLNK, DO_DBIND, PLDJG, DLDJG, PLMINGW32)
+	(DLMINGW32, PAWKOBJS1, PAWKOBJS2, DAWKOBJS2, PGAWKOBJS)
+	(DGAWKOBJS): Remove unused variables.
+	(djgpp, djgpp-debug, mingw32): Don't use them.
+	(mingw32): Add -D__USE_MINGW_ANSI_STDIO to compilation flags.
+	(mingw32-readline, mingw32-mpfr, mingw32-readline-mpfr): New targets.
+	(CFLAGS, AWKOBJS2): Don't reference obsolete DYN_FLAGS and DYN_OBJ
+	variables.
+	(AWKOBJS2): Add symbol$O.
+	(AWKOBJS3): New variable, lists MPFR-related object files.
+	(AWKOBJS): Add $(AWKOBJS3).
+	(all): Remove pgawk.exe and dgawk.exe.
+	(pgawk.exe, dgawk.exe, $(PRSPFILE) $(DRSPFILE), eval_p$O)
+	(profile_p$O): Remove targets.
+	(random$O, debug$O): Don't depend on floatmagic.h
+	(eval$O): Depend on interpret.h.
+	(clean): Prepend '-' to command line, to ignore errors due to
+	non-existent files.
+
+	* config.h: Comment out "#undef HAVE_LIBREADLINE" (again).
+
+2012-03-29         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* config.h: Add definition for _Noreturn.
+
+2012-03-20         Andrew J. Schorr     <aschorr@telemetry-investments.com>
+
+	* gawkmisc.pc (deflibpath): New global variable.
+
+2012-03-28         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* 4.0.1: Release tar ball made.
+
+2012-03-20         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* Makefile.tst (printfbad3): New test.
+
+2012-03-14         Eli Zaretskii  <eliz@gnu.org>
+
+	* gawkmisc.pc (btowc): New version for DJGPP.
+
+2012-03-01   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline version.
+
+2012-03-01         Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile: Quiet confusing info messages from the linker when
+	gawk is linked against readline as a shared library.
+
+2012-02-22         Eli Zaretskii  <eliz@gnu.org>
+
+	* Makefile.tst: Update CMP and CP definitions, add "Expect xxxx to
+	fail with MinGW" messages as needed.
+
+2012-02-15         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* gawkmisc.pc (execvp): Modify signature, return -1
+	on error.
+
+2012-02-11  Eli Zaretskii  <eliz@gnu.org>
+
+	Fix dependencies in pc/Makefile.
+	* Makefile ($(ALLOBJS) $(LIBOBJS) eval_p$O profile_p$O): Add eval_d$O,
+	debug$O, and command$O.
+
+	Support MinGW build with the readline library.
+	* Makefile (default): Add a line for the mingw32-readline target.
+	(mingw32-readline): New target, passes -DHAVE_LIBREADLINE to the
+	compiler and adds -lreadline to the linker command line.
+
+	* config.sed: Comment out "#undef HAVE_LIBREADLINE", so that it
+	could be #define'd on the compiler command line.
+
+2012-02-10         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* gawkmisc.pc (execvp): New function based on code from Eli
+	Zaretskii to make dgawk's restarting the debugger work.
+
+2012-01-27   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline version.
+
+2011-12-12   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline version.
+
+2011-12-06   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline version.
+	Use testoutcmp.awk script.
+
+2011-12-06         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* testoutcmp.awk: Script to replace cmd for DJGPP.
+
+2011-11-01   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* config.sed: Additional update.
+
+2011-10-29  Eli Zaretskii  <eliz@gnu.org>
+
+	* config.sed: Fix some edits, to be consistent with the old
+	config.h file.  Make regexps match #undef lines with whitespace
+	at the end of the line.  Add forgotten EMX #defines.
+
+2011-10-27   Scott Deifik  <scottd.mail@sbcglobal.net>
+
+	* Makefile.tst: Sync with mainline version.
+
+2011-10-24   Eli Zaretskii  <eliz@gnu.org>
+
+	* gawkmisc.pc (wctob) [__MINGW32__]: A replacement for the
+	function of the same name in MS runtime, which does a better job
+	with 8-bit characters that have their high bit set.
+	Original supplied by Jim Meyering  <jim@meyering.net>.
+
+	* popen.h (system) [__MINGW32__]: Redirect to os_system.
+
+	* Makefile (./doc/awkcard.tr): Don't use Unixy forward slashes in
+	redirection.
+	(builtin$O): Depend on popen.h.
+	(random$O): New target, separated from builtin$O.
+
+	* configpk.sed:
+	* config.sed:
+	* make-config.bat: New files, to produce pc/config.h from the top-level
+	configh.in file.
+
+2011-10-18  Juan Manuel Guerrero  <juan.guerrero@gmx.de>
+
+	* Makefile: doc target to create all documentation files.
+
+2011-09-30  Eli Zaretskii  <eliz@gnu.org>
+
+	* config.h: Update packaging related versions.
+
+2011-06-23         Arnold D. Robbins     <arnold@skeeve.com>
+
+	* ChangeLog.0: Rotated ChangeLog into this file.
+	* ChangeLog: Created anew for gawk 4.0.0 and on.
+	* 4.0.0: Release tar ball made.

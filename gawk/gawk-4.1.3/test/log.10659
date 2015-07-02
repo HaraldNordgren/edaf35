@@ -1,0 +1,339 @@
+==10659== Memcheck, a memory error detector
+==10659== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10659== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10659== Command: ../gawk -b -f charasbytes.awk ./charasbytes.in
+==10659== Parent PID: 10658
+==10659== 
+==10659== 
+==10659== HEAP SUMMARY:
+==10659==     in use at exit: 77,604 bytes in 482 blocks
+==10659==   total heap usage: 589 allocs, 107 frees, 141,293 bytes allocated
+==10659== 
+==10659== 4 bytes in 1 blocks are possibly lost in loss record 19 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x461739: re_node_set_init_copy (regex_internal.h:486)
+==10659==    by 0x461A52: re_acquire_state_context (regex_internal.c:1700)
+==10659==    by 0x46A4D3: re_compile_internal (regcomp.c:1104)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 4 bytes in 1 blocks are possibly lost in loss record 20 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x461295: re_node_set_alloc (regex_internal.h:486)
+==10659==    by 0x4612F9: register_state (regex_internal.c:1593)
+==10659==    by 0x461BD0: re_acquire_state_context (regex_internal.c:1752)
+==10659==    by 0x46A4D3: re_compile_internal (regcomp.c:1104)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 5 bytes in 1 blocks are possibly lost in loss record 25 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x456E12: estrdup (awk.h:1786)
+==10659==    by 0x40B027: main (main.c:733)
+==10659== 
+==10659== 6 bytes in 1 blocks are possibly lost in loss record 31 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x459454: make_str_node (awk.h:1786)
+==10659==    by 0x46C926: install (symbol.c:305)
+==10659==    by 0x40B034: main (main.c:733)
+==10659== 
+==10659== 7 bytes in 1 blocks are possibly lost in loss record 34 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x459454: make_str_node (awk.h:1786)
+==10659==    by 0x46D98D: load_symbols (symbol.c:574)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== 8 bytes in 1 blocks are possibly lost in loss record 40 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x459454: make_str_node (awk.h:1786)
+==10659==    by 0x46D961: load_symbols (symbol.c:572)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== 8 bytes in 1 blocks are possibly lost in loss record 41 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x46ADB1: re_search_stub (regex_internal.h:486)
+==10659==    by 0x46B437: re_search (regexec.c:333)
+==10659==    by 0x45CFEE: research (re.c:303)
+==10659==    by 0x4215EE: do_sub (builtin.c:2770)
+==10659==    by 0x43F72A: r_interpret (interpret.h:966)
+==10659==    by 0x40B3BF: main (main.c:505)
+==10659== 
+==10659== 8 bytes in 1 blocks are possibly lost in loss record 42 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x46ADCD: re_search_stub (regex_internal.h:486)
+==10659==    by 0x46B437: re_search (regexec.c:333)
+==10659==    by 0x45CFEE: research (re.c:303)
+==10659==    by 0x4215EE: do_sub (builtin.c:2770)
+==10659==    by 0x43F72A: r_interpret (interpret.h:966)
+==10659==    by 0x40B3BF: main (main.c:505)
+==10659== 
+==10659== 8 bytes in 2 blocks are possibly lost in loss record 43 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x459454: make_str_node (awk.h:1786)
+==10659==    by 0x4175EA: yyparse (awkgram.y:3434)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 9 bytes in 1 blocks are possibly lost in loss record 48 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x459454: make_str_node (awk.h:1786)
+==10659==    by 0x46D9A3: load_symbols (symbol.c:575)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== 10 bytes in 1 blocks are possibly lost in loss record 51 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x456E12: estrdup (awk.h:1786)
+==10659==    by 0x41580F: yyparse (awkgram.y:3093)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 12 bytes in 1 blocks are possibly lost in loss record 55 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x456E12: estrdup (awk.h:1786)
+==10659==    by 0x46D920: load_symbols (symbol.c:568)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== 12 bytes in 3 blocks are possibly lost in loss record 56 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x461739: re_node_set_init_copy (regex_internal.h:486)
+==10659==    by 0x461A52: re_acquire_state_context (regex_internal.c:1700)
+==10659==    by 0x46719B: re_search_internal (regexec.c:3452)
+==10659==    by 0x46AD4E: re_search_stub (regexec.c:469)
+==10659==    by 0x46B437: re_search (regexec.c:333)
+==10659==    by 0x45CFEE: research (re.c:303)
+==10659==    by 0x4215EE: do_sub (builtin.c:2770)
+==10659==    by 0x43F72A: r_interpret (interpret.h:966)
+==10659==    by 0x40B3BF: main (main.c:505)
+==10659== 
+==10659== 12 bytes in 3 blocks are possibly lost in loss record 57 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x461295: re_node_set_alloc (regex_internal.h:486)
+==10659==    by 0x4612F9: register_state (regex_internal.c:1593)
+==10659==    by 0x461BD0: re_acquire_state_context (regex_internal.c:1752)
+==10659==    by 0x46719B: re_search_internal (regexec.c:3452)
+==10659==    by 0x46AD4E: re_search_stub (regexec.c:469)
+==10659==    by 0x46B437: re_search (regexec.c:333)
+==10659==    by 0x45CFEE: research (re.c:303)
+==10659==    by 0x4215EE: do_sub (builtin.c:2770)
+==10659==    by 0x43F72A: r_interpret (interpret.h:966)
+==10659==    by 0x40B3BF: main (main.c:505)
+==10659== 
+==10659== 13 bytes in 1 blocks are possibly lost in loss record 58 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x459454: make_str_node (awk.h:1786)
+==10659==    by 0x46D849: load_symbols (symbol.c:556)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== 16 bytes in 1 blocks are possibly lost in loss record 61 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x46A04E: re_compile_internal (regex_internal.h:486)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 16 bytes in 1 blocks are possibly lost in loss record 62 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x4C2CF1F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x4613AF: register_state (regex_internal.h:497)
+==10659==    by 0x461BD0: re_acquire_state_context (regex_internal.c:1752)
+==10659==    by 0x46A4D3: re_compile_internal (regcomp.c:1104)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 16 bytes in 4 blocks are possibly lost in loss record 63 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x461295: re_node_set_alloc (regex_internal.h:486)
+==10659==    by 0x461408: calc_eclosure_iter (regcomp.c:1749)
+==10659==    by 0x46A170: re_compile_internal (regcomp.c:1726)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 48 bytes in 3 blocks are possibly lost in loss record 75 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x4C2CF1F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x4613AF: register_state (regex_internal.h:497)
+==10659==    by 0x461BD0: re_acquire_state_context (regex_internal.c:1752)
+==10659==    by 0x46719B: re_search_internal (regexec.c:3452)
+==10659==    by 0x46AD4E: re_search_stub (regexec.c:469)
+==10659==    by 0x46B437: re_search (regexec.c:333)
+==10659==    by 0x45CFEE: research (re.c:303)
+==10659==    by 0x4215EE: do_sub (builtin.c:2770)
+==10659==    by 0x43F72A: r_interpret (interpret.h:966)
+==10659==    by 0x40B3BF: main (main.c:505)
+==10659== 
+==10659== 64 bytes in 1 blocks are possibly lost in loss record 80 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x469DA4: re_compile_internal (regex_internal.h:486)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 64 bytes in 1 blocks are possibly lost in loss record 81 of 124
+==10659==    at 0x4C2CC70: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x469DD6: re_compile_internal (regcomp.c:889)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 64 bytes in 1 blocks are possibly lost in loss record 82 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x46A079: re_compile_internal (regex_internal.h:486)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 64 bytes in 1 blocks are possibly lost in loss record 83 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x46A088: re_compile_internal (regex_internal.h:486)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 88 bytes in 1 blocks are possibly lost in loss record 85 of 124
+==10659==    at 0x4C2CC70: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x461A32: re_acquire_state_context (regex_internal.c:1697)
+==10659==    by 0x46A4D3: re_compile_internal (regcomp.c:1104)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 112 bytes in 1 blocks are possibly lost in loss record 90 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x45D2A4: make_regexp (awk.h:1786)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 216 bytes in 1 blocks are possibly lost in loss record 97 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x4C2CF1F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x46A91A: re_compile_internal (regex_internal.h:497)
+==10659==    by 0x46AABA: re_compile_pattern (regcomp.c:257)
+==10659==    by 0x45D4C9: make_regexp (re.c:212)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 256 bytes in 1 blocks are possibly lost in loss record 101 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x45D2CA: make_regexp (awk.h:1786)
+==10659==    by 0x4117D8: make_regnode (awkgram.y:4503)
+==10659==    by 0x41394D: yyparse (awkgram.y:424)
+==10659==    by 0x418923: parse_program (awkgram.y:2318)
+==10659==    by 0x40B068: main (main.c:457)
+==10659== 
+==10659== 264 bytes in 3 blocks are possibly lost in loss record 102 of 124
+==10659==    at 0x4C2CC70: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x461A32: re_acquire_state_context (regex_internal.c:1697)
+==10659==    by 0x46719B: re_search_internal (regexec.c:3452)
+==10659==    by 0x46AD4E: re_search_stub (regexec.c:469)
+==10659==    by 0x46B437: re_search (regexec.c:333)
+==10659==    by 0x45CFEE: research (re.c:303)
+==10659==    by 0x4215EE: do_sub (builtin.c:2770)
+==10659==    by 0x43F72A: r_interpret (interpret.h:966)
+==10659==    by 0x40B3BF: main (main.c:505)
+==10659== 
+==10659== 315 bytes in 41 blocks are possibly lost in loss record 104 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x459454: make_str_node (awk.h:1786)
+==10659==    by 0x46C926: install (symbol.c:305)
+==10659==    by 0x412577: install_builtins (awkgram.y:5693)
+==10659==    by 0x40B352: main (main.c:463)
+==10659== 
+==10659== 538 bytes in 71 blocks are possibly lost in loss record 107 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x459454: make_str_node (awk.h:1786)
+==10659==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== 1,016 bytes in 1 blocks are possibly lost in loss record 110 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x46C544: grow_table (awk.h:1786)
+==10659==    by 0x46C804: str_lookup (str_array.c:135)
+==10659==    by 0x46DA5C: load_symbols (symbol.c:591)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== 4,800 bytes in 1 blocks are possibly lost in loss record 117 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x458E45: more_blocks (awk.h:1786)
+==10659==    by 0x46C84A: str_lookup (str_array.c:171)
+==10659==    by 0x40AF90: main (main.c:880)
+==10659== 
+==10659== 4,800 bytes in 1 blocks are possibly lost in loss record 118 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x458E45: more_blocks (awk.h:1786)
+==10659==    by 0x46C84A: str_lookup (str_array.c:171)
+==10659==    by 0x46DA5C: load_symbols (symbol.c:591)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== 6,144 bytes in 3 blocks are possibly lost in loss record 119 of 124
+==10659==    at 0x4C2CC70: calloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x467234: re_search_internal (regexec.c:3487)
+==10659==    by 0x46AD4E: re_search_stub (regexec.c:469)
+==10659==    by 0x46B437: re_search (regexec.c:333)
+==10659==    by 0x45CFEE: research (re.c:303)
+==10659==    by 0x4215EE: do_sub (builtin.c:2770)
+==10659==    by 0x43F72A: r_interpret (interpret.h:966)
+==10659==    by 0x40B3BF: main (main.c:505)
+==10659== 
+==10659== 7,200 bytes in 1 blocks are possibly lost in loss record 123 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x458E45: more_blocks (awk.h:1786)
+==10659==    by 0x45951A: make_str_node (node.c:368)
+==10659==    by 0x46C926: install (symbol.c:305)
+==10659==    by 0x40B034: main (main.c:733)
+==10659== 
+==10659== 7,200 bytes in 1 blocks are possibly lost in loss record 124 of 124
+==10659==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10659==    by 0x458E45: more_blocks (awk.h:1786)
+==10659==    by 0x45951A: make_str_node (node.c:368)
+==10659==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10659==    by 0x40B366: main (main.c:471)
+==10659== 
+==10659== LEAK SUMMARY:
+==10659==    definitely lost: 0 bytes in 0 blocks
+==10659==    indirectly lost: 0 bytes in 0 blocks
+==10659==      possibly lost: 33,427 bytes in 160 blocks
+==10659==    still reachable: 44,177 bytes in 322 blocks
+==10659==         suppressed: 0 bytes in 0 blocks
+==10659== Reachable blocks (those to which a pointer was found) are not shown.
+==10659== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10659== 
+==10659== For counts of detected and suppressed errors, rerun with: -v
+==10659== ERROR SUMMARY: 36 errors from 36 contexts (suppressed: 0 from 0)

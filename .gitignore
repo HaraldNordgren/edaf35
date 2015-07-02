@@ -1,16 +1,5 @@
-gawk/
-repos/
-stats
-
 *.swp
 *.o
 *.so
 
 alloc/my-linked-list/alloc
-
-tests/danluu/test-0
-tests/danluu/test-1
-tests/danluu/test-2
-tests/danluu/test-3
-tests/danluu/test-4
-

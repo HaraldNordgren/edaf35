@@ -1,0 +1,188 @@
+==11198== Memcheck, a memory error detector
+==11198== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==11198== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==11198== Command: ../gawk -f patsplit.awk
+==11198== Parent PID: 11197
+==11198== 
+==11198== 
+==11198== HEAP SUMMARY:
+==11198==     in use at exit: 91,823 bytes in 530 blocks
+==11198==   total heap usage: 1,359 allocs, 829 frees, 293,086 bytes allocated
+==11198== 
+==11198== 3 bytes in 1 blocks are possibly lost in loss record 16 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x4585FE: r_format_val (awk.h:1786)
+==11198==    by 0x41FEBE: do_print (awk.h:1755)
+==11198==    by 0x43F1EA: r_interpret (interpret.h:971)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 7 bytes in 1 blocks are possibly lost in loss record 35 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x46D98D: load_symbols (symbol.c:574)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 7 bytes in 1 blocks are possibly lost in loss record 36 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x44818A: set_element (field.c:932)
+==11198==    by 0x44897E: fpat_parse_field (field.c:1680)
+==11198==    by 0x44A92E: do_patsplit (field.c:1095)
+==11198==    by 0x43F755: r_interpret (interpret.h:940)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 8 bytes in 1 blocks are possibly lost in loss record 45 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x46D961: load_symbols (symbol.c:572)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 9 bytes in 1 blocks are possibly lost in loss record 50 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x46D977: load_symbols (symbol.c:573)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 9 bytes in 1 blocks are possibly lost in loss record 51 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x46D9A3: load_symbols (symbol.c:575)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 12 bytes in 1 blocks are possibly lost in loss record 57 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x456E12: estrdup (awk.h:1786)
+==11198==    by 0x46D920: load_symbols (symbol.c:568)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 12 bytes in 2 blocks are possibly lost in loss record 58 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x44818A: set_element (field.c:932)
+==11198==    by 0x44891B: fpat_parse_field (field.c:1623)
+==11198==    by 0x44A92E: do_patsplit (field.c:1095)
+==11198==    by 0x43F755: r_interpret (interpret.h:940)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 13 bytes in 1 blocks are possibly lost in loss record 60 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x46D849: load_symbols (symbol.c:556)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 13 bytes in 2 blocks are possibly lost in loss record 61 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x44818A: set_element (field.c:932)
+==11198==    by 0x4488F1: fpat_parse_field (field.c:1617)
+==11198==    by 0x44A92E: do_patsplit (field.c:1095)
+==11198==    by 0x43F755: r_interpret (interpret.h:940)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 121 bytes in 16 blocks are possibly lost in loss record 94 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x46C926: install (symbol.c:305)
+==11198==    by 0x412577: install_builtins (awkgram.y:5693)
+==11198==    by 0x40B352: main (main.c:463)
+==11198== 
+==11198== 256 bytes in 1 blocks are possibly lost in loss record 113 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x426334: tree_lookup (awk.h:1786)
+==11198==    by 0x4481AC: set_element (field.c:935)
+==11198==    by 0x4488F1: fpat_parse_field (field.c:1617)
+==11198==    by 0x44A92E: do_patsplit (field.c:1095)
+==11198==    by 0x43F755: r_interpret (interpret.h:940)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 256 bytes in 1 blocks are possibly lost in loss record 114 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x426637: tree_lookup (awk.h:1786)
+==11198==    by 0x4481AC: set_element (field.c:935)
+==11198==    by 0x4488F1: fpat_parse_field (field.c:1617)
+==11198==    by 0x44A92E: do_patsplit (field.c:1095)
+==11198==    by 0x43F755: r_interpret (interpret.h:940)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 256 bytes in 1 blocks are possibly lost in loss record 115 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x426334: tree_lookup (awk.h:1786)
+==11198==    by 0x4481AC: set_element (field.c:935)
+==11198==    by 0x44891B: fpat_parse_field (field.c:1623)
+==11198==    by 0x44A92E: do_patsplit (field.c:1095)
+==11198==    by 0x43F755: r_interpret (interpret.h:940)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 256 bytes in 1 blocks are possibly lost in loss record 116 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x426637: tree_lookup (awk.h:1786)
+==11198==    by 0x4481AC: set_element (field.c:935)
+==11198==    by 0x44891B: fpat_parse_field (field.c:1623)
+==11198==    by 0x44A92E: do_patsplit (field.c:1095)
+==11198==    by 0x43F755: r_interpret (interpret.h:940)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 512 bytes in 2 blocks are possibly lost in loss record 120 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x426334: tree_lookup (awk.h:1786)
+==11198==    by 0x43FCAF: r_interpret (interpret.h:309)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 512 bytes in 2 blocks are possibly lost in loss record 121 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x426637: tree_lookup (awk.h:1786)
+==11198==    by 0x43FCAF: r_interpret (interpret.h:309)
+==11198==    by 0x40B3BF: main (main.c:505)
+==11198== 
+==11198== 586 bytes in 80 blocks are possibly lost in loss record 122 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x459454: make_str_node (awk.h:1786)
+==11198==    by 0x46DA4D: load_symbols (symbol.c:590)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 1,016 bytes in 1 blocks are possibly lost in loss record 125 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x46C544: grow_table (awk.h:1786)
+==11198==    by 0x46C804: str_lookup (str_array.c:135)
+==11198==    by 0x46DA5C: load_symbols (symbol.c:591)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 4,800 bytes in 1 blocks are possibly lost in loss record 133 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x458E45: more_blocks (awk.h:1786)
+==11198==    by 0x46C84A: str_lookup (str_array.c:171)
+==11198==    by 0x40AF90: main (main.c:880)
+==11198== 
+==11198== 4,800 bytes in 1 blocks are possibly lost in loss record 134 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x458E45: more_blocks (awk.h:1786)
+==11198==    by 0x46C84A: str_lookup (str_array.c:171)
+==11198==    by 0x46DA5C: load_symbols (symbol.c:591)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== 7,200 bytes in 1 blocks are possibly lost in loss record 140 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x458E45: more_blocks (awk.h:1786)
+==11198==    by 0x45951A: make_str_node (node.c:368)
+==11198==    by 0x46C926: install (symbol.c:305)
+==11198==    by 0x412577: install_builtins (awkgram.y:5693)
+==11198==    by 0x40B352: main (main.c:463)
+==11198== 
+==11198== 7,200 bytes in 1 blocks are possibly lost in loss record 141 of 141
+==11198==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11198==    by 0x458E45: more_blocks (awk.h:1786)
+==11198==    by 0x45951A: make_str_node (node.c:368)
+==11198==    by 0x46DA4D: load_symbols (symbol.c:590)
+==11198==    by 0x40B366: main (main.c:471)
+==11198== 
+==11198== LEAK SUMMARY:
+==11198==    definitely lost: 0 bytes in 0 blocks
+==11198==    indirectly lost: 0 bytes in 0 blocks
+==11198==      possibly lost: 27,864 bytes in 121 blocks
+==11198==    still reachable: 63,959 bytes in 409 blocks
+==11198==         suppressed: 0 bytes in 0 blocks
+==11198== Reachable blocks (those to which a pointer was found) are not shown.
+==11198== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==11198== 
+==11198== For counts of detected and suppressed errors, rerun with: -v
+==11198== ERROR SUMMARY: 23 errors from 23 contexts (suppressed: 0 from 0)

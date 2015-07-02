@@ -1,0 +1,41 @@
+==11211== Memcheck, a memory error detector
+==11211== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==11211== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==11211== Command: ../gawk -f printfbad1.awk
+==11211== Parent PID: 11210
+==11211== 
+==11211== 
+==11211== HEAP SUMMARY:
+==11211==     in use at exit: 83,915 bytes in 431 blocks
+==11211==   total heap usage: 449 allocs, 18 frees, 87,713 bytes allocated
+==11211== 
+==11211== 159 bytes in 21 blocks are possibly lost in loss record 66 of 90
+==11211==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11211==    by 0x459454: make_str_node (awk.h:1786)
+==11211==    by 0x46DA4D: load_symbols (symbol.c:590)
+==11211==    by 0x40B366: main (main.c:471)
+==11211== 
+==11211== 4,800 bytes in 1 blocks are possibly lost in loss record 84 of 90
+==11211==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11211==    by 0x458E45: more_blocks (awk.h:1786)
+==11211==    by 0x46C84A: str_lookup (str_array.c:171)
+==11211==    by 0x40AF90: main (main.c:880)
+==11211== 
+==11211== 7,200 bytes in 1 blocks are possibly lost in loss record 89 of 90
+==11211==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11211==    by 0x458E45: more_blocks (awk.h:1786)
+==11211==    by 0x45951A: make_str_node (node.c:368)
+==11211==    by 0x46DA4D: load_symbols (symbol.c:590)
+==11211==    by 0x40B366: main (main.c:471)
+==11211== 
+==11211== LEAK SUMMARY:
+==11211==    definitely lost: 0 bytes in 0 blocks
+==11211==    indirectly lost: 0 bytes in 0 blocks
+==11211==      possibly lost: 12,159 bytes in 23 blocks
+==11211==    still reachable: 71,756 bytes in 408 blocks
+==11211==         suppressed: 0 bytes in 0 blocks
+==11211== Reachable blocks (those to which a pointer was found) are not shown.
+==11211== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==11211== 
+==11211== For counts of detected and suppressed errors, rerun with: -v
+==11211== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

@@ -1,0 +1,47 @@
+==11328== Memcheck, a memory error detector
+==11328== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==11328== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==11328== Command: ../gawk -f pty1.awk
+==11328== Parent PID: 11327
+==11328== 
+==11328== Warning: noted but unhandled ioctl 0x5302 with no size/direction hints
+==11328==    This could cause spurious value errors to appear.
+==11328==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==11328== Warning: noted but unhandled ioctl 0x5302 with no size/direction hints
+==11328==    This could cause spurious value errors to appear.
+==11328==    See README_MISSING_SYSCALL_OR_IOCTL for guidance on writing a proper wrapper.
+==11328== 
+==11328== HEAP SUMMARY:
+==11328==     in use at exit: 68,255 bytes in 439 blocks
+==11328==   total heap usage: 541 allocs, 102 frees, 102,720 bytes allocated
+==11328== 
+==11328== 164 bytes in 22 blocks are possibly lost in loss record 73 of 97
+==11328==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11328==    by 0x459454: make_str_node (awk.h:1786)
+==11328==    by 0x46DA4D: load_symbols (symbol.c:590)
+==11328==    by 0x40B366: main (main.c:471)
+==11328== 
+==11328== 4,800 bytes in 1 blocks are possibly lost in loss record 92 of 97
+==11328==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11328==    by 0x458E45: more_blocks (awk.h:1786)
+==11328==    by 0x46C84A: str_lookup (str_array.c:171)
+==11328==    by 0x40AF90: main (main.c:880)
+==11328== 
+==11328== 7,200 bytes in 1 blocks are possibly lost in loss record 97 of 97
+==11328==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==11328==    by 0x458E45: more_blocks (awk.h:1786)
+==11328==    by 0x45951A: make_str_node (node.c:368)
+==11328==    by 0x46DA4D: load_symbols (symbol.c:590)
+==11328==    by 0x40B366: main (main.c:471)
+==11328== 
+==11328== LEAK SUMMARY:
+==11328==    definitely lost: 0 bytes in 0 blocks
+==11328==    indirectly lost: 0 bytes in 0 blocks
+==11328==      possibly lost: 12,164 bytes in 24 blocks
+==11328==    still reachable: 56,091 bytes in 415 blocks
+==11328==         suppressed: 0 bytes in 0 blocks
+==11328== Reachable blocks (those to which a pointer was found) are not shown.
+==11328== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==11328== 
+==11328== For counts of detected and suppressed errors, rerun with: -v
+==11328== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

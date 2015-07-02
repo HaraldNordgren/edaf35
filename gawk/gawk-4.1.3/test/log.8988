@@ -1,0 +1,68 @@
+==8988== Memcheck, a memory error detector
+==8988== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==8988== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==8988== Command: ../gawk -f arrayprm2.awk
+==8988== Parent PID: 8987
+==8988== 
+==8988== 
+==8988== HEAP SUMMARY:
+==8988==     in use at exit: 68,720 bytes in 447 blocks
+==8988==   total heap usage: 475 allocs, 28 frees, 89,569 bytes allocated
+==8988== 
+==8988== 3 bytes in 1 blocks are possibly lost in loss record 15 of 99
+==8988==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8988==    by 0x459454: make_str_node (awk.h:1786)
+==8988==    by 0x44818A: set_element (field.c:932)
+==8988==    by 0x448533: def_parse_field (field.c:525)
+==8988==    by 0x44A2EA: do_split (field.c:1036)
+==8988==    by 0x43F755: r_interpret (interpret.h:940)
+==8988==    by 0x40B3BF: main (main.c:505)
+==8988== 
+==8988== 157 bytes in 21 blocks are possibly lost in loss record 71 of 99
+==8988==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8988==    by 0x459454: make_str_node (awk.h:1786)
+==8988==    by 0x46DA4D: load_symbols (symbol.c:590)
+==8988==    by 0x40B366: main (main.c:471)
+==8988== 
+==8988== 256 bytes in 1 blocks are possibly lost in loss record 79 of 99
+==8988==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8988==    by 0x426334: tree_lookup (awk.h:1786)
+==8988==    by 0x4481AC: set_element (field.c:935)
+==8988==    by 0x448533: def_parse_field (field.c:525)
+==8988==    by 0x44A2EA: do_split (field.c:1036)
+==8988==    by 0x43F755: r_interpret (interpret.h:940)
+==8988==    by 0x40B3BF: main (main.c:505)
+==8988== 
+==8988== 256 bytes in 1 blocks are possibly lost in loss record 80 of 99
+==8988==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8988==    by 0x426637: tree_lookup (awk.h:1786)
+==8988==    by 0x4481AC: set_element (field.c:935)
+==8988==    by 0x448533: def_parse_field (field.c:525)
+==8988==    by 0x44A2EA: do_split (field.c:1036)
+==8988==    by 0x43F755: r_interpret (interpret.h:940)
+==8988==    by 0x40B3BF: main (main.c:505)
+==8988== 
+==8988== 4,800 bytes in 1 blocks are possibly lost in loss record 94 of 99
+==8988==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8988==    by 0x458E45: more_blocks (awk.h:1786)
+==8988==    by 0x46C84A: str_lookup (str_array.c:171)
+==8988==    by 0x40AF90: main (main.c:880)
+==8988== 
+==8988== 7,200 bytes in 1 blocks are possibly lost in loss record 99 of 99
+==8988==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==8988==    by 0x458E45: more_blocks (awk.h:1786)
+==8988==    by 0x45951A: make_str_node (node.c:368)
+==8988==    by 0x46DA4D: load_symbols (symbol.c:590)
+==8988==    by 0x40B366: main (main.c:471)
+==8988== 
+==8988== LEAK SUMMARY:
+==8988==    definitely lost: 0 bytes in 0 blocks
+==8988==    indirectly lost: 0 bytes in 0 blocks
+==8988==      possibly lost: 12,672 bytes in 26 blocks
+==8988==    still reachable: 56,048 bytes in 421 blocks
+==8988==         suppressed: 0 bytes in 0 blocks
+==8988== Reachable blocks (those to which a pointer was found) are not shown.
+==8988== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==8988== 
+==8988== For counts of detected and suppressed errors, rerun with: -v
+==8988== ERROR SUMMARY: 6 errors from 6 contexts (suppressed: 0 from 0)

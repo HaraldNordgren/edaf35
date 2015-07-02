@@ -1,0 +1,120 @@
+==9422== Memcheck, a memory error detector
+==9422== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==9422== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==9422== Command: ../gawk -f getline.awk
+==9422== Parent PID: 9421
+==9422== 
+==9422== 
+==9422== HEAP SUMMARY:
+==9422==     in use at exit: 68,425 bytes in 456 blocks
+==9422==   total heap usage: 604 allocs, 148 frees, 110,229 bytes allocated
+==9422== 
+==9422== 3 bytes in 1 blocks are possibly lost in loss record 17 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x4585FE: r_format_val (awk.h:1786)
+==9422==    by 0x41FEBE: do_print (awk.h:1755)
+==9422==    by 0x43F1EA: r_interpret (interpret.h:971)
+==9422==    by 0x40B3BF: main (main.c:505)
+==9422== 
+==9422== 3 bytes in 1 blocks are possibly lost in loss record 18 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x459454: make_str_node (awk.h:1786)
+==9422==    by 0x455B6B: do_getline_redir (io.c:2490)
+==9422==    by 0x43F6A2: r_interpret (interpret.h:1162)
+==9422==    by 0x40B3BF: main (main.c:505)
+==9422== 
+==9422== 5 bytes in 1 blocks are possibly lost in loss record 26 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x459454: make_str_node (awk.h:1786)
+==9422==    by 0x46C926: install (symbol.c:305)
+==9422==    by 0x412577: install_builtins (awkgram.y:5693)
+==9422==    by 0x40B352: main (main.c:463)
+==9422== 
+==9422== 7 bytes in 1 blocks are possibly lost in loss record 35 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x459454: make_str_node (awk.h:1786)
+==9422==    by 0x46D98D: load_symbols (symbol.c:574)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 8 bytes in 1 blocks are possibly lost in loss record 41 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x459454: make_str_node (awk.h:1786)
+==9422==    by 0x46D961: load_symbols (symbol.c:572)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 9 bytes in 1 blocks are possibly lost in loss record 46 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x459454: make_str_node (awk.h:1786)
+==9422==    by 0x46D977: load_symbols (symbol.c:573)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 9 bytes in 1 blocks are possibly lost in loss record 47 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x459454: make_str_node (awk.h:1786)
+==9422==    by 0x46D9A3: load_symbols (symbol.c:575)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 12 bytes in 1 blocks are possibly lost in loss record 54 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x456E12: estrdup (awk.h:1786)
+==9422==    by 0x46D920: load_symbols (symbol.c:568)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 13 bytes in 1 blocks are possibly lost in loss record 55 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x459454: make_str_node (awk.h:1786)
+==9422==    by 0x46D849: load_symbols (symbol.c:556)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 23 bytes in 1 blocks are possibly lost in loss record 60 of 100
+==9422==    at 0x4C2CE8E: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x4518A4: in_PROCINFO (awk.h:1802)
+==9422==    by 0x4524D6: get_a_record (io.c:3874)
+==9422==    by 0x455B20: do_getline_redir (io.c:2465)
+==9422==    by 0x43F6A2: r_interpret (interpret.h:1162)
+==9422==    by 0x40B3BF: main (main.c:505)
+==9422== 
+==9422== 552 bytes in 75 blocks are possibly lost in loss record 85 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x459454: make_str_node (awk.h:1786)
+==9422==    by 0x46DA4D: load_symbols (symbol.c:590)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 1,016 bytes in 1 blocks are possibly lost in loss record 88 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x46C544: grow_table (awk.h:1786)
+==9422==    by 0x46C804: str_lookup (str_array.c:135)
+==9422==    by 0x46DA5C: load_symbols (symbol.c:591)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 4,800 bytes in 1 blocks are possibly lost in loss record 94 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x458E45: more_blocks (awk.h:1786)
+==9422==    by 0x46C84A: str_lookup (str_array.c:171)
+==9422==    by 0x40AF90: main (main.c:880)
+==9422== 
+==9422== 4,800 bytes in 1 blocks are possibly lost in loss record 95 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x458E45: more_blocks (awk.h:1786)
+==9422==    by 0x46C84A: str_lookup (str_array.c:171)
+==9422==    by 0x46DA5C: load_symbols (symbol.c:591)
+==9422==    by 0x40B366: main (main.c:471)
+==9422== 
+==9422== 7,200 bytes in 1 blocks are possibly lost in loss record 100 of 100
+==9422==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9422==    by 0x458E45: more_blocks (awk.h:1786)
+==9422==    by 0x46CBCE: install (symbol.c:282)
+==9422==    by 0x412577: install_builtins (awkgram.y:5693)
+==9422==    by 0x40B352: main (main.c:463)
+==9422== 
+==9422== LEAK SUMMARY:
+==9422==    definitely lost: 0 bytes in 0 blocks
+==9422==    indirectly lost: 0 bytes in 0 blocks
+==9422==      possibly lost: 18,460 bytes in 89 blocks
+==9422==    still reachable: 49,965 bytes in 367 blocks
+==9422==         suppressed: 0 bytes in 0 blocks
+==9422== Reachable blocks (those to which a pointer was found) are not shown.
+==9422== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9422== 
+==9422== For counts of detected and suppressed errors, rerun with: -v
+==9422== ERROR SUMMARY: 15 errors from 15 contexts (suppressed: 0 from 0)

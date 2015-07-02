@@ -1,0 +1,126 @@
+==10028== Memcheck, a memory error detector
+==10028== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10028== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10028== Command: ../gawk -f regrange.awk
+==10028== Parent PID: 10027
+==10028== 
+==10028== 
+==10028== HEAP SUMMARY:
+==10028==     in use at exit: 86,099 bytes in 492 blocks
+==10028==   total heap usage: 877 allocs, 385 frees, 213,744 bytes allocated
+==10028== 
+==10028== 7 bytes in 1 blocks are possibly lost in loss record 35 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x459454: make_str_node (awk.h:1786)
+==10028==    by 0x46D98D: load_symbols (symbol.c:574)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 8 bytes in 1 blocks are possibly lost in loss record 44 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x459454: make_str_node (awk.h:1786)
+==10028==    by 0x46D961: load_symbols (symbol.c:572)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 9 bytes in 1 blocks are possibly lost in loss record 49 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x459454: make_str_node (awk.h:1786)
+==10028==    by 0x46D977: load_symbols (symbol.c:573)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 9 bytes in 1 blocks are possibly lost in loss record 50 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x459454: make_str_node (awk.h:1786)
+==10028==    by 0x46D9A3: load_symbols (symbol.c:575)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 12 bytes in 1 blocks are possibly lost in loss record 56 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x456E12: estrdup (awk.h:1786)
+==10028==    by 0x46D920: load_symbols (symbol.c:568)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 13 bytes in 1 blocks are possibly lost in loss record 58 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x459454: make_str_node (awk.h:1786)
+==10028==    by 0x46D849: load_symbols (symbol.c:556)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 16 bytes in 1 blocks are possibly lost in loss record 64 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x4C2CF1F: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x434352: realloc_trans_if_necessary (xalloc.h:158)
+==10028==    by 0x439549: dfaexec_sb (dfa.c:3356)
+==10028==    by 0x45D0A4: research (re.c:292)
+==10028==    by 0x43E62E: r_interpret (interpret.h:1009)
+==10028==    by 0x40B3BF: main (main.c:505)
+==10028== 
+==10028== 63 bytes in 8 blocks are possibly lost in loss record 78 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x459454: make_str_node (awk.h:1786)
+==10028==    by 0x46C926: install (symbol.c:305)
+==10028==    by 0x412577: install_builtins (awkgram.y:5693)
+==10028==    by 0x40B352: main (main.c:463)
+==10028== 
+==10028== 512 bytes in 2 blocks are possibly lost in loss record 107 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x426334: tree_lookup (awk.h:1786)
+==10028==    by 0x43FCAF: r_interpret (interpret.h:309)
+==10028==    by 0x40B3BF: main (main.c:505)
+==10028== 
+==10028== 512 bytes in 2 blocks are possibly lost in loss record 108 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x426637: tree_lookup (awk.h:1786)
+==10028==    by 0x43FCAF: r_interpret (interpret.h:309)
+==10028==    by 0x40B3BF: main (main.c:505)
+==10028== 
+==10028== 552 bytes in 74 blocks are possibly lost in loss record 109 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x459454: make_str_node (awk.h:1786)
+==10028==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 1,016 bytes in 1 blocks are possibly lost in loss record 112 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x46C544: grow_table (awk.h:1786)
+==10028==    by 0x46C804: str_lookup (str_array.c:135)
+==10028==    by 0x46DA5C: load_symbols (symbol.c:591)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 4,800 bytes in 1 blocks are possibly lost in loss record 122 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x458E45: more_blocks (awk.h:1786)
+==10028==    by 0x46C84A: str_lookup (str_array.c:171)
+==10028==    by 0x40AF90: main (main.c:880)
+==10028== 
+==10028== 4,800 bytes in 1 blocks are possibly lost in loss record 123 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x458E45: more_blocks (awk.h:1786)
+==10028==    by 0x46C84A: str_lookup (str_array.c:171)
+==10028==    by 0x46DA5C: load_symbols (symbol.c:591)
+==10028==    by 0x40B366: main (main.c:471)
+==10028== 
+==10028== 7,200 bytes in 1 blocks are possibly lost in loss record 128 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x458E45: more_blocks (awk.h:1786)
+==10028==    by 0x46CBCE: install (symbol.c:282)
+==10028==    by 0x412577: install_builtins (awkgram.y:5693)
+==10028==    by 0x40B352: main (main.c:463)
+==10028== 
+==10028== 7,200 bytes in 1 blocks are possibly lost in loss record 129 of 129
+==10028==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10028==    by 0x458E45: more_blocks (awk.h:1786)
+==10028==    by 0x4267D4: tree_lookup (cint_array.c:714)
+==10028==    by 0x43FCAF: r_interpret (interpret.h:309)
+==10028==    by 0x40B3BF: main (main.c:505)
+==10028== 
+==10028== LEAK SUMMARY:
+==10028==    definitely lost: 0 bytes in 0 blocks
+==10028==    indirectly lost: 0 bytes in 0 blocks
+==10028==      possibly lost: 26,729 bytes in 98 blocks
+==10028==    still reachable: 59,370 bytes in 394 blocks
+==10028==         suppressed: 0 bytes in 0 blocks
+==10028== Reachable blocks (those to which a pointer was found) are not shown.
+==10028== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10028== 
+==10028== For counts of detected and suppressed errors, rerun with: -v
+==10028== ERROR SUMMARY: 16 errors from 16 contexts (suppressed: 0 from 0)

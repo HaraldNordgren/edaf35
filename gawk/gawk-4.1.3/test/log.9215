@@ -1,0 +1,68 @@
+==9215== Memcheck, a memory error detector
+==9215== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==9215== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==9215== Command: ../gawk -f datanonl.awk
+==9215== Parent PID: 9214
+==9215== 
+==9215== 
+==9215== HEAP SUMMARY:
+==9215==     in use at exit: 91,219 bytes in 540 blocks
+==9215==   total heap usage: 859 allocs, 319 frees, 133,402 bytes allocated
+==9215== 
+==9215== 88 bytes in 1 blocks are possibly lost in loss record 85 of 140
+==9215==    at 0x4C2CE8E: realloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9215==    by 0x434352: realloc_trans_if_necessary (xalloc.h:158)
+==9215==    by 0x4387BF: build_state (dfa.c:2960)
+==9215==    by 0x439506: dfaexec_sb (dfa.c:3532)
+==9215==    by 0x45D0A4: research (re.c:292)
+==9215==    by 0x43E772: r_interpret (interpret.h:1009)
+==9215==    by 0x40B3BF: main (main.c:505)
+==9215== 
+==9215== 154 bytes in 20 blocks are possibly lost in loss record 98 of 140
+==9215==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9215==    by 0x459454: make_str_node (awk.h:1786)
+==9215==    by 0x46DA4D: load_symbols (symbol.c:590)
+==9215==    by 0x40B366: main (main.c:471)
+==9215== 
+==9215== 2,048 bytes in 1 blocks are possibly lost in loss record 129 of 140
+==9215==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9215==    by 0x44D5DE: xmalloc (awk.h:1786)
+==9215==    by 0x438784: build_state (dfa.c:2950)
+==9215==    by 0x439553: dfaexec_sb (dfa.c:3357)
+==9215==    by 0x45D0A4: research (re.c:292)
+==9215==    by 0x43E772: r_interpret (interpret.h:1009)
+==9215==    by 0x40B3BF: main (main.c:505)
+==9215== 
+==9215== 4,800 bytes in 1 blocks are possibly lost in loss record 134 of 140
+==9215==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9215==    by 0x458E45: more_blocks (awk.h:1786)
+==9215==    by 0x46C84A: str_lookup (str_array.c:171)
+==9215==    by 0x40AF90: main (main.c:880)
+==9215== 
+==9215== 7,200 bytes in 1 blocks are possibly lost in loss record 139 of 140
+==9215==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9215==    by 0x458E45: more_blocks (awk.h:1786)
+==9215==    by 0x45951A: make_str_node (node.c:368)
+==9215==    by 0x46DA4D: load_symbols (symbol.c:590)
+==9215==    by 0x40B366: main (main.c:471)
+==9215== 
+==9215== 10,240 bytes in 5 blocks are possibly lost in loss record 140 of 140
+==9215==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9215==    by 0x44D5DE: xmalloc (awk.h:1786)
+==9215==    by 0x438784: build_state (dfa.c:2950)
+==9215==    by 0x439506: dfaexec_sb (dfa.c:3532)
+==9215==    by 0x45D0A4: research (re.c:292)
+==9215==    by 0x43E772: r_interpret (interpret.h:1009)
+==9215==    by 0x40B3BF: main (main.c:505)
+==9215== 
+==9215== LEAK SUMMARY:
+==9215==    definitely lost: 0 bytes in 0 blocks
+==9215==    indirectly lost: 0 bytes in 0 blocks
+==9215==      possibly lost: 24,530 bytes in 29 blocks
+==9215==    still reachable: 66,689 bytes in 511 blocks
+==9215==         suppressed: 0 bytes in 0 blocks
+==9215== Reachable blocks (those to which a pointer was found) are not shown.
+==9215== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9215== 
+==9215== For counts of detected and suppressed errors, rerun with: -v
+==9215== ERROR SUMMARY: 6 errors from 6 contexts (suppressed: 0 from 0)

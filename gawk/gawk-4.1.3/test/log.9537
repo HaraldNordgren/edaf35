@@ -1,0 +1,91 @@
+==9537== Memcheck, a memory error detector
+==9537== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==9537== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==9537== Command: ../gawk -f hex.awk
+==9537== Parent PID: 9536
+==9537== 
+==9537== 
+==9537== HEAP SUMMARY:
+==9537==     in use at exit: 68,065 bytes in 447 blocks
+==9537==   total heap usage: 485 allocs, 38 frees, 86,447 bytes allocated
+==9537== 
+==9537== 7 bytes in 1 blocks are possibly lost in loss record 30 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x459454: make_str_node (awk.h:1786)
+==9537==    by 0x46D98D: load_symbols (symbol.c:574)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 8 bytes in 1 blocks are possibly lost in loss record 37 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x459454: make_str_node (awk.h:1786)
+==9537==    by 0x46D961: load_symbols (symbol.c:572)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 9 bytes in 1 blocks are possibly lost in loss record 42 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x459454: make_str_node (awk.h:1786)
+==9537==    by 0x46D977: load_symbols (symbol.c:573)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 9 bytes in 1 blocks are possibly lost in loss record 43 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x459454: make_str_node (awk.h:1786)
+==9537==    by 0x46D9A3: load_symbols (symbol.c:575)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 12 bytes in 1 blocks are possibly lost in loss record 52 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x456E12: estrdup (awk.h:1786)
+==9537==    by 0x46D920: load_symbols (symbol.c:568)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 13 bytes in 1 blocks are possibly lost in loss record 53 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x459454: make_str_node (awk.h:1786)
+==9537==    by 0x46D849: load_symbols (symbol.c:556)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 548 bytes in 74 blocks are possibly lost in loss record 78 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x459454: make_str_node (awk.h:1786)
+==9537==    by 0x46DA4D: load_symbols (symbol.c:590)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 1,016 bytes in 1 blocks are possibly lost in loss record 81 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x46C544: grow_table (awk.h:1786)
+==9537==    by 0x46C804: str_lookup (str_array.c:135)
+==9537==    by 0x46DA5C: load_symbols (symbol.c:591)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 4,800 bytes in 1 blocks are possibly lost in loss record 87 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x458E45: more_blocks (awk.h:1786)
+==9537==    by 0x46C84A: str_lookup (str_array.c:171)
+==9537==    by 0x40AF90: main (main.c:880)
+==9537== 
+==9537== 4,800 bytes in 1 blocks are possibly lost in loss record 88 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x458E45: more_blocks (awk.h:1786)
+==9537==    by 0x46C84A: str_lookup (str_array.c:171)
+==9537==    by 0x46DA5C: load_symbols (symbol.c:591)
+==9537==    by 0x40B366: main (main.c:471)
+==9537== 
+==9537== 7,200 bytes in 1 blocks are possibly lost in loss record 93 of 93
+==9537==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==9537==    by 0x458E45: more_blocks (awk.h:1786)
+==9537==    by 0x46CBCE: install (symbol.c:282)
+==9537==    by 0x412577: install_builtins (awkgram.y:5693)
+==9537==    by 0x40B352: main (main.c:463)
+==9537== 
+==9537== LEAK SUMMARY:
+==9537==    definitely lost: 0 bytes in 0 blocks
+==9537==    indirectly lost: 0 bytes in 0 blocks
+==9537==      possibly lost: 18,422 bytes in 84 blocks
+==9537==    still reachable: 49,643 bytes in 363 blocks
+==9537==         suppressed: 0 bytes in 0 blocks
+==9537== Reachable blocks (those to which a pointer was found) are not shown.
+==9537== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==9537== 
+==9537== For counts of detected and suppressed errors, rerun with: -v
+==9537== ERROR SUMMARY: 11 errors from 11 contexts (suppressed: 0 from 0)

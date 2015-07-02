@@ -1,0 +1,41 @@
+==10789== Memcheck, a memory error detector
+==10789== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==10789== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==10789== Command: ../gawk -f fsfwfs.awk
+==10789== Parent PID: 10788
+==10789== 
+==10789== 
+==10789== HEAP SUMMARY:
+==10789==     in use at exit: 68,212 bytes in 433 blocks
+==10789==   total heap usage: 538 allocs, 105 frees, 87,655 bytes allocated
+==10789== 
+==10789== 172 bytes in 23 blocks are possibly lost in loss record 72 of 96
+==10789==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10789==    by 0x459454: make_str_node (awk.h:1786)
+==10789==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10789==    by 0x40B366: main (main.c:471)
+==10789== 
+==10789== 4,800 bytes in 1 blocks are possibly lost in loss record 91 of 96
+==10789==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10789==    by 0x458E45: more_blocks (awk.h:1786)
+==10789==    by 0x46C84A: str_lookup (str_array.c:171)
+==10789==    by 0x40AF90: main (main.c:880)
+==10789== 
+==10789== 7,200 bytes in 1 blocks are possibly lost in loss record 96 of 96
+==10789==    at 0x4C2AB80: malloc (in /usr/lib/valgrind/vgpreload_memcheck-amd64-linux.so)
+==10789==    by 0x458E45: more_blocks (awk.h:1786)
+==10789==    by 0x45951A: make_str_node (node.c:368)
+==10789==    by 0x46DA4D: load_symbols (symbol.c:590)
+==10789==    by 0x40B366: main (main.c:471)
+==10789== 
+==10789== LEAK SUMMARY:
+==10789==    definitely lost: 0 bytes in 0 blocks
+==10789==    indirectly lost: 0 bytes in 0 blocks
+==10789==      possibly lost: 12,172 bytes in 25 blocks
+==10789==    still reachable: 56,040 bytes in 408 blocks
+==10789==         suppressed: 0 bytes in 0 blocks
+==10789== Reachable blocks (those to which a pointer was found) are not shown.
+==10789== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==10789== 
+==10789== For counts of detected and suppressed errors, rerun with: -v
+==10789== ERROR SUMMARY: 3 errors from 3 contexts (suppressed: 0 from 0)

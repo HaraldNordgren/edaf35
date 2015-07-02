@@ -1,0 +1,22 @@
+==11013== Memcheck, a memory error detector
+==11013== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
+==11013== Using Valgrind-3.10.0.SVN and LibVEX; rerun with -h for copyright info
+==11013== Command: ../gawk --lint -f hello -i hello.awk
+==11013== Parent PID: 11012
+==11013== 
+==11013== 
+==11013== HEAP SUMMARY:
+==11013==     in use at exit: 29,424 bytes in 23 blocks
+==11013==   total heap usage: 28 allocs, 5 frees, 29,501 bytes allocated
+==11013== 
+==11013== LEAK SUMMARY:
+==11013==    definitely lost: 0 bytes in 0 blocks
+==11013==    indirectly lost: 0 bytes in 0 blocks
+==11013==      possibly lost: 0 bytes in 0 blocks
+==11013==    still reachable: 29,424 bytes in 23 blocks
+==11013==         suppressed: 0 bytes in 0 blocks
+==11013== Reachable blocks (those to which a pointer was found) are not shown.
+==11013== To see them, rerun with: --leak-check=full --show-leak-kinds=all
+==11013== 
+==11013== For counts of detected and suppressed errors, rerun with: -v
+==11013== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

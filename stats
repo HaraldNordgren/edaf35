@@ -1,0 +1,34 @@
+MALLOC-TESTEN
+
+FUNKAR:         pbos
+FUNKAR:         snaipe
+
+
+LIST
+
+repos/daveho/malloc/libmalloc.so
+FUNKAR:         All tests passed
+
+/home/harald/courses/edaf35/project/eda050/liblist.so
+FUNKAR INTE:    Crashar hela systemet
+
+/home/harald/courses/edaf35/project/danluu/liblist.so
+FUNKAR INTE:    Crashar hela systemet
+
+/home/harald/courses/edaf35/project/freedrikp/project/liblist.so
+FUNKAR INTE:    Segmentation fault
+
+
+BUDDY
+
+/home/harald/courses/edaf35/project/Buddy-System-Malloc/libbuddy.so
+FUNKAR INTE:    Segmentation fault
+
+/home/harald/courses/edaf35/project/FredrikAppelros/libbuddy.so
+KANSKE FUNKAR:  Vissa tester failar
+
+
+OKLAR IMPLEMENTATION
+
+/home/harald/courses/edaf35/project/doug-lea
+FUNKAR!
