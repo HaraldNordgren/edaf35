@@ -80,24 +80,21 @@ void *malloc(size_t size) {
     }
     
     if (p->size >= min_size + LIST_T + 8) {
-        printf("large segment\n");
+	size_t total_size = p->size;
+	list_t* second_next = p->next;
+	
+	p->size = min_size;
+	list_t* next = (list_t*) ( (char*) p + p->size );
+	
+	next->size = total_size - min_size;
 
-        /*TODO*/
-        
-        /*list_t list_entry = *p;
+	if (prev == NULL) {
+		avail = next;
+	} else {
+		prev->next = next;
+	}
 
-        new = (size_t*) p;
-        *new = min_size;
-        
-
-        list_entry.size = list_entry.size - min_size;
-        list_entry.addr = list_entry.addr + min_size;
-
-        if (prev != NULL) {
-            prev->next = (list_t*) list_entry.addr;
-        }
-
-        return new + 1;*/
+	return p->data;
     }
      
     if (prev != NULL) {
