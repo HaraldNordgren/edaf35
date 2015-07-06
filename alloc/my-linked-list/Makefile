@@ -3,7 +3,7 @@ CC			= gcc
 LDFLAGS		= -g
 
 # Targets
-PROGS =	alloc #liblist.so
+PROGS =	alloc liblist.so
 
 all:	$(PROGS)
 
