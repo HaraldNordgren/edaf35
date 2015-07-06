@@ -454,7 +454,7 @@ ac_pwd='/home/harald/courses/edaf35/project/gawk/gawk-3.1.8'
 srcdir='.'
 INSTALL='./install-sh -c'
 MKDIR_P='/bin/mkdir -p'
-AWK='gawk'
+AWK='mawk'
 test -n "$AWK" || AWK=awk
 # The default lists apply if the user does not specify any file.
 ac_need_defaults=:
@@ -694,7 +694,7 @@ S["am__tar"]="${AMTAR} chof - \"$$tardir\""
 S["AMTAR"]="${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-3.1.8/missing --run tar"
 S["am__leading_dot"]="."
 S["SET_MAKE"]=""
-S["AWK"]="gawk"
+S["AWK"]="mawk"
 S["mkdir_p"]="/bin/mkdir -p"
 S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"

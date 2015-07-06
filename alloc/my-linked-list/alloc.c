@@ -1,58 +1,26 @@
 #define MY_MALLOC 1
+#define CREATE_LIBRARY 0
 
 #if !(MY_MALLOC)
     #include <stdlib.h>
 #endif
 
-#include <stdio.h>
+#if !(CREATE_LIBRARY)
+    #include <stdio.h>
+#endif
+
 #include <unistd.h>
 #include <string.h>
+#include <malloc.h>
 
-#define SIZE    (1024)
-#define N       (8 * SIZE*SIZE / sizeof(size_t))
+#include "alloc.h"
 
-typedef struct list_t list_t;
 
-struct list_t {
-    size_t  size;
-    list_t  *next;
-    char    data[];
-};
 
-#define LIST_T sizeof(list_t)
-#define SIZE_T sizeof(size_t)
+#if !(CREATE_LIBRARY)
+    static size_t *memory_start;
+#endif
 
-static list_t *avail = NULL;
-static size_t *memory_start;
-
-void print_memory() {
-    size_t i;
-
-    printf("\n");
-
-    for (i = 0; i < 2 * 0xa; i++) {
-        printf("%p:\t%016zx\n", memory_start + i, memory_start[i]);
-    }
-}
-
-void print_avail() {
-    list_t *p = avail;
-    
-    printf("\navail:\t%p\n", p);
-
-    if (p == NULL) {
-        return;
-    }
-
-    while (p->next != NULL) {
-        p = p->next;
-        printf("next:\t%p\n", p);
-    }
-    
-    if (avail != NULL) {
-        printf("next:\t%p\n", p->next);
-    }
-}
 
 #if MY_MALLOC
 
@@ -222,8 +190,37 @@ void* calloc(size_t nmemb, size_t size) {
     
     return ptr;
 }
-
 #endif
+
+#if !(CREATE_LIBRARY)
+void print_memory() {
+    size_t i;
+
+    printf("\n");
+
+    for (i = 0; i < 2 * 0xa; i++) {
+        printf("%p:\t%016zx\n", memory_start + i, memory_start[i]);
+    }
+}
+
+void print_avail() {
+    list_t *p = avail;
+    
+    printf("\navail:\t%p\n", p);
+
+    if (p == NULL) {
+        return;
+    }
+
+    while (p->next != NULL) {
+        p = p->next;
+        printf("next:\t%p\n", p);
+    }
+    
+    if (avail != NULL) {
+        printf("next:\t%p\n", p->next);
+    }
+}
 
 #if 0
 int main() {
@@ -344,5 +341,7 @@ int main() {
     print_avail();
     
     return 0;
-#endif
 }
+
+#endif
+#endif

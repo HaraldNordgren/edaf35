@@ -174,7 +174,7 @@ AMTAR = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-3.1.8/missing --r
 AUTOCONF = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-3.1.8/missing --run autoconf
 AUTOHEADER = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-3.1.8/missing --run autoheader
 AUTOMAKE = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-3.1.8/missing --run automake-1.11
-AWK = gawk
+AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2

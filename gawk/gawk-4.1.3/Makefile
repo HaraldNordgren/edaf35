@@ -317,7 +317,7 @@ AM_DEFAULT_VERBOSITY = 1
 AUTOCONF = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-4.1.3/missing autoconf
 AUTOHEADER = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-4.1.3/missing autoheader
 AUTOMAKE = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-4.1.3/missing automake-1.15
-AWK = gawk
+AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2 -DNDEBUG

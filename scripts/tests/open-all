@@ -1,1 +1,1 @@
-vim -p run-tests /home/harald/courses/edaf35/project/tests/danluu/*.c
+vim -p run-tests /home/harald/courses/edaf35/project/tests/danluu-2/test/*.c

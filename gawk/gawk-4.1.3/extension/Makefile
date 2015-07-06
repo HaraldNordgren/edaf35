@@ -386,7 +386,7 @@ AR = ar
 AUTOCONF = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-4.1.3/extension/build-aux/missing autoconf
 AUTOHEADER = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-4.1.3/extension/build-aux/missing autoheader
 AUTOMAKE = ${SHELL} /home/harald/courses/edaf35/project/gawk/gawk-4.1.3/extension/build-aux/missing automake-1.15
-AWK = gawk
+AWK = mawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2 -Wall

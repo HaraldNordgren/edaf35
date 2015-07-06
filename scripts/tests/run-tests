@@ -21,7 +21,7 @@ echo
 
 for number in $TESTS
 do
-    TEST="tests/danluu/test-$number"
+    TEST="tests/danluu-2/test-$number"
     echo "$TEST:"
     $TEST
     echo
