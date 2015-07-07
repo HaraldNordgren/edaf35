@@ -1,14 +1,20 @@
-CC=gcc
-CCFLAGS=-fPIC -c -Wall
-LDFLAGS=-shared -Wl,-soname,liblist.so
+CC			= gcc
+CFLAGS		= -g -Wall -Wextra -std=c11
 
-all: liblist.so
-.PHONY: all
+# Targets
+PROGS =	test liblist.so
 
-liblist.so: malloc.c
-	$(CC) $(CCFLAGS) malloc.c
-	$(CC) malloc.o $(LDFLAGS) -o liblist.so
+all:	$(PROGS)
 
+alloc.o: alloc.c
+	$(CC) $(CFLAGS) -c -fPIC $^ -o $@
+
+test: alloc.o test.c
+	$(CC) $(CFLAGS) $^ -o $@
+
+liblist.so: alloc.o
+	$(CC) $^ $(CFLAGS) -shared -o $@
+
+# Standard clean
 clean:
-	rm -f *.o liblist.so
-.PHONY: clean
+	rm -f *.o $(PROGS)
