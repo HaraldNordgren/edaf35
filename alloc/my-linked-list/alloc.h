@@ -1,8 +1,10 @@
 #ifndef ALLOC_H
 #define ALLOC_H
 
+#if 0
 #define SIZE    (1024)
 #define N       (8 * SIZE*SIZE / sizeof(size_t))
+#endif
 
 void *malloc(size_t size);
 void free(void *ptr);
@@ -20,12 +22,6 @@ struct list_t {
 #define LIST_T sizeof(list_t)
 #define SIZE_T sizeof(size_t)
 
-static list_t *avail = NULL;
-
-#ifdef DEBUG
-list_t* get_avail() {
-    return avail;
-}
-#endif
+list_t* get_avail(void);
 
 #endif

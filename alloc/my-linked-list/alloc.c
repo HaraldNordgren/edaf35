@@ -1,28 +1,19 @@
-#define MY_MALLOC 1
-#define CREATE_LIBRARY 0
+#define _BSD_SOURCE
 
-#if !(MY_MALLOC)
-    #include <stdlib.h>
-#endif
-
-#if !(CREATE_LIBRARY)
+#define DEBUG 0
+#if DEBUG
     #include <stdio.h>
 #endif
 
 #include <unistd.h>
 #include <string.h>
-#include <malloc.h>
-
 #include "alloc.h"
 
+static list_t *avail = NULL;
 
-
-#if !(CREATE_LIBRARY)
-    static size_t *memory_start;
-#endif
-
-
-#if MY_MALLOC
+list_t* get_avail(void) {
+    return avail;
+}
 
 size_t align_size(size_t size) {
     char offset;
@@ -35,7 +26,7 @@ size_t align_size(size_t size) {
     return size;
 }
 
-void merge(list_t* p, list_t* q) {
+void attempt_merge(list_t* p, list_t* q) {
     if ((list_t*) ((char*) p + p->size) == q) {
         p->size += q->size;
         p->next = q->next;
@@ -43,30 +34,41 @@ void merge(list_t* p, list_t* q) {
 }
 
 void *malloc(size_t size) {
-    list_t *prev, *p, *freed_segment;
-    size_t *new, min_size;
+    list_t *p, *prev, *memory_segment;
+    size_t min_size;
+
+    #if DEBUG
+    printf("malloc, size:\t%zu\n", size);
+    #endif
     
     if (size <= 0) {
         return NULL; 
     }
 
     size = align_size(size);
-
-    prev = NULL;
-    p = avail;
-
     min_size = size + LIST_T;
 
+    p = avail;
+    prev = NULL;
+
+    #if DEBUG
+    printf("p:\t\t%p\n", p);
+    #endif
+    
     while (p != NULL && p->size < min_size) {
+        #if DEBUG
+        printf("p->next:\t%p\n", p->next);
+        #endif
+
         prev = p;
         p = p->next;
     }
 
     if (p == NULL) {
-        freed_segment = sbrk(min_size);
-        freed_segment->size = min_size;
+        memory_segment = sbrk(min_size);
+        memory_segment->size = min_size;
         
-        return freed_segment->data;
+        return memory_segment->data;
     }
     
     if (p->size >= min_size + LIST_T + SIZE_T) {
@@ -74,7 +76,7 @@ void *malloc(size_t size) {
         p->size = min_size;
         
         list_t* second_next = p->next;
-        list_t* first_next = (list_t*) ( (char*) p + p->size );
+        list_t* first_next = (list_t*) ((char*) p + p->size);
         
         first_next->size = total_size - min_size;
         first_next->next = second_next;
@@ -93,16 +95,18 @@ void *malloc(size_t size) {
     }
     
     if (p == avail) {
-        avail = avail->next;
+        avail = p->next;
     }
 
     return p->data;
 }
 
 void free(void *ptr) {
-    list_t  *p, *prev, *freed_segment;
-    size_t  size;
-    char    *addr;
+    list_t *p, *prev, *freed_segment;
+    
+    #if DEBUG
+    printf("free\n");
+    #endif
 
     if (ptr == NULL) {
         return;
@@ -112,6 +116,8 @@ void free(void *ptr) {
 
     if (avail == NULL) {
         avail = freed_segment;
+        avail->next = NULL;
+
         return;
     }
 
@@ -128,29 +134,38 @@ void free(void *ptr) {
         avail = freed_segment;
         freed_segment->next = tmp;
 
-        merge(freed_segment, freed_segment->next);
-    } else if (p == NULL) {
+        attempt_merge(freed_segment, freed_segment->next);
+        return;
+    }
+    
+    if (p == NULL) {
         prev->next = freed_segment;
         freed_segment->next = NULL;
 
-        merge(prev, freed_segment);
-    } else {
-        freed_segment->next = p;
-        prev->next = freed_segment;
-
-        merge(freed_segment, p);
-        merge(prev, freed_segment);
+        attempt_merge(prev, freed_segment);
+        return;
     }
+    
+    prev->next = freed_segment;
+    freed_segment->next = p;
+
+    attempt_merge(freed_segment, p);
+    attempt_merge(prev, freed_segment);
 }
 
 void *realloc(void *ptr, size_t size) {
+    
+    #if DEBUG
+    printf("realloc\n");
+    #endif
+
     if (ptr == NULL) {
         return malloc(size);
     }
 
     if (size <= 0) {
-        free(ptr);
-        return;
+        free(ptr);    
+        return NULL;
     }
 
     list_t *old_segment = (list_t*) ((char*) ptr - LIST_T);
@@ -159,29 +174,31 @@ void *realloc(void *ptr, size_t size) {
     long size_diff = minimum_new_size - old_segment->size;
     
     if (size_diff <= 0) {
-        if (-size_diff > LIST_T + SIZE_T) {
+
+        if ((size_t) -size_diff > LIST_T + SIZE_T) {
             list_t *list_to_free = (list_t*) ((char*) old_segment + minimum_new_size);
-            
             list_to_free->size = -size_diff;
+            
             free((char*) list_to_free + LIST_T);
 
             old_segment->size = minimum_new_size;
         }
 
         return ptr;
-
-    } else {
-        void *new_ptr = malloc(size);
-        memcpy((char*) new_ptr, (char*) ptr, old_segment->size - LIST_T);
-
-        free(ptr);
-
-        return new_ptr;
     }
+    
+    void *new_ptr = malloc(size);
+    memcpy(new_ptr, ptr, old_segment->size - LIST_T);
+    
+    free(ptr);
+    return new_ptr;
 }
 
-
 void* calloc(size_t nmemb, size_t size) {
+    #if DEBUG
+    printf("calloc\n");
+    #endif
+    
     void* ptr = malloc(nmemb * size);
     
     if (ptr != NULL) {
@@ -190,158 +207,3 @@ void* calloc(size_t nmemb, size_t size) {
     
     return ptr;
 }
-#endif
-
-#if !(CREATE_LIBRARY)
-void print_memory() {
-    size_t i;
-
-    printf("\n");
-
-    for (i = 0; i < 2 * 0xa; i++) {
-        printf("%p:\t%016zx\n", memory_start + i, memory_start[i]);
-    }
-}
-
-void print_avail() {
-    list_t *p = avail;
-    
-    printf("\navail:\t%p\n", p);
-
-    if (p == NULL) {
-        return;
-    }
-
-    while (p->next != NULL) {
-        p = p->next;
-        printf("next:\t%p\n", p);
-    }
-    
-    if (avail != NULL) {
-        printf("next:\t%p\n", p->next);
-    }
-}
-
-#if 0
-int main() {
-
-    memory_start = sbrk(0);
-
-    size_t *p, *q, *r;
-    
-    printf("before first malloc\n");
-    printf(" p:\t%p\n", p);
-    
-    p = malloc(11);
-    
-    printf("\nafter first malloc\n");
-    printf(" p:\t%p\n", p);
-    print_memory();
-    
-    *p = 0x1122;
-    *(p+1) = 0x3344;
-    
-    printf("\nafter filling p\n");
-    print_memory();
-    
-    r = malloc(1);
-    *r = 0x5566;
-    
-    printf("\nafter second malloc and filling r\n");
-    printf(" r:\t%p\n", r);
-    print_memory();
-    
-    q = malloc(8);
-    *q = 0x7788;
-
-    printf("\nafter third malloc and filling q\n");
-    printf(" q:\t%p\n", q);
-    print_memory();
-    
-    printf("\navail:\t%p\n", avail);
-    
-    free(p);
-    printf("\nafter freeing p (%p)\n", p);
-    print_memory();
-    
-    free(q);
-    printf("\nafter freeing q (%p)\n", q);
-    print_memory();
-    print_avail();
-    
-    free(r);
-    printf("\nafter freeing r (%p)\n", r);
-    print_memory();
-    print_avail();
-    
-    q = malloc(8);
-    *q = 0x99aa;
-
-    printf("\nafter fourth malloc and filling q\n");
-    printf(" q:\t%p\n", q);
-    print_memory(); 
-    print_avail();
-    
-    q = malloc(30);
-    *q = 0xbbcc;
-
-    printf("\nafter fifth malloc and filling q\n");
-    printf(" q:\t%p\n", q);
-    print_memory(); 
-    print_avail();
-     
-    q = malloc(1);
-    *q = 0xddee;
-
-    printf("\nafter sixth malloc and filling q\n");
-    printf(" q:\t%p\n", q);
-    print_memory(); 
-    print_avail();
-    return 0;
-#endif
-
-#if 1
-int main() {
-
-    memory_start = sbrk(0);
-
-    size_t *p, *r;
-    
-    p = malloc(40);
-    *p = 0x1122;
-    *(p+1) = 0x3344;
-    
-    printf("after first malloc and filling p\n");
-    printf(" p:\t%p\n", p);
-    print_memory();
-    
-
-    r = malloc(12);
-    *r = 0x1122334455667788;
-    *(r+1) = 0x99aabbccddeeff00; 
-    
-    printf("\nafter second malloc and filling r\n");
-    printf(" r:\t%p\n", r);
-    print_memory();
-
-
-    p = realloc(p, 1);
-    
-    printf("\nreallocing p\n");
-    printf(" p:\t%p\n", p);
-    print_memory();
-    print_avail();
-
-
-    r = realloc(r, 20);
-    
-    printf("\nreallocking r\n");
-    printf(" r:\t%p\n", r);
-    print_memory();
-    print_avail();
-    
-    return 0;
-}
-
-#endif
-#endif
