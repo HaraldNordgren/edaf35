@@ -1,3 +1,0 @@
-@load "readdir"
-
-{ print }

@@ -1,6 +1,0 @@
-#!/bin/bash
-
-export LD_PRELOAD="/home/harald/courses/edaf35/project/linked-list/malloc.so"
-#export LD_PRELOAD="/home/harald/courses/edaf35/project/eda050/project/libbuddy.so"
-
-ls -l | 'print-permissions'
