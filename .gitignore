@@ -2,4 +2,5 @@
 *.o
 *.so
 
-alloc/my-linked-list/alloc
+gawk/gawk-3.1.8/
+gawk/gawk-4.1.3/

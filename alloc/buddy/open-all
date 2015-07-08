@@ -1,0 +1,1 @@
+vim -p alloc.c alloc.c alloc.c alloc.h test.c Makefile open-all

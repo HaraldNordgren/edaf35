@@ -2,7 +2,7 @@ CC			= gcc
 CFLAGS		= -g -Wall -Wextra -std=c11
 
 # Targets
-PROGS =	test #libbuddy.so
+PROGS =	test libbuddy.so
 
 all:	$(PROGS)
 
