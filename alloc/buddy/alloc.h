@@ -1,7 +1,7 @@
 #ifndef ALLOC_H
 #define ALLOC_H
 
-#define N           (22)
+#define N           (30)
 #define POOL_SIZE   (1 << N)
 
 void *malloc(size_t size);
@@ -10,6 +10,7 @@ void *calloc(size_t nmemb, size_t size);
 void *realloc(void *ptr, size_t size);
 
 void print_freelists();
+void print_memory();
 
 typedef struct list_t list_t;
 
