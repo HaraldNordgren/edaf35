@@ -10,19 +10,7 @@ else
     echo "## Testing with standard library ##"
 fi
 
-if [ -n "$2" ]
-then
-    TESTS="$2"
-else
-    TESTS="0 1 2 3 4"
-fi
-
 echo
 
-for number in $TESTS
-do
-    TEST="tests/danluu-2/test-$number"
-    echo "$TEST:"
-    $TEST
-    echo
-done
+scripts/tests/waterloo/waterloo-tests
+scripts/tests/danluu/danluu-tests

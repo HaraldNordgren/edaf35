@@ -5,7 +5,7 @@
 #include "alloc.h"
 
 #if DEBUG_1
-    #define DEBUG_2 1
+    #define DEBUG_2 0
 #endif
 
 static list_t* start = NULL;
@@ -57,60 +57,6 @@ void init_pool() {
     freelist[N] = start;
 }
 
-list_t* find_block(int k) {
-    
-    int k_avail = k;
-    list_t* block = freelist[k_avail];
-
-    while (block == NULL && k_avail < N) {
-        k_avail++;
-        block = freelist[k_avail];
-    }
-
-    if (block == NULL) {
-        return NULL;
-    }
-
-    while (k_avail > k) {
-        
-        list_t* original_segment = freelist[k_avail];
-        freelist[k_avail] = original_segment->succ;
-
-        if (original_segment->succ != NULL) {
-            original_segment->succ->pred = NULL;
-        }
-        
-        k_avail--;
-
-        list_t* first_half = original_segment;
-        list_t* second_half = (list_t*) ((char*) first_half + ((size_t) 1 << k_avail));
-
-        first_half->reserved = 0;
-        first_half->kval = k_avail;
-        first_half->pred = NULL;
-        first_half->succ = second_half;
-
-        second_half->reserved = 0;
-        second_half->kval = k_avail;
-        second_half->pred = first_half;
-        second_half->succ = NULL;
-
-        freelist[k_avail] = first_half;
-    }
-
-    list_t* result = freelist[k_avail];
-    
-    freelist[k_avail] = freelist[k_avail]->succ;
-    result->reserved = 1;
-
-    if (result->succ != NULL) {
-        result->succ->pred = NULL;
-        result->succ = NULL;
-    }
-
-    return result;
-}
-
 void *malloc(size_t size) {
     
     if (start == NULL) {
@@ -135,7 +81,55 @@ void *malloc(size_t size) {
         k++;
     }
 
-    list_t* result = find_block(k);
+    int k_avail = k;
+    list_t* block = freelist[k_avail];
+
+    while (block == NULL && k_avail < N) {
+        k_avail++;
+        block = freelist[k_avail];
+    }
+
+    if (block == NULL) {
+        return NULL;
+    }
+
+    while (k_avail > k) {
+        
+        list_t* original_segment = freelist[k_avail];
+        freelist[k_avail] = original_segment->succ;
+
+        if (original_segment->succ != NULL) {
+            original_segment->succ->pred = NULL;
+        }
+        
+        k_avail--;
+
+        list_t* first_half = original_segment;
+        list_t* second_half = (list_t*) ((char*) first_half +
+                ((size_t) 1 << k_avail));
+
+        first_half->reserved = 0;
+        first_half->kval = k_avail;
+        first_half->pred = NULL;
+        first_half->succ = second_half;
+
+        second_half->reserved = 0;
+        second_half->kval = k_avail;
+        second_half->pred = first_half;
+        second_half->succ = NULL;
+
+        freelist[k_avail] = first_half;
+    }
+
+    list_t* result = freelist[k_avail];
+    
+    freelist[k_avail] = freelist[k_avail]->succ;
+    result->reserved = 1;
+
+    if (result->succ != NULL) {
+        result->succ->pred = NULL;
+        result->succ = NULL;
+    }
 
     if (result == NULL) {
         return NULL;
@@ -156,7 +150,8 @@ list_t* recursively_merge(list_t* freed_segment) {
     list_t* buddy = (list_t*) ((char*) start + buddy_offset);
 
 #if 0
-    printf("\nfreed_segment:\t\t%zu\n", (size_t) ((char*) freed_segment - (char*) start));
+    printf("\nfreed_segment:\t\t%zu\n",
+            (size_t) ((char*) freed_segment - (char*) start));
     printf("(%p)\n\n", freed_segment);
     
     printf("buddy:\t\t\t%zu\n", (size_t) ((char*) buddy - (char*) start));
@@ -284,11 +279,11 @@ void *realloc(void *ptr, size_t size) {
     }
 
     list_t* old_segment = (list_t*) ((char*) ptr - LIST_T);
-    size_t old_size = (1 << old_segment->kval) - LIST_T;
+    size_t old_size = ((size_t) 1 << old_segment->kval) - LIST_T;
 
     void* new_ptr = malloc(size);
     list_t* new_segment = (list_t*) ((char*) new_ptr - LIST_T);
-    size_t new_size = (1 << new_segment->kval) - LIST_T;
+    size_t new_size = ((size_t) 1 << new_segment->kval) - LIST_T;
 
     size_t min_size;
     if (old_size <= new_size) {

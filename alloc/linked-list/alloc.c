@@ -35,7 +35,6 @@ void attempt_merge(list_t* p, list_t* q) {
 
 void *malloc(size_t size) {
     list_t *p, *prev, *memory_segment;
-    size_t min_size;
 
     #if DEBUG
     printf("malloc, size:\t%zu\n", size);
@@ -45,21 +44,12 @@ void *malloc(size_t size) {
         return NULL; 
     }
 
-    size = align_size(size);
-    min_size = size + LIST_T;
+    size_t min_size = align_size(size) + LIST_T;
 
     p = avail;
     prev = NULL;
-
-    #if DEBUG
-    printf("p:\t\t%p\n", p);
-    #endif
     
     while (p != NULL && p->size < min_size) {
-        #if DEBUG
-        printf("p->next:\t%p\n", p->next);
-        #endif
-
         prev = p;
         p = p->next;
     }
@@ -71,20 +61,21 @@ void *malloc(size_t size) {
         return memory_segment->data;
     }
     
+    /* Space for the allocation and for at least one word after,
+     * split the segment in two*/
     if (p->size >= min_size + LIST_T + SIZE_T) {
         size_t total_size = p->size;
         p->size = min_size;
         
-        list_t* second_next = p->next;
-        list_t* first_next = (list_t*) ((char*) p + p->size);
+        list_t* new_segment = (list_t*) ((char*) p + p->size);
         
-        first_next->size = total_size - min_size;
-        first_next->next = second_next;
+        new_segment->size = total_size - min_size;
+        new_segment->next = p->next;
 
         if (prev == NULL) {
-            avail = first_next;
+            avail = new_segment;
         } else {
-            prev->next = first_next;
+            prev->next = new_segment;
         }
 
         return p->data;
@@ -105,7 +96,7 @@ void free(void *ptr) {
     list_t *p, *prev, *freed_segment;
     
     #if DEBUG
-    printf("free\n");
+    printf("free (%p)\n", ptr);
     #endif
 
     if (ptr == NULL) {
@@ -130,9 +121,8 @@ void free(void *ptr) {
     }
 
     if (prev == NULL) {
-        list_t *tmp = avail;
+        freed_segment->next = avail;
         avail = freed_segment;
-        freed_segment->next = tmp;
 
         attempt_merge(freed_segment, freed_segment->next);
         return;
@@ -168,19 +158,21 @@ void *realloc(void *ptr, size_t size) {
         return NULL;
     }
 
+    size_t minimum_new_size = align_size(size) + LIST_T;
     list_t *old_segment = (list_t*) ((char*) ptr - LIST_T);
 
-    size_t minimum_new_size = align_size(size) + LIST_T;
-    long size_diff = minimum_new_size - old_segment->size;
-    
-    if (size_diff <= 0) {
+    if (minimum_new_size < old_segment->size) {
 
-        if ((size_t) -size_diff > LIST_T + SIZE_T) {
-            list_t *list_to_free = (list_t*) ((char*) old_segment + minimum_new_size);
-            list_to_free->size = -size_diff;
+        size_t size_diff = old_segment->size - minimum_new_size;
+
+        if (size_diff >= LIST_T + SIZE_T) {
             
+            list_t *list_to_free = (list_t*) ((char*) old_segment +
+                    minimum_new_size);
+            
+            list_to_free->size = size_diff;
             free((char*) list_to_free + LIST_T);
-
+            
             old_segment->size = minimum_new_size;
         }
 

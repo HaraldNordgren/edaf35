@@ -1,0 +1,11 @@
+#!/bin/bash
+
+echo
+
+for number in 0 1 2 3 4
+do
+    TEST="tests/danluu-2/test-$number"
+    echo "$TEST:"
+    $TEST
+    echo
+done

@@ -112,7 +112,8 @@
                  val = ((unsigned long)i ^ (unsigned long)bias);
                  pl[i] = val;
                  if (doprint && (i%64==63)) {
-                         printf(".");
+                         /* COMMENTED */
+                         /*printf(".");*/
                  }
          }
          if (doprint) {
@@ -148,7 +149,8 @@
                          return -1;
                  }
                  if (doprint && (i%64==63)) {
-                         printf(".");
+                         /* COMMENTED */
+                         /*printf(".");*/
                  }
          }
          if (doprint) {
