@@ -1,9 +1,10 @@
 #ifndef ALLOC_H
 #define ALLOC_H
 
-#define DEBUG_1 0
+#define DEBUG_1 1
 
 #define N           (32)
+//#define N           (12)
 #define POOL_SIZE   ((size_t) 1 << N)
 
 void *malloc(size_t size);
@@ -17,7 +18,8 @@ void print_memory();
 typedef struct list_t list_t;
 
 struct list_t {
-    unsigned    reserved:1;
+    //unsigned    reserved:1;
+    char        reserved;
     char        kval;
     list_t*     succ;
     list_t*     pred;

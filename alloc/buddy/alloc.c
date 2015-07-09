@@ -30,7 +30,7 @@ void print_freelists() {
             j++;
         }
     }
-    printf("\n");
+    printf("\n\n");
 }
 
 void print_memory() {
