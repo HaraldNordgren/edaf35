@@ -1,8 +1,10 @@
 #ifndef ALLOC_H
 #define ALLOC_H
 
-#define N           (30)
-#define POOL_SIZE   (1 << N)
+#define DEBUG_1 0
+
+#define N           (32)
+#define POOL_SIZE   ((size_t) 1 << N)
 
 void *malloc(size_t size);
 void free(void *ptr);

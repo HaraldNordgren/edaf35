@@ -5,6 +5,7 @@
 #include "alloc.h"
 
 int main(void) {
+#if DEBUG_1
     size_t *a, *b, *c, *d;
     
     printf("START\n");
@@ -67,6 +68,9 @@ int main(void) {
     print_freelists();
     printf("\nDone\n\n");
 
-    /*int hej;
-    hej = getchar();*/
+    printf("TEST FINISHED\n");
+#endif
+
+    printf("\npool size (hex): %zx\n", POOL_SIZE);
+
 }
