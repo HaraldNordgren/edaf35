@@ -2,9 +2,10 @@
 
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "alloc.h"
 
-#define FREELIST_MAX (10)
+#define FREELIST_DISPLAY (10)
 
 #if DEBUG_1
     #define DEBUG_2 0
@@ -26,8 +27,9 @@ void print_freelists() {
         int j = 0;
         
         printf("\nsize %10zu (freelist[%d]):\t", (size_t) 1 << i, i);
-        while (e != NULL && j < FREELIST_MAX) {
-            printf("at %zu (%p) -> ", (size_t) ((char*) e - (char*) start), VOID(e));
+        while (e != NULL && j < FREELIST_DISPLAY) {
+            printf("at %zu (%p) -> ",
+                    (size_t) ((char*) e - (char*) start), VOID(e));
             e = e->succ;
             j++;
         }
@@ -53,7 +55,12 @@ void print_memory() {
 #endif
 
 void init_pool() {
-    start = sbrk(POOL_SIZE); 
+    start = sbrk(POOL_SIZE);
+
+    if (start == (void *) -1) {
+    	fprintf(stderr, "Failed to initialize pool of size %zu\n", POOL_SIZE);
+    	exit(EXIT_FAILURE);
+    }
 
     memory_start = (size_t*) start;
 
@@ -88,9 +95,13 @@ void *malloc(size_t size) {
         tmp_size >>= 1;
         k++;
     }
-
+    
     int k_avail = k;
     list_t* block = freelist[k_avail];
+
+    if (k_avail > N) {
+        return NULL;
+    }
 
     while (block == NULL && k_avail < N) {
         k_avail++;

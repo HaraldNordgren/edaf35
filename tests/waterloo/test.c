@@ -111,10 +111,11 @@ markblock(volatile void *ptr, size_t size, unsigned bias, int doprint)
         for (i=0; i<n; i++) {
                 val = ((unsigned long)i ^ (unsigned long)bias);
                 pl[i] = val;
+                
+                /* COMMENTED
                 if (doprint && (i%64==63)) {
-                        /* COMMENTED */
-                        /*printf(".");*/
-                }
+                        printf(".");
+                }*/
         }
         if (doprint) {
                 printf("\n");
@@ -148,10 +149,10 @@ checkblock(volatile void *ptr, size_t size, unsigned bias, int doprint)
                                pl[i], val);
                         return -1;
                 }
+                /* COMMENTED
                 if (doprint && (i%64==63)) {
-                        /* COMMENTED */
-                        /*printf(".");*/
-                }
+                        printf(".");
+                }*/
         }
         if (doprint) {
                 printf("\n");
@@ -317,9 +318,10 @@ test3(void)
                 markblock(list->junk, sizeof(list->junk), (uintptr_t)list, 0);
 
                 ct++;
+                /* COMMENTED
                 if (ct%128==0) {
                         printf(".");
-                }
+                }*/
         }
 
         printf("Allocated %lu bytes\n", (unsigned long) tot);

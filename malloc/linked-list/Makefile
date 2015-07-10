@@ -4,7 +4,7 @@ CFLAGS		= -g -Wall -Wextra -std=c11
 # Targets
 PROGS =	test liblist.so
 
-all:	$(PROGS)
+all: clean $(PROGS)
 
 alloc.o: alloc.c
 	$(CC) $(CFLAGS) -c -fPIC $^ -o $@

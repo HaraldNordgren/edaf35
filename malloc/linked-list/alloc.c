@@ -16,7 +16,7 @@ list_t* get_avail(void) {
 }
 
 size_t align_size(size_t size) {
-    char offset;
+    unsigned offset;
 
     offset = size % SIZE_T;
     if (offset != 0) {
@@ -56,6 +56,11 @@ void *malloc(size_t size) {
 
     if (p == NULL) {
         memory_segment = sbrk(min_size);
+
+        if ((void*) memory_segment == (void*) -1) {
+            return NULL;
+        }
+
         memory_segment->size = min_size;
         
         return memory_segment->data;

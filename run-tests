@@ -12,5 +12,3 @@ os.system("reset");
 for malloc in libraries:
     cmd = "scripts/test-scripts/run-tests " + malloc
     os.system(cmd)
-    
-    #os.system("echo");

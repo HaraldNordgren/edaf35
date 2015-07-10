@@ -4,7 +4,7 @@ CFLAGS		= -g -Wall -Wextra -pedantic -std=c11
 # Targets
 PROGS =	test test2 libbuddy.so
 
-all:	$(PROGS)
+all: clean $(PROGS)
 
 alloc.o: alloc.c
 	$(CC) $(CFLAGS) -c -fPIC $^ -o $@
@@ -16,7 +16,7 @@ test2: alloc.o test2.c
 	$(CC) $(CFLAGS) $^ -o $@
 
 libbuddy.so: alloc.o
-	$(CC) $^ $(CFLAGS) -shared -o $@
+	$(CC) $(CFLAGS) $^ -shared -o $@
 
 # Standard clean
 clean:

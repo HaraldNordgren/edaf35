@@ -1,6 +1,7 @@
 #define _BSD_SOURCE
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "alloc.h"
 
 static size_t *memory_start;
@@ -39,15 +40,20 @@ void print_avail() {
     printf("\n");
 }
 
-void* malloc_and_fill(int size, char padding) {
+void* malloc_and_fill(size_t size, char padding) {
     char* ptr = malloc(size);
-    int i;
+    size_t i;
+
+    if (ptr == NULL) {
+        fprintf(stderr, "Malloc failed\n");
+        exit(EXIT_FAILURE);
+    }
 
     for (i = 0; i < size; i++) {
         ptr[i] = padding;
     }
     
-    printf("Malloc, size %d\n", size);
+    printf("Malloc, size %zu\n", size);
     printf(" ptr:\t%p\n", ptr);
     print_memory();
 
@@ -70,10 +76,10 @@ int main(void) {
 
     char *p, *q, *r, *rr, *s, *t, *u;
 
-    p = malloc_and_fill(11, 0x12);
-    q = malloc_and_fill(15, 0x34);
-    r = malloc_and_fill(16, 0x56); 
-    rr = malloc_and_fill(16, 0x78);
+    p =  malloc_and_fill(4000000000, 0x12);
+    q =  malloc_and_fill(1000000000, 0x34);
+    r =  malloc_and_fill(1000000000, 0x56); 
+    rr = malloc_and_fill( 300000000, 0x78);
     print_avail();
 
     free_ptr(p);
@@ -89,6 +95,10 @@ int main(void) {
 
     u = malloc_and_fill(4, 0xbc);
     print_avail();
+    
+    free_ptr(s);
+    free_ptr(t); 
+    free_ptr(u);
     
     return 0;
 }

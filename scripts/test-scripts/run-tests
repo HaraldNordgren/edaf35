@@ -1,28 +1,34 @@
 #!/bin/bash
 
-green=`tput setaf 2`
+color=`tput setaf 4`
 bold=`tput bold`
 underline=`tput smul`
 reset=`tput sgr0`
 
-echo -n $green$bold
+echo -n $color$bold
 
 if [ -n "$1" ]
 then
     export LD_PRELOAD="$PWD/$1"
-    echo "Preloaded library $1"
+    echo Preloaded library $1
 else
-    echo "No library preloaded, testing with standard library"
+    echo No library preloaded, testing with standard library
 fi
 
-echo $reset $green $underline
-echo "Waterloo tests"
-echo $reset
-"scripts/test-scripts/waterloo/waterloo-tests"
+echo ${reset}
 
-echo $green $underline
-echo "Danluu tests$reset"
-"scripts/test-scripts/danluu/danluu-tests"
+
+for i in 1 2 3 4 5; do
+    echo ${color}Waterloo test $i ${reset}
+    "tests/waterloo/test" < "scripts/test-scripts/waterloo/inputs/$i"
+    echo
+done
+
+for i in 0 1 2 3 4; do
+    echo "${color}Danluu test $i ${reset}"
+    "tests/danluu-2/test-$i"
+    echo
+done
 
 echo $reset
 unset LD_PRELOAD
