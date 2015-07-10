@@ -1,4 +1,4 @@
-## EDAF35 Project: Currently Heap Managers (Buddy and Linked List)
+# EDAF35 Project: Currently Heap Managers (Buddy and Linked List)
  
 1. Your task is to implement two versions of malloc/calloc/realloc and free.
 
