@@ -1,12 +1,10 @@
-#define _BSD_SOURCE
-
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
 #include "alloc.h"
 
 #if DEBUG_1
-void* malloc_and_fill(size_t size, char padding) {
+void* malloc_and_fill(size_t size, unsigned char padding) {
 
     char* ptr = malloc(size);
 
@@ -49,28 +47,6 @@ void free_ptr(void* ptr) {
 
 int main(void) {
 #if DEBUG_1
-#if 0
-    size_t *a, *b, *c, *d;
-    
-    printf("START\n");
-
-    a = malloc_and_fill(70 - LIST_T, 0x12);
-    b = malloc_and_fill(35 - LIST_T, 0x34);
-
-    b = realloc_print(b, 35 - LIST_T);
-
-    c = malloc_and_fill(80 - LIST_T, 0x56);
-    
-    free_ptr(a);
-    
-    d = malloc_and_fill(60 - LIST_T, 0x78);
-
-    free_ptr(b);
-    free_ptr(d);
-    free_ptr(c);
-    
-    printf("TEST FINISHED\n");
-#else
     size_t *a, *b, *c, *d, *e, *f, *g, *h, *i;
     size_t a_val, b_val, c_val, d_val, e_val;
     size_t a_size = 32, b_size = 64;
@@ -126,8 +102,9 @@ int main(void) {
     free_ptr(g);
     free_ptr(f);
 #endif
-#endif
 
     printf("\npool size (hex): %zx\n", POOL_SIZE);
-
+	printf("hejhejhej\n");
+	
+	return 0;
 }

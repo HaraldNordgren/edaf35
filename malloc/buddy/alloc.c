@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include "alloc.h"
 
+#define FREELIST_MAX (10)
+
 #if DEBUG_1
     #define DEBUG_2 0
 #endif
@@ -24,10 +26,16 @@ void print_freelists() {
         int j = 0;
         
         printf("\nsize %10zu (freelist[%d]):\t", (size_t) 1 << i, i);
-        while (e != NULL && j < 10) {
-            printf("%zu (%p) -> ", (size_t) ((char*) e - (char*) start), e);
+        while (e != NULL && j < FREELIST_MAX) {
+            printf("at %zu (%p) -> ", (size_t) ((char*) e - (char*) start), VOID(e));
             e = e->succ;
             j++;
+        }
+
+        if (e != NULL) {
+            printf("...");
+        } else {
+            printf("%p", NULL);
         }
     }
     printf("\n\n");
@@ -39,7 +47,7 @@ void print_memory() {
     printf("\n");
 
     for (i = 0; i < 2 * 0x20; i++) {
-        printf("%p:\t%016zx\n", memory_start + i, memory_start[i]);
+        printf("%p:\t%016zx\n", (void*) (memory_start + i), memory_start[i]);
     }
 }
 #endif

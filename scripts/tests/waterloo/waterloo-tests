@@ -1,3 +1,0 @@
-#!/bin/bash
-
-tests/waterloo/test < /home/harald/courses/edaf35/project/scripts/tests/waterloo/input

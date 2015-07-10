@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tests/waterloo/test < scripts/test-scripts/waterloo/input

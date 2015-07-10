@@ -3,9 +3,11 @@
 
 #define DEBUG_1 1
 
-#define N           (32)
+#define N           (31)
 //#define N           (12)
 #define POOL_SIZE   ((size_t) 1 << N)
+
+#define VOID(ptr) ((void*) (ptr))
 
 void *malloc(size_t size);
 void free(void *ptr);

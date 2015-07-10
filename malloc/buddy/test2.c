@@ -13,7 +13,7 @@ int main(void) {
     p = malloc(11);
     
     printf("after first malloc\n");
-    printf(" p:\t%p\n", p);
+    printf(" p:\t%p\n", VOID(p));
     print_memory();
     
     *p = 0x1122;
@@ -26,47 +26,47 @@ int main(void) {
     *r = 0x5566;
     
     printf("\nafter second malloc and filling r\n");
-    printf(" r:\t%p\n", r);
+    printf(" r:\t%p\n", VOID(r));
     print_memory();
     
     q = malloc(8);
     *q = 0x7788;
 
     printf("\nafter third malloc and filling q\n");
-    printf(" q:\t%p\n", q);
+    printf(" q:\t%p\n", VOID(q));
     print_memory();
     
     free(p);
-    printf("\nafter freeing p (%p)\n", p);
+    printf("\nafter freeing p (%p)\n", VOID(p));
     print_memory();
     
     free(q);
-    printf("\nafter freeing q (%p)\n", q);
+    printf("\nafter freeing q (%p)\n", VOID(q));
     print_memory();
     
     free(r);
-    printf("\nafter freeing r (%p)\n", r);
+    printf("\nafter freeing r (%p)\n", VOID(r));
     print_memory();
     
     q = malloc(8);
     *q = 0x99aa;
 
     printf("\nafter fourth malloc and filling q\n");
-    printf(" q:\t%p\n", q);
+    printf(" q:\t%p\n", VOID(q));
     print_memory(); 
     
     q = malloc(30);
     *q = 0xbbcc;
 
     printf("\nafter fifth malloc and filling q\n");
-    printf(" q:\t%p\n", q);
+    printf(" q:\t%p\n", VOID(q));
     print_memory(); 
      
     q = malloc(1);
     *q = 0xddee;
 
     printf("\nafter sixth malloc and filling q\n");
-    printf(" q:\t%p\n", q);
+    printf(" q:\t%p\n", VOID(q));
     print_memory(); 
     return 0;
 

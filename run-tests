@@ -1,0 +1,16 @@
+#!/usr/bin/python
+
+import os
+
+libraries = ["buddy/libbuddy.so", "linked-list/liblist.so"]
+libraries = ["malloc/" + lib for lib in libraries]
+
+libraries.insert(0, "")
+
+os.system("reset");
+
+for malloc in libraries:
+    cmd = "scripts/test-scripts/run-tests " + malloc
+    os.system(cmd)
+    
+    #os.system("echo");
