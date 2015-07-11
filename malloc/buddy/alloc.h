@@ -22,8 +22,8 @@ struct list_t {
     //unsigned    reserved:1;
     char        reserved;
     char        kval;
-    list_t*     succ;
     list_t*     pred;
+    list_t*     succ;
     char        data[];
 };
 

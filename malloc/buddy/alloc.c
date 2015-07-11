@@ -6,9 +6,14 @@
 #include "alloc.h"
 
 #define FREELIST_DISPLAY (10)
+#define FREELIST_MIN (4)
+
+//#define PRINT_SIZE (0x1000)
+#define PRINT_SIZE (0x20)
 
 #if DEBUG_1
     #define DEBUG_2 0
+    #define DEBUG_3 0
 #endif
 
 static list_t* start = NULL;
@@ -21,7 +26,7 @@ static size_t* memory_start;
 
 void print_freelists() {
     int i;
-    for (i = N; i >= 4; i--) {
+    for (i = N; i >= FREELIST_MIN; i--) {
         list_t* e = freelist[i];
 
         int j = 0;
@@ -48,20 +53,20 @@ void print_memory() {
 
     printf("\n");
 
-    for (i = 0; i < 2 * 0x20; i++) {
+    for (i = 0; i < 2 * PRINT_SIZE; i++) {
         printf("%p:\t%016zx\n", (void*) (memory_start + i), memory_start[i]);
     }
 }
 #endif
 
 void init_pool() {
-    start = sbrk(POOL_SIZE);
+    void* start_tmp = sbrk(POOL_SIZE);
 
-    if (start == (void *) -1) {
-    	fprintf(stderr, "Failed to initialize pool of size %zu\n", POOL_SIZE);
+    if (start_tmp == (void *) -1) {
     	exit(EXIT_FAILURE);
     }
-
+    
+    start = start_tmp;
     memory_start = (size_t*) start;
 
     start->reserved = 0;
@@ -79,9 +84,14 @@ void *malloc(size_t size) {
     }
 
     #if DEBUG_2
-    printf("malloc (size %zu)\n", size);
+    printf("\nmalloc (size %zu)\n", size);
     #endif
-
+    
+    #if DEBUG_3
+    print_freelists();
+    print_memory();
+    #endif
+    
     if (size <= 0) {
         return NULL;
     }
@@ -168,48 +178,35 @@ list_t* recursively_merge(list_t* freed_segment) {
 
     list_t* buddy = (list_t*) ((char*) start + buddy_offset);
 
-#if 0
-    printf("\nfreed_segment:\t\t%zu\n",
-            (size_t) ((char*) freed_segment - (char*) start));
-    printf("(%p)\n\n", freed_segment);
-    
-    printf("buddy:\t\t\t%zu\n", (size_t) ((char*) buddy - (char*) start));
-    printf("(%p)\n\n", buddy);
-
-    printf("kval:\t\t\t%d\n", freed_segment->kval);
-    printf("buddy->kval:\t\t%d\n", buddy->kval);
-    
-    printf("reserved:\t\t%d\n", freed_segment->reserved);
-    printf("buddy->reserved:\t%d\n", buddy->reserved);
-
-    print_freelists();
-    printf("\n\n");
-#endif
-
     list_t* merged_segment = freed_segment;
+    int kval = freed_segment->kval;
     
-    if (! buddy->reserved && buddy->kval == freed_segment->kval) {
-        int kval = buddy->kval;
-
-        if (buddy == freelist[kval]) {
-            freelist[kval] = buddy->succ;
-        }
-
+    if (! buddy->reserved && buddy->kval == kval) {
+        
         if (freed_segment < buddy) {
             merged_segment = freed_segment;
         } else {
             merged_segment = buddy;
         }
 
-        if (buddy->succ != NULL) {
-            buddy->succ->pred = buddy->pred;
-        }
+        if (buddy == freelist[kval]) {
+            freelist[kval] = buddy->succ;
+            if (freelist[kval] != NULL) {
+                freelist[kval]->pred = NULL;
+            }
 
-        if (buddy->pred != NULL) {
+        } else {
+
             buddy->pred->succ = buddy->succ;
+            if (buddy->succ != NULL) {
+                buddy->succ->pred = buddy->pred;
+            }
         }
 
-        buddy = buddy->succ;
+        #if DEBUG_3
+        printf("merged!\n\n");
+        print_freelists();
+        #endif
 
         merged_segment->kval++;
         merged_segment = recursively_merge(merged_segment);
@@ -221,13 +218,18 @@ list_t* recursively_merge(list_t* freed_segment) {
 
 void free(void *ptr) {
     #if DEBUG_2
-    printf("free (%p)\n", ptr);
+    printf("\nfree (%p)\n", ptr);
     #endif
 
     if (ptr == NULL || ptr > (void*) ((char*) start + POOL_SIZE)) {
         return;
     }
     
+    #if DEBUG_3
+    print_freelists();
+    print_memory();
+    #endif
+
     list_t* freed_segment = (list_t*) ((char*) ptr - LIST_T);
     freed_segment->reserved = 0;
 
@@ -240,14 +242,14 @@ void free(void *ptr) {
         freelist[kval] = freed_segment;
         freelist[kval]->succ = NULL;
         freelist[kval]->pred = NULL;
-
+        
         return;
     }
     
     list_t* p = freelist[kval];
     list_t* prev = NULL;
     
-    while (p != NULL && freed_segment > p) {
+    while (p != NULL && p < freed_segment) {
         prev = p;
         p = p->succ;
     }
@@ -270,22 +272,15 @@ void free(void *ptr) {
         return;
     }
 
-    if (freed_segment > p) {
-        freed_segment->succ = p->succ;
+    if (freed_segment < p) {
+        freed_segment->succ = p;
+        freed_segment->pred = prev;
+
+        prev->succ = freed_segment;
+        p->pred = freed_segment;
             
-        if (freed_segment->succ != NULL) {
-            freed_segment->succ->pred = freed_segment;
-        }
-
-        freed_segment->pred = p;
-        p->succ = freed_segment;
-
         return;
     }
-
-    freed_segment->succ = p->succ;
-    freed_segment->pred = p;
-    p->succ = freed_segment;
 }
 
 void *realloc(void *ptr, size_t size) {

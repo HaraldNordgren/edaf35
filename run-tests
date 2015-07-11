@@ -5,7 +5,7 @@ import os
 libraries = ["buddy/libbuddy.so", "linked-list/liblist.so"]
 libraries = ["malloc/" + lib for lib in libraries]
 
-libraries.insert(0, "")
+#libraries.insert(0, "")
 
 os.system("reset");
 

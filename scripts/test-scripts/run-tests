@@ -1,14 +1,19 @@
 #!/bin/bash
 
-color=`tput setaf 4`
-bold=`tput bold`
-underline=`tput smul`
-reset=`tput sgr0`
+function print_return {
+    if [ $1 == 0 ]; then
+        echo "${green}Test passed${reset}"
+    else
+        echo "${red}Test failed${reset}"
+    fi
+}
 
-echo -n $color$bold
 
-if [ -n "$1" ]
-then
+source "scripts/test-scripts/terminal-formatting"
+
+echo -n ${blue}${bold}
+
+if [ -n "$1" ]; then
     export LD_PRELOAD="$PWD/$1"
     echo Preloaded library $1
 else
@@ -18,17 +23,23 @@ fi
 echo ${reset}
 
 
-for i in 1 2 3 4 5; do
-    echo ${color}Waterloo test $i ${reset}
+for i in 1 2 3 4 5 7; do
+    echo ${blue}Waterloo test $i ${reset}
     "tests/waterloo/test" < "scripts/test-scripts/waterloo/inputs/$i"
     echo
 done
 
 for i in 0 1 2 3 4; do
-    echo "${color}Danluu test $i ${reset}"
+    echo "${blue}Danluu test $i ${reset}"
     "tests/danluu-2/test-$i"
+    print_return $?
     echo
 done
+
+echo "${blue}Wisc test${reset}"
+"tests/wisc/test"
+print_return $?
+echo
 
 echo $reset
 unset LD_PRELOAD
