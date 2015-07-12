@@ -4,6 +4,7 @@
 #define DEBUG_1 1
 
 #define N           (32)
+//#define N           (29)
 #define POOL_SIZE   ((size_t) 1 << N)
 
 #define VOID(ptr) ((void*) (ptr))
@@ -28,6 +29,6 @@ struct list_t {
 };
 
 #define LIST_T sizeof(list_t)
-#define SIZE_T sizeof(size_t)
+//#define SIZE_T sizeof(size_t)
 
 #endif

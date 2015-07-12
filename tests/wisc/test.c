@@ -12,6 +12,9 @@
 #include <sys/resource.h>
 #include <malloc.h>
 
+#define VERBOSE
+//#define MSTATS
+
 #ifndef MEMORY
 #define MEMORY          4000000l
 #endif

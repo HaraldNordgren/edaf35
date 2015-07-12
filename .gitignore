@@ -1,6 +1,8 @@
 *.swp
 *.swo
 *.swn
+*.swm
+
 *.o
 *.so
 
@@ -13,6 +15,7 @@ malloc/buddy/test2
 malloc/linked-list/test
 
 tests/waterloo/test
+tests/waterloo/hej
 
 **/.settings/
 **/.project

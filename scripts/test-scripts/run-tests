@@ -31,7 +31,7 @@ done
 
 for i in 0 1 2 3 4; do
     echo "${blue}Danluu test $i ${reset}"
-    "tests/danluu-2/test-$i"
+    "tests/danluu/test-$i"
     print_return $?
     echo
 done

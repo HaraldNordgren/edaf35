@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <errno.h>
 #include "alloc.h"
 
 #define FREELIST_DISPLAY (10)
@@ -63,7 +64,8 @@ void init_pool() {
     void* start_tmp = sbrk(POOL_SIZE);
 
     if (start_tmp == (void *) -1) {
-    	exit(EXIT_FAILURE);
+        return;
+    	//exit(EXIT_FAILURE);
     }
     
     start = start_tmp;
@@ -81,10 +83,15 @@ void *malloc(size_t size) {
     
     if (start == NULL) {
         init_pool();
+
+        if (start == NULL) {
+            errno = ENOMEM;
+            return NULL;
+        }
     }
 
     #if DEBUG_2
-    printf("\nmalloc (size %zu)\n", size);
+    printf("\nBefore malloc (size %zu)\n", size);
     #endif
     
     #if DEBUG_3
@@ -92,13 +99,13 @@ void *malloc(size_t size) {
     print_memory();
     #endif
     
-    if (size <= 0) {
+    if (size == 0) {
         return NULL;
     }
 
     size_t min_size = size + LIST_T;
 
-    char k = 0;
+    int k = 0;
     size_t tmp_size = min_size - 1;
 
     while (tmp_size > 0) {
@@ -107,11 +114,12 @@ void *malloc(size_t size) {
     }
     
     int k_avail = k;
-    list_t* block = freelist[k_avail];
-
     if (k_avail > N) {
+        errno = ENOMEM;
         return NULL;
     }
+
+    list_t* block = freelist[k_avail];
 
     while (block == NULL && k_avail < N) {
         k_avail++;
@@ -119,6 +127,7 @@ void *malloc(size_t size) {
     }
 
     if (block == NULL) {
+        errno = ENOMEM;
         return NULL;
     }
 
@@ -161,6 +170,7 @@ void *malloc(size_t size) {
     }
 
     if (result == NULL) {
+        errno = ENOMEM;
         return NULL;
     }
     
@@ -218,20 +228,24 @@ list_t* recursively_merge(list_t* freed_segment) {
 
 void free(void *ptr) {
     #if DEBUG_2
-    printf("\nfree (%p)\n", ptr);
+    printf("\nBefore free (%p)\n", ptr);
     #endif
 
-    if (ptr == NULL || ptr > (void*) ((char*) start + POOL_SIZE)) {
+    if (ptr == NULL || ptr > (void*) ((char*) start + POOL_SIZE) || start == NULL) {
         return;
     }
+
+    list_t* freed_segment = (list_t*) ((char*) ptr - LIST_T);
+    freed_segment->reserved = 0;
+    
+    #if DEBUG_2
+    printf("size: %zu\n", 1l << freed_segment->kval);
+    #endif
     
     #if DEBUG_3
     print_freelists();
     print_memory();
     #endif
-
-    list_t* freed_segment = (list_t*) ((char*) ptr - LIST_T);
-    freed_segment->reserved = 0;
 
     freed_segment = recursively_merge(freed_segment);
     
@@ -285,17 +299,33 @@ void free(void *ptr) {
 
 void *realloc(void *ptr, size_t size) {
     #if DEBUG_2
-    printf("realloc (%p)\n", ptr);
+    printf("Before realloc (%p)\n", ptr);
     #endif
+
+    if (start == NULL) {
+        errno = ENOMEM;
+        return NULL;
+    }
 
     if (ptr == NULL) {
         return malloc(size);
+    }
+
+    if (size == 0) {
+        free(ptr);
+        return NULL;
     }
 
     list_t* old_segment = (list_t*) ((char*) ptr - LIST_T);
     size_t old_size = ((size_t) 1 << old_segment->kval) - LIST_T;
 
     void* new_ptr = malloc(size);
+
+    if (new_ptr == NULL) {
+        errno = ENOMEM;
+        return NULL;
+    }
+
     list_t* new_segment = (list_t*) ((char*) new_ptr - LIST_T);
     size_t new_size = ((size_t) 1 << new_segment->kval) - LIST_T;
 
@@ -315,8 +345,17 @@ void *realloc(void *ptr, size_t size) {
 
 void* calloc(size_t nmemb, size_t size) {
     #if DEBUG_2
-    printf("calloc\n");
+    printf("Before calloc\n");
     #endif
+
+    if (start == NULL) {
+        errno = ENOMEM;
+        return NULL;
+    }
+
+    if (nmemb == 0 || size == 0) {
+        return NULL;
+    }
     
     void* ptr = malloc(nmemb * size);
     
