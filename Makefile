@@ -9,7 +9,7 @@ all:
 		cd $(PWD); done
 	@for version in $(GAWK); do \
 		cd gawk; \
-		tar xf gawk-$$version.tar.bz2; \
+		tar xf gawk-$$version.tar.*; \
 		cd gawk-$$version; \
 		./configure; \
 		echo; \
