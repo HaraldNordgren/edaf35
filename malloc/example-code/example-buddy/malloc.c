@@ -1,7 +1,8 @@
 #define _BSD_SOURCE
 
-#define	N			24
-#define POOL_SIZE	16 * 1024 * 1024
+#define	N			32
+//#define POOL_SIZE	16 * 1024 * 1024
+#define POOL_SIZE	((size_t) 1 << N)
 
 #include <unistd.h>
 #include <stddef.h>

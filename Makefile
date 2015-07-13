@@ -12,5 +12,6 @@ all:
 		tar xf gawk-$$version.tar.*; \
 		cd gawk-$$version; \
 		./configure; \
+		make check: \
 		echo; \
 		cd $(PWD); done

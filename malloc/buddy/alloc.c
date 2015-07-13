@@ -1,4 +1,5 @@
-#define _BSD_SOURCE
+//#define _BSD_SOURCE
+#define _GNU_SOURCE
 
 #include <string.h>
 #include <unistd.h>
@@ -6,21 +7,20 @@
 #include <errno.h>
 #include "alloc.h"
 
-#define FREELIST_DISPLAY (10)
-#define FREELIST_MIN (4)
+#define FREELIST_DISPLAY    (4)
+#define FREELIST_MIN        (4)
 
-//#define PRINT_SIZE (0x1000)
-#define PRINT_SIZE (0x20)
+//#define PRINT_SIZE          (0x1000)
+#define PRINT_SIZE          (0x40)
 
 #if DEBUG_1
     #define DEBUG_2 0
     #define DEBUG_3 0
 #endif
 
-static list_t* start = NULL;
-static list_t* freelist[N+1];
-
-static size_t* memory_start;
+list_t* start = NULL;
+list_t* freelist[N+1];
+size_t* memory_start;
 
 #if DEBUG_1
 #include <stdio.h>
@@ -32,7 +32,7 @@ void print_freelists() {
 
         int j = 0;
         
-        printf("\nsize %10zu (freelist[%d]):\t", (size_t) 1 << i, i);
+        printf("\nsize %10zu (freelist[%d]):\t", 1L << i, i);
         while (e != NULL && j < FREELIST_DISPLAY) {
             printf("at %zu (%p) -> ",
                     (size_t) ((char*) e - (char*) start), VOID(e));
@@ -50,11 +50,10 @@ void print_freelists() {
 }
 
 void print_memory() {
-    size_t i;
-
     printf("\n");
-
-    for (i = 0; i < 2 * PRINT_SIZE; i++) {
+    
+    size_t i;
+    for (i = 0; i < PRINT_SIZE; i++) {
         printf("%p:\t%016zx\n", (void*) (memory_start + i), memory_start[i]);
     }
 }
@@ -64,8 +63,9 @@ void init_pool() {
     void* start_tmp = sbrk(POOL_SIZE);
 
     if (start_tmp == (void *) -1) {
-        return;
-    	//exit(EXIT_FAILURE);
+        //return;
+        printf("Not enough memory for initialization\n");
+    	exit(EXIT_FAILURE);
     }
     
     start = start_tmp;
@@ -143,8 +143,7 @@ void *malloc(size_t size) {
         k_avail--;
 
         list_t* first_half = original_segment;
-        list_t* second_half = (list_t*) ((char*) first_half +
-                ((size_t) 1 << k_avail));
+        list_t* second_half = (list_t*) ((char*) first_half + (1L << k_avail));
 
         first_half->reserved = 0;
         first_half->kval = k_avail;
@@ -184,7 +183,7 @@ list_t* recursively_merge(list_t* freed_segment) {
     }
 
     size_t diff = (char*) freed_segment - (char*) start;
-    size_t buddy_offset = diff ^ ((size_t) 1 << freed_segment->kval);
+    size_t buddy_offset = diff ^ (1L << freed_segment->kval);
 
     list_t* buddy = (list_t*) ((char*) start + buddy_offset);
 
@@ -231,7 +230,22 @@ void free(void *ptr) {
     printf("\nBefore free (%p)\n", ptr);
     #endif
 
-    if (ptr == NULL || ptr > (void*) ((char*) start + POOL_SIZE) || start == NULL) {
+    if (ptr == NULL) {
+        return;
+    }
+
+    if (start == NULL) {
+        errno = ENOMEM;
+        return;
+    }
+
+    if (ptr < (void*) start || ptr >= (void*) ((char*) start + POOL_SIZE)) {
+        printf("ptr:\t\t%p\n", ptr);
+        printf("sbrk(0):\t%p\n", sbrk(0));
+        printf("pool end:\t%p\n\n", (void*) ((char*) start + POOL_SIZE));
+        //print_freelists();
+
+        errno = ENOMEM;
         return;
     }
 
@@ -239,7 +253,7 @@ void free(void *ptr) {
     freed_segment->reserved = 0;
     
     #if DEBUG_2
-    printf("size: %zu\n", 1l << freed_segment->kval);
+    printf("size: %zu\n", 1L << freed_segment->kval);
     #endif
     
     #if DEBUG_3
@@ -269,11 +283,10 @@ void free(void *ptr) {
     }
     
     if (prev == NULL) {
-        freed_segment->succ = p;
-        p->pred = freed_segment;
-
         freelist[kval] = freed_segment;
+        freelist[kval]->succ = p;
         freelist[kval]->pred = NULL;
+        p->pred = freed_segment;
 
         return;
     }
@@ -285,16 +298,12 @@ void free(void *ptr) {
 
         return;
     }
-
-    if (freed_segment < p) {
-        freed_segment->succ = p;
-        freed_segment->pred = prev;
-
-        prev->succ = freed_segment;
-        p->pred = freed_segment;
-            
-        return;
-    }
+    
+    freed_segment->succ = p;
+    freed_segment->pred = prev;
+    
+    prev->succ = freed_segment;
+    p->pred = freed_segment;
 }
 
 void *realloc(void *ptr, size_t size) {
@@ -307,17 +316,14 @@ void *realloc(void *ptr, size_t size) {
         return NULL;
     }
 
-    if (ptr == NULL) {
-        return malloc(size);
-    }
-
     if (size == 0) {
         free(ptr);
         return NULL;
     }
 
-    list_t* old_segment = (list_t*) ((char*) ptr - LIST_T);
-    size_t old_size = ((size_t) 1 << old_segment->kval) - LIST_T;
+    if (ptr == NULL) {
+        return malloc(size);
+    }
 
     void* new_ptr = malloc(size);
 
@@ -326,10 +332,13 @@ void *realloc(void *ptr, size_t size) {
         return NULL;
     }
 
+    list_t* old_segment = (list_t*) ((char*) ptr - LIST_T);
     list_t* new_segment = (list_t*) ((char*) new_ptr - LIST_T);
-    size_t new_size = ((size_t) 1 << new_segment->kval) - LIST_T;
-
+    
+    size_t old_size = (1L << old_segment->kval) - LIST_T;
+    size_t new_size = (1L << new_segment->kval) - LIST_T;
     size_t min_size;
+
     if (old_size <= new_size) {
         min_size = old_size;
     } else {
@@ -356,11 +365,12 @@ void* calloc(size_t nmemb, size_t size) {
     if (nmemb == 0 || size == 0) {
         return NULL;
     }
-    
-    void* ptr = malloc(nmemb * size);
+
+    size_t total_size = nmemb * size;
+    void* ptr = malloc(total_size);
     
     if (ptr != NULL) {
-        memset(ptr, 0, nmemb * size);
+        memset(ptr, 0, total_size);
     }
     
     return ptr;

@@ -1,9 +1,10 @@
 #!/bin/bash
 
-source "scripts/test-scripts/terminal-formatting"
-
 VERSION="3.1.8"
 #VERSION="4.1.3"
+
+reset
+source "scripts/test-scripts/terminal-formatting"
 
 if [ ! -d $GAWK_FOLDER ]; then
     echo -n ${red}${bold}

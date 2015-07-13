@@ -1,21 +1,11 @@
 #ifndef ALLOC_H
 #define ALLOC_H
 
-#define DEBUG_1 1
-
+#define DEBUG_1     1
 #define N           (32)
-//#define N           (29)
-#define POOL_SIZE   ((size_t) 1 << N)
+#define POOL_SIZE   (1L << N)
 
-#define VOID(ptr) ((void*) (ptr))
-
-void *malloc(size_t size);
-void free(void *ptr);
-void *calloc(size_t nmemb, size_t size);
-void *realloc(void *ptr, size_t size);
-
-void print_freelists();
-void print_memory();
+#define VOID(ptr)   ((void*) (ptr))
 
 typedef struct list_t list_t;
 
@@ -29,6 +19,13 @@ struct list_t {
 };
 
 #define LIST_T sizeof(list_t)
-//#define SIZE_T sizeof(size_t)
+
+void *malloc(size_t size);
+void free(void *ptr);
+void *calloc(size_t nmemb, size_t size);
+void *realloc(void *ptr, size_t size);
+
+void print_freelists();
+void print_memory();
 
 #endif

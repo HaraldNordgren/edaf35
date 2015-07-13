@@ -276,6 +276,7 @@ bin_free(m) struct bin *m;
         }
 #endif
         total_size -= m->size;
+        //printf("hej\n");
         free(m->ptr);
         m->size = 0;
 }
