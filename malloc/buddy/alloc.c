@@ -1,4 +1,3 @@
-//#define _BSD_SOURCE
 #define _GNU_SOURCE
 
 #include <string.h>
@@ -10,7 +9,6 @@
 #define FREELIST_DISPLAY    (4)
 #define FREELIST_MIN        (4)
 
-//#define PRINT_SIZE          (0x1000)
 #define PRINT_SIZE          (0x40)
 
 #if DEBUG_1
