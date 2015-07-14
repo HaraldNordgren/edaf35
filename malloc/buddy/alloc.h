@@ -2,17 +2,20 @@
 #define ALLOC_H
 
 #define DEBUG_1     1
+
 #define N           (32)
-#define POOL_SIZE   (1L << N)
+//#define POOL_SIZE   (1L << N)
+//#define MIN_ALLOC   (5)
 
 #define VOID(ptr)   ((void*) (ptr))
 
 typedef struct list_t list_t;
 
 struct list_t {
-    //unsigned    reserved:1;
     char        reserved;
     char        kval;
+    char        kval_max;
+    long        brk_offset;
     list_t*     pred;
     list_t*     succ;
     char        data[];
