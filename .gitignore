@@ -16,6 +16,7 @@ tests/danluu/test-*
 tests/waterloo/test
 tests/waterloo/hej
 tests/wisc/test
+tests/wisc/hej
 
 **/.settings/
 **/.project
