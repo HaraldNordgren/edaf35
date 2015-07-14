@@ -20,9 +20,7 @@ list_t* freelist[N+1];
 size_t* memory_start;
 
 int nval;
-
 void* previous_brk;
-long brk_offset;
 
 #if DEBUG_1
 #include <stdio.h>
@@ -78,27 +76,33 @@ void print_ptr(size_t* ptr) {
 }
 #endif
 
-void init_pool(int k) {
-    //k = N - 16;
+void brk_integrity() {
+    long brk_diff = (char*) sbrk(0) - (char*) previous_brk;
+    
+    if (brk_diff) {
+        printf("brk tampered with, diff %lu\n", brk_diff);
+        exit(EXIT_FAILURE);
+    }
+}
 
-    //void* start_tmp = sbrk(POOL_SIZE);
+void init_pool(int k) {
     void* start_tmp = sbrk(1L << k);
-    previous_brk = sbrk(0);
 
     if (start_tmp == (void *) -1) {
-        //return;
         printf("Initialization of size %zu failed!\n", 1L << k);
     	exit(EXIT_FAILURE);
+        //return;
     }
     
     start = start_tmp;
+    previous_brk = sbrk(0);
+
     nval = k;
 
     start->reserved = 0;
     start->kval = nval;
     start->succ = NULL;
     start->pred = NULL;
-    start->kval_max = N;
 
     freelist[nval] = start;
     memory_start = (size_t*) start;
@@ -130,12 +134,14 @@ void *malloc(size_t size) {
     
     if (start == NULL) {
         init_pool(k);
-
+    
         if (start == NULL) {
             errno = ENOMEM;
             return NULL;
         }
     }
+    
+    brk_integrity();
     
     #if DEBUG_3
     print_freelists();
@@ -158,11 +164,6 @@ void *malloc(size_t size) {
         }
 
         k_avail = 0;
-        
-        long brk_diff = (char*) sbrk(0) - (char*) previous_brk;
-        printf("  brk diff: %10lu\t(nval: %d)\n", brk_diff, nval);
-        
-        brk_offset += brk_diff;
 
         while (k_avail < k) {
 
@@ -176,20 +177,24 @@ void *malloc(size_t size) {
 
             previous_brk = sbrk(0);
 
-            freelist[nval] = block;
-            freelist[nval]->kval = nval;
-            freelist[nval]->succ = NULL;
-            freelist[nval]->pred = NULL;
-            freelist[nval]->brk_offset = brk_offset;
-
-            if (brk_offset == 0) {
-                freelist[nval]->kval_max = N;
+            if (freelist[nval] == NULL) {
+                freelist[nval] = block;
+                freelist[nval]->kval = nval;
+                freelist[nval]->succ = NULL;
+                freelist[nval]->pred = NULL;
+                k_avail = nval;
+                nval++;
             } else {
-                freelist[nval]->kval_max = nval;
+                nval++;
+                freelist[nval] = freelist[nval-1];
+                freelist[nval-1] = NULL;
+                freelist[nval]->kval = nval;
+                freelist[nval]->succ = NULL;
+                freelist[nval]->pred = NULL;
+                k_avail = nval;
             }
 
-            k_avail = nval;
-            nval++;
+            //printf("nval: %d\n", nval);
         }
     }
 
@@ -216,9 +221,6 @@ void *malloc(size_t size) {
         second_half->kval = k_avail;
         second_half->pred = first_half;
         second_half->succ = NULL;
-        
-        second_half->kval_max = first_half->kval_max;
-        second_half->brk_offset = first_half->brk_offset;
 
         freelist[k_avail] = first_half;
     }
@@ -244,11 +246,11 @@ void *malloc(size_t size) {
 list_t* recursively_merge(list_t* freed_segment) {
     int kval = freed_segment->kval;
 
-    if (kval == nval || kval == freed_segment->kval_max) {
+    if (kval == nval) {
         return freed_segment;
     }
 
-    size_t diff = (char*) freed_segment - (char*) start - freed_segment->brk_offset;
+    size_t diff = (char*) freed_segment - (char*) start;
     size_t buddy_offset = diff ^ (1L << kval);
 
     list_t* buddy = (list_t*) ((char*) start + buddy_offset);
@@ -297,6 +299,8 @@ void free(void *ptr) {
     if (ptr == NULL) {
         return;
     }
+    
+    brk_integrity();
 
     if (start == NULL) {
         errno = ENOMEM;
@@ -317,18 +321,37 @@ void free(void *ptr) {
     freed_segment->reserved = 0;
     
     #if DEBUG_2
-    printf("kval: %d (size %zu)\n", freed_segment->kval, 1L << freed_segment->kval);
+    printf("kval: %d (size %zu)\n",
+            freed_segment->kval, 1L << freed_segment->kval);
     #endif
     
     #if DEBUG_3
     print_freelists();
     print_memory();
-    print_ptr(ptr);
+    //print_ptr(ptr);
     #endif
 
-    freed_segment = recursively_merge(freed_segment);
-    
+    freed_segment = recursively_merge(freed_segment); 
     int kval = freed_segment->kval;
+
+    if (kval == nval) {
+        brk_integrity();
+
+        sbrk(-(1L << kval));
+        start = NULL;
+
+        return;
+    } else if (kval == nval - 1 &&
+            (char*) freed_segment + (1L << kval) == sbrk(0)) {
+        brk_integrity();
+
+        sbrk(-(1L << kval));
+        previous_brk = sbrk(0);
+        nval--;
+
+        return;
+    }
+
     
     if (freelist[kval] == NULL) {
 
@@ -421,11 +444,6 @@ void* calloc(size_t nmemb, size_t size) {
     #if DEBUG_2
     printf("Before calloc\n");
     #endif
-
-    if (start == NULL) {
-        errno = ENOMEM;
-        return NULL;
-    }
 
     if (nmemb == 0 || size == 0) {
         return NULL;

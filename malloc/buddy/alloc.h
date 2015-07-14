@@ -14,8 +14,6 @@ typedef struct list_t list_t;
 struct list_t {
     char        reserved;
     char        kval;
-    char        kval_max;
-    long        brk_offset;
     list_t*     pred;
     list_t*     succ;
     char        data[];

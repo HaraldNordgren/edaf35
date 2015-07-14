@@ -52,7 +52,7 @@ void free_ptr(void* ptr) {
     
     free(ptr);
 
-    print_memory();
+    //print_memory();
     print_freelists();
 }
 
@@ -69,9 +69,9 @@ void assert_ptr(char* ptr, char* val, size_t size) {
 
 int main(void) {
 #if DEBUG_1
-    size_t a_size = 70 - LIST_T, b_size = 70 - LIST_T,
-           c_size = 33 - LIST_T, d_size = 33 - LIST_T,
-           e_size = 33 - LIST_T;
+    size_t a_size = 5, b_size = 120,
+           c_size = 12, d_size = 32 - LIST_T,
+           e_size = 32 - LIST_T;
     char *a, *b, *c, *d, *e, *f, *g, *h;
     char a_val[a_size], b_val[b_size], c_val[c_size],
          d_val[d_size], e_val[e_size], f_val[a_size],
@@ -80,23 +80,24 @@ int main(void) {
     printf("START\n");
 
     a = malloc_and_fill(a_size, a_val, 0x12);
-    sbrk(8);
+    assert_ptr(a, a_val, a_size);
+    free_ptr(a);
+    
+    printf("efter free\n");
     
     b = malloc_and_fill(b_size, b_val, 0x13);
-    assert_ptr(b, b_val, b_size);
-    free_ptr(b);
-
     c = malloc_and_fill(c_size, c_val, 0x14);
     d = malloc_and_fill(d_size, d_val, 0x15);
 
-    assert_ptr(a, a_val, a_size);
-    free_ptr(a);
 
     assert_ptr(b, b_val, b_size);
     free_ptr(b);
 
     assert_ptr(c, c_val, c_size);
     free_ptr(c);
+
+    assert_ptr(d, d_val, d_size);
+    free_ptr(d);
 
 
     
@@ -105,14 +106,8 @@ int main(void) {
     g = malloc_and_fill(a_size, g_val, 0x25);
     h = malloc_and_fill(a_size, h_val, 0x26);
 
-    c = realloc_print(c, c_size);
-    d = realloc_print(d, d_size);
-    b = realloc_print(b, 2 * b_size);
-
     e = realloc_print(e, e_size);
     e = realloc_print(e, e_size);
-    
-    a = realloc_print(a, a_size);
 
     assert_ptr(e, e_val, e_size);
     free_ptr(e);
@@ -122,9 +117,6 @@ int main(void) {
     
     assert_ptr(h, h_val, a_size);
     free_ptr(h);
-
-    assert_ptr(d, d_val, d_size);
-    free_ptr(d);
 
     assert_ptr(f, f_val, a_size);
     free_ptr(f);
