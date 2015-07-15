@@ -1,12 +1,11 @@
 #define _BSD_SOURCE
 
 #define DEBUG 0
-#if DEBUG
-    #include <stdio.h>
-#endif
 
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "alloc.h"
 
 static list_t *avail = NULL;
@@ -40,7 +39,7 @@ void *malloc(size_t size) {
     printf("malloc, size:\t%zu\n", size);
     #endif
     
-    if (size <= 0) {
+    if (size == 0) {
         return NULL; 
     }
 
@@ -58,7 +57,11 @@ void *malloc(size_t size) {
         memory_segment = sbrk(min_size);
 
         if ((void*) memory_segment == (void*) -1) {
-            return NULL;
+            //printf("Not enough memory for initialization\n");
+            printf("size: %zu\n", (size_t) sbrk(0));
+            exit(EXIT_FAILURE);
+
+            //return NULL;
         }
 
         memory_segment->size = min_size;
@@ -158,7 +161,7 @@ void *realloc(void *ptr, size_t size) {
         return malloc(size);
     }
 
-    if (size <= 0) {
+    if (size == 0) {
         free(ptr);    
         return NULL;
     }
