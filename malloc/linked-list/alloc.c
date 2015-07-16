@@ -1,18 +1,76 @@
 #define _BSD_SOURCE
 
-#define DEBUG 0
-
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include "alloc.h"
 
-static list_t *avail = NULL;
+#define PRINT_MAX (2 * 0xa)
+
+list_t *avail = NULL;
+
+#if DEBUG
+    #define DEBUG_1 1
+    #define DEBUG_2 1
+
+size_t *memory_start = NULL;
+
+void indent() {
+    printf("  ");
+}
 
 list_t* get_avail(void) {
     return avail;
 }
+
+void print_memory() {
+
+    printf("\n");
+    
+    if (memory_start == NULL) {
+        printf("Memory Uninitialized\n");
+        return;
+    }
+
+    long brk_diff = (char*) sbrk(0) - (char*) memory_start;
+    unsigned print_max;
+    
+    if (brk_diff >= PRINT_MAX) {
+        print_max = PRINT_MAX;
+    } else {
+        print_max = brk_diff;
+    }
+
+    size_t i;
+    for (i = 0; i < print_max; i++) {
+        printf("%p:\t%016zx\n", memory_start + i, memory_start[i]);
+    }
+    printf("\n");
+}
+
+void print_avail() {
+    list_t *p = get_avail();
+    
+    printf("avail:\t%p\n", p);
+
+    if (p == NULL) {
+        printf("\n");
+        return;
+    }
+
+    while (p->next != NULL) {
+        p = p->next;
+        printf("next:\t%p\n", p);
+    }
+    
+    if (get_avail() != NULL) {
+        printf("next:\t%p\n", p->next);
+    }
+
+    printf("\n");
+}
+#endif
 
 size_t align_size(size_t size) {
     unsigned offset;
@@ -36,7 +94,13 @@ void *malloc(size_t size) {
     list_t *p, *prev, *memory_segment;
 
     #if DEBUG
-    printf("malloc, size:\t%zu\n", size);
+    if (memory_start == NULL) {
+        memory_start = sbrk(0);
+    }
+    #endif
+
+    #if DEBUG_1
+    printf("Malloc size %zu\n", size);
     #endif
     
     if (size == 0) {
@@ -57,14 +121,18 @@ void *malloc(size_t size) {
         memory_segment = sbrk(min_size);
 
         if ((void*) memory_segment == (void*) -1) {
-            //printf("Not enough memory for initialization\n");
-            printf("size: %zu\n", (size_t) sbrk(0));
-            exit(EXIT_FAILURE);
-
-            //return NULL;
+            //printf("Not enough memory for sbrk (size: %zu)\n", (size_t) sbrk(0));
+            //exit(EXIT_FAILURE);
+            
+            return NULL;
         }
 
         memory_segment->size = min_size;
+
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
         
         return memory_segment->data;
     }
@@ -86,6 +154,11 @@ void *malloc(size_t size) {
             prev->next = new_segment;
         }
 
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
+
         return p->data;
     }
      
@@ -97,14 +170,19 @@ void *malloc(size_t size) {
         avail = p->next;
     }
 
+    #if DEBUG_2
+    print_memory();
+    print_avail();
+    #endif
+
     return p->data;
 }
 
 void free(void *ptr) {
     list_t *p, *prev, *freed_segment;
     
-    #if DEBUG
-    printf("free (%p)\n", ptr);
+    #if DEBUG_1
+    printf("Free (%p)\n", ptr);
     #endif
 
     if (ptr == NULL) {
@@ -116,6 +194,11 @@ void free(void *ptr) {
     if (avail == NULL) {
         avail = freed_segment;
         avail->next = NULL;
+
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
 
         return;
     }
@@ -133,6 +216,12 @@ void free(void *ptr) {
         avail = freed_segment;
 
         attempt_merge(freed_segment, freed_segment->next);
+
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
+
         return;
     }
     
@@ -141,6 +230,12 @@ void free(void *ptr) {
         freed_segment->next = NULL;
 
         attempt_merge(prev, freed_segment);
+
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
+
         return;
     }
     
@@ -153,15 +248,28 @@ void free(void *ptr) {
 
 void *realloc(void *ptr, size_t size) {
     
-    #if DEBUG
-    printf("realloc\n");
+    #if DEBUG_1
+    printf("Realloc size %zu (from %p)\n", size, ptr);
+    #endif
+
+    #if DEBUG_2
+    print_memory();
+    print_avail();
     #endif
 
     if (ptr == NULL) {
+        #if DEBUG_1
+        indent();
+        #endif
+
         return malloc(size);
     }
 
     if (size == 0) {
+        #if DEBUG_1
+        indent();
+        #endif
+        
         free(ptr);    
         return NULL;
     }
@@ -186,17 +294,34 @@ void *realloc(void *ptr, size_t size) {
 
         return ptr;
     }
+
+    #if DEBUG_1
+    indent();
+    #endif
     
     void *new_ptr = malloc(size);
     memcpy(new_ptr, ptr, old_segment->size - LIST_T);
+
+    #if DEBUG_1
+    indent();
+    #endif
     
     free(ptr);
     return new_ptr;
 }
 
 void* calloc(size_t nmemb, size_t size) {
-    #if DEBUG
-    printf("calloc\n");
+    #if DEBUG_1
+    printf("Calloc size %zu\n", nmemb * size);
+    #endif
+
+    #if DEBUG_2
+    print_memory();
+    print_avail();
+    #endif
+
+    #if DEBUG_1
+    indent();
     #endif
     
     void* ptr = malloc(nmemb * size);

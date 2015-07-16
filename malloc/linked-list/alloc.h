@@ -1,6 +1,8 @@
 #ifndef ALLOC_H
 #define ALLOC_H
 
+#define DEBUG 0
+
 #if 0
 #define SIZE    (1024)
 #define N       (8 * SIZE*SIZE / sizeof(size_t))
@@ -23,5 +25,7 @@ struct list_t {
 #define SIZE_T sizeof(size_t)
 
 list_t* get_avail(void);
+void print_avail();
+void print_memory();
 
 #endif
