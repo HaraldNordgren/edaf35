@@ -11,6 +11,7 @@ gawk/gawk-*/
 malloc/linked-list/test
 malloc/buddy/test
 malloc/buddy/test2
+malloc/buddy/stats/
 
 tests/danluu/test-*
 tests/waterloo/test

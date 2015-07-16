@@ -14,6 +14,7 @@
 #if DEBUG_1
     #define DEBUG_2 0
     #define DEBUG_3 0
+    #define DEBUG_4 0
 #endif
 
 list_t* start = NULL;
@@ -57,11 +58,23 @@ void print_memory() {
 }
 #endif
 
+#if DEBUG_4
+char stats_path[] = "/home/harald/courses/edaf35/project/malloc/buddy/stats/";
+char text_buf[60], stats_index[15];
+static FILE *stats_file;
+
+void indent() {
+    if (stats_file != NULL) {
+        fputs("  ", stats_file);
+        fflush(stats_file);
+    }
+}
+#endif
+
 void init_pool() {
     void* start_tmp = sbrk(POOL_SIZE);
 
     if (start_tmp == (void *) -1) {
-        //return;
         printf("Not enough memory for initialization\n");
     	exit(EXIT_FAILURE);
     }
@@ -75,6 +88,17 @@ void init_pool() {
     start->pred = NULL;
 
     freelist[N] = start;
+
+    #if DEBUG_4
+    sprintf(stats_index, "%p", VOID(start));
+    strcat(stats_path, stats_index);
+    stats_file = fopen(stats_path, "a");
+    
+    sprintf(text_buf, "== Initialized memory pool of size %zu ==\n",
+            (char*) sbrk(0) - (char*) start); 
+    fputs(text_buf, stats_file);
+    fflush(stats_file);
+    #endif
 }
 
 void *malloc(size_t size) {
@@ -86,6 +110,7 @@ void *malloc(size_t size) {
             errno = ENOMEM;
             return NULL;
         }
+
     }
 
     #if DEBUG_2
@@ -95,6 +120,14 @@ void *malloc(size_t size) {
     #if DEBUG_3
     print_freelists();
     print_memory();
+    #endif
+    
+    #if DEBUG_4
+    if (stats_file != NULL) {
+        sprintf(text_buf, "Malloc size %zu\n", size);
+        fputs(text_buf, stats_file);
+        fflush(stats_file);
+    }
     #endif
     
     if (size == 0) {
@@ -228,6 +261,14 @@ void free(void *ptr) {
     printf("\nBefore free (%p)\n", ptr);
     #endif
 
+    #if DEBUG_4
+    if (stats_file != NULL) {
+        sprintf(text_buf, "Free (%p)\n", ptr); 
+        fputs(text_buf, stats_file);
+        fflush(stats_file);
+    }
+    #endif
+
     if (ptr == NULL) {
         return;
     }
@@ -308,11 +349,23 @@ void *realloc(void *ptr, size_t size) {
     #if DEBUG_2
     printf("Before realloc (%p)\n", ptr);
     #endif
+    
+    #if DEBUG_4
+    if (stats_file != NULL) {
+        sprintf(text_buf, "Realloc size %zu (%p)\n", size, ptr);
+        fputs(text_buf, stats_file);
+        fflush(stats_file);
+    }
+    #endif
 
     if (start == NULL) {
         errno = ENOMEM;
         return NULL;
     }
+    
+    #if DEBUG_4
+    indent();
+    #endif
 
     if (size == 0) {
         free(ptr);
@@ -344,7 +397,10 @@ void *realloc(void *ptr, size_t size) {
     }
 
     memcpy(new_ptr, ptr, min_size);
-
+    
+    #if DEBUG_4
+    indent();
+    #endif
     free(ptr);
 
     return new_ptr;
@@ -353,6 +409,14 @@ void *realloc(void *ptr, size_t size) {
 void* calloc(size_t nmemb, size_t size) {
     #if DEBUG_2
     printf("Before calloc\n");
+    #endif
+    
+    #if DEBUG_4
+    if (stats_file != NULL) {
+        sprintf(text_buf, "Calloc size %zu\n", nmemb * size); 
+        fputs(text_buf, stats_file);
+        fflush(stats_file);
+    }
     #endif
 
     if (start == NULL) {
@@ -363,6 +427,10 @@ void* calloc(size_t nmemb, size_t size) {
     if (nmemb == 0 || size == 0) {
         return NULL;
     }
+
+    #if DEBUG_4
+    indent();
+    #endif
 
     size_t total_size = nmemb * size;
     void* ptr = malloc(total_size);

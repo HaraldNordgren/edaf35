@@ -89,8 +89,8 @@ int main(void) {
     g = malloc_and_fill(a_size, g_val, 0x25);
     h = malloc_and_fill(a_size, h_val, 0x26);
 
-    /*c = realloc_print(c, c_size);
-    d = realloc_print(d, d_size);
+    c = realloc_print(c, c_size);
+    /*d = realloc_print(d, d_size);
     b = realloc_print(b, 2 * b_size);
 
     e = malloc_and_fill(e_size, e_val, 0xbc);
@@ -140,6 +140,9 @@ int main(void) {
 #endif
 
     printf("\npool size: 1 << %d = 0x%zx = %zu\n", N, POOL_SIZE, POOL_SIZE);
-	
+    
+    /*int tmp;
+    scanf("%d", &tmp);*/
+
 	return 0;
 }
