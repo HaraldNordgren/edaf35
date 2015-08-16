@@ -1,7 +1,7 @@
 #ifndef ALLOC_H
 #define ALLOC_H
 
-#define DEBUG 0
+#define DEBUG 1
 
 #if 0
 #define SIZE    (1024)

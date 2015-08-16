@@ -6,13 +6,13 @@
 #include <stdio.h>
 #include "alloc.h"
 
-#define PRINT_MAX (2 * 0xa)
+#define PRINT_MAX (200)
 
 list_t *avail = NULL;
 
 #if DEBUG
-    #define DEBUG_1 1
-    #define DEBUG_2 1
+    #define DEBUG_1 0
+    #define DEBUG_2 0
 
 size_t *memory_start = NULL;
 
@@ -121,13 +121,18 @@ void *malloc(size_t size) {
         memory_segment = sbrk(min_size);
 
         if ((void*) memory_segment == (void*) -1) {
-            //printf("Not enough memory for sbrk (size: %zu)\n", (size_t) sbrk(0));
-            //exit(EXIT_FAILURE);
+            //printf("Not enough memory for sbrk (size: %zu)\n",
+            //        (size_t) sbrk(0));
+            exit(EXIT_FAILURE);
             
             return NULL;
         }
 
         memory_segment->size = min_size;
+    
+        #if DEBUG_1
+        printf("address %p\n", memory_segment->data);
+        #endif
 
         #if DEBUG_2
         print_memory();
@@ -154,6 +159,10 @@ void *malloc(size_t size) {
             prev->next = new_segment;
         }
 
+        #if DEBUG_1
+        printf("address %p\n", p->data);
+        #endif
+
         #if DEBUG_2
         print_memory();
         print_avail();
@@ -169,6 +178,10 @@ void *malloc(size_t size) {
     if (p == avail) {
         avail = p->next;
     }
+
+    #if DEBUG_1
+    printf("address %p\n", p->data);
+    #endif
 
     #if DEBUG_2
     print_memory();
