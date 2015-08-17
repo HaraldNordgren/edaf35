@@ -1,5 +1,5 @@
 CC			= gcc
-CFLAGS		= -g -Wall -Wextra -pedantic -std=c11
+CFLAGS		= -g -Wall -Wextra -pedantic -std=c11 -m64
 
 # Targets
 PROGS =	test test2 libbuddy.so
