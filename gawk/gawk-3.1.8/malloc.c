@@ -1,442 +1,346 @@
-#define _GNU_SOURCE
+#define _BSD_SOURCE
 
-#include <string.h>
 #include <unistd.h>
+#include <string.h>
 #include <stdlib.h>
-#include <errno.h>
+#include <stdio.h>
 #include "alloc.h"
 
-#define FREELIST_DISPLAY    (4)
-#define FREELIST_MIN        (4)
+#define PRINT_MAX (200)
 
-#define PRINT_SIZE          (0x40)
+list_t *avail = NULL;
 
-#if DEBUG_1
+#if DEBUG
+    #define DEBUG_1 0
     #define DEBUG_2 0
-    #define DEBUG_3 0
-    #define DEBUG_4 0
-#endif
 
-list_t* start = NULL;
-list_t* freelist[N+1];
-size_t* memory_start;
+size_t *memory_start = NULL;
 
-#if DEBUG_1
-#include <stdio.h>
+void indent() {
+    printf("  ");
+}
 
-void print_freelists() {
-    int i;
-    for (i = N; i >= FREELIST_MIN; i--) {
-        list_t* e = freelist[i];
-
-        int j = 0;
-        
-        printf("\nsize %10zu (freelist[%d]):\t", 1L << i, i);
-        while (e != NULL && j < FREELIST_DISPLAY) {
-            printf("at %zu (%p) -> ",
-                    (size_t) ((char*) e - (char*) start), VOID(e));
-            e = e->succ;
-            j++;
-        }
-
-        if (e != NULL) {
-            printf("...");
-        } else {
-            printf("%p", NULL);
-        }
-    }
-    printf("\n\n");
+list_t* get_avail(void) {
+    return avail;
 }
 
 void print_memory() {
+
     printf("\n");
     
+    if (memory_start == NULL) {
+        printf("Memory Uninitialized\n");
+        return;
+    }
+
+    long brk_diff = (char*) sbrk(0) - (char*) memory_start;
+    unsigned print_max;
+    
+    if (brk_diff >= PRINT_MAX) {
+        print_max = PRINT_MAX;
+    } else {
+        print_max = brk_diff;
+    }
+
     size_t i;
-    for (i = 0; i < PRINT_SIZE; i++) {
-        printf("%p:\t%016zx\n", (void*) (memory_start + i), memory_start[i]);
+    for (i = 0; i < print_max; i++) {
+        printf("%p:\t%016zx\n", memory_start + i, memory_start[i]);
     }
+    printf("\n");
+}
+
+void print_avail() {
+    list_t *p = get_avail();
+    
+    printf("avail:\t%p\n", p);
+
+    if (p == NULL) {
+        printf("\n");
+        return;
+    }
+
+    while (p->next != NULL) {
+        p = p->next;
+        printf("next:\t%p\n", p);
+    }
+    
+    if (get_avail() != NULL) {
+        printf("next:\t%p\n", p->next);
+    }
+
+    printf("\n");
 }
 #endif
 
-#if DEBUG_4
-char stats_path[] = "/home/harald/courses/edaf35/project/malloc/buddy/stats/";
-char text_buf[60], stats_index[15];
-static FILE *stats_file;
+size_t align_size(size_t size) {
+    unsigned offset;
 
-void indent() {
-    if (stats_file != NULL) {
-        fputs("  ", stats_file);
-        fflush(stats_file);
+    offset = size % SIZE_T;
+    if (offset != 0) {
+        return size + SIZE_T - offset;
     }
+
+    return size;
 }
-#endif
 
-void init_pool() {
-    void* start_tmp = sbrk(POOL_SIZE);
-
-    if (start_tmp == (void *) -1) {
-        printf("Not enough memory for initialization\n");
-    	exit(EXIT_FAILURE);
+void attempt_merge(list_t* p, list_t* q) {
+    if ((list_t*) ((char*) p + p->size) == q) {
+        p->size += q->size;
+        p->next = q->next;
     }
-    
-    start = start_tmp;
-    memory_start = (size_t*) start;
-
-    start->reserved = 0;
-    start->kval = N;
-    start->succ = NULL;
-    start->pred = NULL;
-
-    freelist[N] = start;
-
-    #if DEBUG_4
-    sprintf(stats_index, "%p", VOID(start));
-    strcat(stats_path, stats_index);
-    stats_file = fopen(stats_path, "a");
-    
-    sprintf(text_buf, "== Initialized memory pool of size %zu ==\n",
-            (char*) sbrk(0) - (char*) start); 
-    fputs(text_buf, stats_file);
-    fflush(stats_file);
-    #endif
 }
 
 void *malloc(size_t size) {
-    
-    if (start == NULL) {
-        init_pool();
+    list_t *p, *prev, *memory_segment;
 
-        if (start == NULL) {
-            errno = ENOMEM;
-            return NULL;
-        }
-
+    #if DEBUG
+    if (memory_start == NULL) {
+        memory_start = sbrk(0);
     }
+    #endif
 
-    #if DEBUG_2
-    printf("\nBefore malloc (size %zu)\n", size);
-    #endif
-    
-    #if DEBUG_3
-    print_freelists();
-    print_memory();
-    #endif
-    
-    #if DEBUG_4
-    if (stats_file != NULL) {
-        sprintf(text_buf, "Malloc size %zu\n", size);
-        fputs(text_buf, stats_file);
-        fflush(stats_file);
-    }
+    #if DEBUG_1
+    printf("Malloc size %zu\n", size);
     #endif
     
     if (size == 0) {
-        return NULL;
+        return NULL; 
     }
 
-    size_t min_size = size + LIST_T;
+    size_t min_size = align_size(size) + LIST_T;
 
-    int k = 0;
-    size_t tmp_size = min_size - 1;
-
-    while (tmp_size > 0) {
-        tmp_size >>= 1;
-        k++;
-    }
+    p = avail;
+    prev = NULL;
     
-    int k_avail = k;
-    if (k_avail > N) {
-        errno = ENOMEM;
-        return NULL;
+    while (p != NULL && p->size < min_size) {
+        prev = p;
+        p = p->next;
     }
 
-    list_t* block = freelist[k_avail];
+    if (p == NULL) {
+        memory_segment = sbrk(min_size);
 
-    while (block == NULL && k_avail < N) {
-        k_avail++;
-        block = freelist[k_avail];
-    }
-
-    if (block == NULL) {
-        errno = ENOMEM;
-        return NULL;
-    }
-
-    while (k_avail > k) {
-        
-        list_t* original_segment = freelist[k_avail];
-        freelist[k_avail] = original_segment->succ;
-
-        if (original_segment->succ != NULL) {
-            original_segment->succ->pred = NULL;
-        }
-        
-        k_avail--;
-
-        list_t* first_half = original_segment;
-        list_t* second_half = (list_t*) ((char*) first_half + (1L << k_avail));
-
-        first_half->reserved = 0;
-        first_half->kval = k_avail;
-        first_half->pred = NULL;
-        first_half->succ = second_half;
-
-        second_half->reserved = 0;
-        second_half->kval = k_avail;
-        second_half->pred = first_half;
-        second_half->succ = NULL;
-
-        freelist[k_avail] = first_half;
-    }
-
-    list_t* result = freelist[k_avail];
-    
-    freelist[k_avail] = freelist[k_avail]->succ;
-    result->reserved = 1;
-
-    if (result->succ != NULL) {
-        result->succ->pred = NULL;
-        result->succ = NULL;
-    }
-
-    if (result == NULL) {
-        errno = ENOMEM;
-        return NULL;
-    }
-    
-    return result->data;
-}
-
-list_t* recursively_merge(list_t* freed_segment) {
-
-    if (freed_segment->kval == N) {
-        return freed_segment;
-    }
-
-    size_t diff = (char*) freed_segment - (char*) start;
-    size_t buddy_offset = diff ^ (1L << freed_segment->kval);
-
-    list_t* buddy = (list_t*) ((char*) start + buddy_offset);
-
-    list_t* merged_segment = freed_segment;
-    int kval = freed_segment->kval;
-    
-    if (! buddy->reserved && buddy->kval == kval) {
-        
-        if (freed_segment < buddy) {
-            merged_segment = freed_segment;
-        } else {
-            merged_segment = buddy;
+        if ((void*) memory_segment == (void*) -1) {
+            //printf("Not enough memory for sbrk (size: %zu)\n",
+            //        (size_t) sbrk(0));
+            exit(EXIT_FAILURE);
+            
+            return NULL;
         }
 
-        if (buddy == freelist[kval]) {
-            freelist[kval] = buddy->succ;
-            if (freelist[kval] != NULL) {
-                freelist[kval]->pred = NULL;
-            }
-
-        } else {
-
-            buddy->pred->succ = buddy->succ;
-            if (buddy->succ != NULL) {
-                buddy->succ->pred = buddy->pred;
-            }
-        }
-
-        #if DEBUG_3
-        printf("merged!\n\n");
-        print_freelists();
+        memory_segment->size = min_size;
+    
+        #if DEBUG_1
+        printf("address %p\n", memory_segment->data);
         #endif
 
-        merged_segment->kval++;
-        merged_segment = recursively_merge(merged_segment);
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
+        
+        return memory_segment->data;
+    }
+    
+    /* Space for the allocation and for at least one word after,
+     * split the segment in two*/
+    if (p->size >= min_size + LIST_T + SIZE_T) {
+        size_t total_size = p->size;
+        p->size = min_size;
+        
+        list_t* new_segment = (list_t*) ((char*) p + p->size);
+        
+        new_segment->size = total_size - min_size;
+        new_segment->next = p->next;
+
+        if (prev == NULL) {
+            avail = new_segment;
+        } else {
+            prev->next = new_segment;
+        }
+
+        #if DEBUG_1
+        printf("address %p\n", p->data);
+        #endif
+
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
+
+        return p->data;
+    }
+     
+    if (prev != NULL) {
+        prev->next = p->next;
+    }
+    
+    if (p == avail) {
+        avail = p->next;
     }
 
-    return merged_segment;
-}
-
-
-void free(void *ptr) {
-    #if DEBUG_2
-    printf("\nBefore free (%p)\n", ptr);
+    #if DEBUG_1
+    printf("address %p\n", p->data);
     #endif
 
-    #if DEBUG_4
-    if (stats_file != NULL) {
-        sprintf(text_buf, "Free (%p)\n", ptr); 
-        fputs(text_buf, stats_file);
-        fflush(stats_file);
-    }
+    #if DEBUG_2
+    print_memory();
+    print_avail();
+    #endif
+
+    return p->data;
+}
+
+void free(void *ptr) {
+    list_t *p, *prev, *freed_segment;
+    
+    #if DEBUG_1
+    printf("Free (%p)\n", ptr);
     #endif
 
     if (ptr == NULL) {
         return;
     }
 
-    if (start == NULL) {
-        errno = ENOMEM;
+    freed_segment = (list_t*) ((char*) ptr - LIST_T);
+
+    if (avail == NULL) {
+        avail = freed_segment;
+        avail->next = NULL;
+
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
+
         return;
     }
 
-    if (ptr < (void*) start || ptr >= (void*) ((char*) start + POOL_SIZE)) {
-        printf("ptr:\t\t%p\n", ptr);
-        printf("sbrk(0):\t%p\n", sbrk(0));
-        printf("pool end:\t%p\n\n", (void*) ((char*) start + POOL_SIZE));
-        //print_freelists();
-
-        errno = ENOMEM;
-        return;
-    }
-
-    list_t* freed_segment = (list_t*) ((char*) ptr - LIST_T);
-    freed_segment->reserved = 0;
-    
-    #if DEBUG_2
-    printf("size: %zu\n", 1L << freed_segment->kval);
-    #endif
-    
-    #if DEBUG_3
-    print_freelists();
-    print_memory();
-    #endif
-
-    freed_segment = recursively_merge(freed_segment);
-    
-    int kval = freed_segment->kval;
-    
-    if (freelist[kval] == NULL) {
-
-        freelist[kval] = freed_segment;
-        freelist[kval]->succ = NULL;
-        freelist[kval]->pred = NULL;
-        
-        return;
-    }
-    
-    list_t* p = freelist[kval];
-    list_t* prev = NULL;
+    p = avail;
+    prev = NULL;
     
     while (p != NULL && p < freed_segment) {
         prev = p;
-        p = p->succ;
+        p = p->next;
     }
-    
+
     if (prev == NULL) {
-        freelist[kval] = freed_segment;
-        freelist[kval]->succ = p;
-        freelist[kval]->pred = NULL;
-        p->pred = freed_segment;
+        freed_segment->next = avail;
+        avail = freed_segment;
+
+        attempt_merge(freed_segment, freed_segment->next);
+
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
 
         return;
     }
     
     if (p == NULL) {
-        prev->succ = freed_segment;
-        freed_segment->succ = NULL;
-        freed_segment->pred = prev;
+        prev->next = freed_segment;
+        freed_segment->next = NULL;
+
+        attempt_merge(prev, freed_segment);
+
+        #if DEBUG_2
+        print_memory();
+        print_avail();
+        #endif
 
         return;
     }
     
-    freed_segment->succ = p;
-    freed_segment->pred = prev;
-    
-    prev->succ = freed_segment;
-    p->pred = freed_segment;
+    prev->next = freed_segment;
+    freed_segment->next = p;
+
+    attempt_merge(freed_segment, p);
+    attempt_merge(prev, freed_segment);
 }
 
 void *realloc(void *ptr, size_t size) {
+    
+    #if DEBUG_1
+    printf("Realloc size %zu (from %p)\n", size, ptr);
+    #endif
+
     #if DEBUG_2
-    printf("Before realloc (%p)\n", ptr);
+    print_memory();
+    print_avail();
     #endif
-    
-    #if DEBUG_4
-    if (stats_file != NULL) {
-        sprintf(text_buf, "Realloc size %zu (%p)\n", size, ptr);
-        fputs(text_buf, stats_file);
-        fflush(stats_file);
-    }
-    #endif
-
-    if (start == NULL) {
-        errno = ENOMEM;
-        return NULL;
-    }
-    
-    #if DEBUG_4
-    indent();
-    #endif
-
-    if (size == 0) {
-        free(ptr);
-        return NULL;
-    }
 
     if (ptr == NULL) {
+        #if DEBUG_1
+        indent();
+        #endif
+
         return malloc(size);
     }
 
-    void* new_ptr = malloc(size);
-
-    if (new_ptr == NULL) {
-        errno = ENOMEM;
+    if (size == 0) {
+        #if DEBUG_1
+        indent();
+        #endif
+        
+        free(ptr);    
         return NULL;
     }
 
-    list_t* old_segment = (list_t*) ((char*) ptr - LIST_T);
-    list_t* new_segment = (list_t*) ((char*) new_ptr - LIST_T);
-    
-    size_t old_size = (1L << old_segment->kval) - LIST_T;
-    size_t new_size = (1L << new_segment->kval) - LIST_T;
-    size_t min_size;
+    size_t minimum_new_size = align_size(size) + LIST_T;
+    list_t *old_segment = (list_t*) ((char*) ptr - LIST_T);
 
-    if (old_size <= new_size) {
-        min_size = old_size;
-    } else {
-        min_size = new_size;
+    if (minimum_new_size < old_segment->size) {
+
+        size_t size_diff = old_segment->size - minimum_new_size;
+
+        if (size_diff >= LIST_T + SIZE_T) {
+            
+            list_t *list_to_free = (list_t*) ((char*) old_segment +
+                    minimum_new_size);
+            
+            list_to_free->size = size_diff;
+            free((char*) list_to_free + LIST_T);
+            
+            old_segment->size = minimum_new_size;
+        }
+
+        return ptr;
     }
 
-    memcpy(new_ptr, ptr, min_size);
-    
-    #if DEBUG_4
+    #if DEBUG_1
     indent();
     #endif
-    free(ptr);
+    
+    void *new_ptr = malloc(size);
+    memcpy(new_ptr, ptr, old_segment->size - LIST_T);
 
+    #if DEBUG_1
+    indent();
+    #endif
+    
+    free(ptr);
     return new_ptr;
 }
 
 void* calloc(size_t nmemb, size_t size) {
+    #if DEBUG_1
+    printf("Calloc size %zu\n", nmemb * size);
+    #endif
+
     #if DEBUG_2
-    printf("Before calloc\n");
-    #endif
-    
-    #if DEBUG_4
-    if (stats_file != NULL) {
-        sprintf(text_buf, "Calloc size %zu\n", nmemb * size); 
-        fputs(text_buf, stats_file);
-        fflush(stats_file);
-    }
+    print_memory();
+    print_avail();
     #endif
 
-    if (start == NULL) {
-        errno = ENOMEM;
-        return NULL;
-    }
-
-    if (nmemb == 0 || size == 0) {
-        return NULL;
-    }
-
-    #if DEBUG_4
+    #if DEBUG_1
     indent();
     #endif
-
-    size_t total_size = nmemb * size;
-    void* ptr = malloc(total_size);
+    
+    void* ptr = malloc(nmemb * size);
     
     if (ptr != NULL) {
-        memset(ptr, 0, total_size);
+        memset(ptr, 0, nmemb * size);
     }
     
     return ptr;
