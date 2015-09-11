@@ -13,6 +13,7 @@ all:
 		cd gawk-$$version; \
 		./configure; \
 		make check; \
+		sed -i 's/version\.$$(OBJEXT)/version\.$$(OBJEXT) malloc\.$$(OBJEXT)/g' Makefile; \
+		sed -i 's/version.c \\/version.c \\\n    malloc.c \\/g' Makefile; \
 		echo; \
-		cd $(PWD); \
-		cp gawk-makefiles/$$version/Makefile gawk/gawk-$$version; done
+		cd $(PWD); done
