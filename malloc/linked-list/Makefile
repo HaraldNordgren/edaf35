@@ -1,5 +1,5 @@
 CC			= gcc
-CFLAGS		= -g -Wall -Wextra -std=c11 -m64
+CFLAGS		= -g -Wall -Wextra -std=c11
 
 # Targets
 PROGS =	test liblist.so

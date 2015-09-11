@@ -1,7 +1,0 @@
-version.o: version.c /usr/include/stdc-predef.h config.h custom.h
-
-/usr/include/stdc-predef.h:
-
-config.h:
-
-custom.h:
