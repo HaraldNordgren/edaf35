@@ -1,8 +1,5 @@
 #!/bin/bash
 
-#VERSION="3.1.8"
-VERSION="4.1.3"
-
 if [ $# -ne 2 ]; then
     echo "Usage: $0 <gawk-version> <malloc-folder>"
     exit 1
@@ -18,12 +15,11 @@ echo ${blue}${bold}
 echo "Linking malloc files..."
 
 cd $GAWK_FOLDER
-ln -fs "$MALLOC_FOLDER/alloc.c" "malloc.c"
-ln -fs "$MALLOC_FOLDER/alloc.h" "alloc.h" 
-echo "Done."
+cp "$MALLOC_FOLDER/alloc.c" "malloc.c"
+cp "$MALLOC_FOLDER/alloc.h" "alloc.h" 
 
 echo
-echo "Running make check"
+echo "Running make check..."
 echo ${reset}
 make check
 

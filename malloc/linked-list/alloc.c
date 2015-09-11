@@ -16,7 +16,7 @@ list_t *avail = NULL;
 
 size_t *memory_start = NULL;
 
-void indent() {
+void indent__() {
     printf("  ");
 }
 
@@ -272,7 +272,7 @@ void *realloc(void *ptr, size_t size) {
 
     if (ptr == NULL) {
         #if DEBUG_1
-        indent();
+        indent__();
         #endif
 
         return malloc(size);
@@ -280,7 +280,7 @@ void *realloc(void *ptr, size_t size) {
 
     if (size == 0) {
         #if DEBUG_1
-        indent();
+        indent__();
         #endif
         
         free(ptr);    
@@ -309,14 +309,14 @@ void *realloc(void *ptr, size_t size) {
     }
 
     #if DEBUG_1
-    indent();
+    indent__();
     #endif
     
     void *new_ptr = malloc(size);
     memcpy(new_ptr, ptr, old_segment->size - LIST_T);
 
     #if DEBUG_1
-    indent();
+    indent__();
     #endif
     
     free(ptr);
@@ -334,7 +334,7 @@ void* calloc(size_t nmemb, size_t size) {
     #endif
 
     #if DEBUG_1
-    indent();
+    indent__();
     #endif
     
     void* ptr = malloc(nmemb * size);
