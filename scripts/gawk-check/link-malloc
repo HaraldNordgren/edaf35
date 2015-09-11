@@ -1,0 +1,33 @@
+#!/bin/bash
+
+VERSION="3.1.8"
+#VERSION="4.1.3"
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <malloc-folder>"
+    exit 1
+fi
+
+reset
+source "scripts/test-scripts/terminal-formatting"
+
+if [ ! -d $GAWK_FOLDER ]; then
+    echo -n ${red}${bold}
+    echo 'Untar gawk source first and run "configure"'
+    echo ${reset}
+    exit 1
+fi
+
+GAWK_FOLDER="gawk/gawk-$VERSION"
+MALLOC_FOLDER="../../${1%/}"
+
+echo ${blue}${bold}
+
+echo "Linking malloc files"
+cd $GAWK_FOLDER
+
+ln -fs "$MALLOC_FOLDER/alloc.c" "malloc.c"
+ln -fs "$MALLOC_FOLDER/alloc.o" "malloc.o"
+ln -fs "$MALLOC_FOLDER/alloc.h" "alloc.h" 
+
+echo ${reset}
