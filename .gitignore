@@ -6,8 +6,6 @@
 *.o
 *.so
 
-gawk/gawk-*/
-
 malloc/linked-list/test
 malloc/buddy/test
 malloc/buddy/test2
