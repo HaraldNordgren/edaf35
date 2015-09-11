@@ -5,14 +5,13 @@ if [ $# -ne 2 ]; then
     exit 1
 fi
 
-reset
 source "scripts/test-scripts/terminal-formatting"
 
 GAWK_FOLDER="gawk/gawk-$1"
 MALLOC_FOLDER="../../${2%/}"
 
 echo ${blue}${bold}
-echo "Linking malloc files..."
+echo "Copying malloc files..."
 
 cd $GAWK_FOLDER
 cp "$MALLOC_FOLDER/alloc.c" "malloc.c"
@@ -21,6 +20,10 @@ cp "$MALLOC_FOLDER/alloc.h" "alloc.h"
 echo
 echo "Running make check..."
 echo ${reset}
+
 make check
+return_value=$?
 
 echo ${reset}
+
+exit $return_value
