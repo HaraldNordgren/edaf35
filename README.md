@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/HaraldNordgren/edaf35.svg?branch=master)](https://travis-ci.org/HaraldNordgren/edaf35)
+
 ## EDAF35 Project: Currently Heap Managers (Buddy and Linked List)
  
 1. Your task is to implement two versions of malloc/calloc/realloc and free.
