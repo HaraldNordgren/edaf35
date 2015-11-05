@@ -1,5 +1,5 @@
-CC = clang
-FLAGS = -O0 -W -Wall -Wextra -g
+CC		?= clang
+FLAGS	= -O0 -W -Wall -Wextra -g
 
 all: test-0 test-1 test-2 test-3 test-4
 
