@@ -1,8 +1,8 @@
-CC			= gcc
+CC			?= gcc
 CFLAGS		= -g -Wall -Wextra -pedantic -std=c11
 
 # Targets
-PROGS =	test test2 libbuddy.so
+PROGS		= test test2 libbuddy.so
 
 all: clean $(PROGS)
 

@@ -1,8 +1,8 @@
-CC			= gcc
+CC			?= gcc
 CFLAGS		= -g -Wall -Wextra -std=c11
 
 # Targets
-PROGS =	test liblist.so
+PROGS		= test liblist.so
 
 all: clean $(PROGS)
 
