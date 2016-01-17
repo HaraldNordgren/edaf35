@@ -190,6 +190,11 @@ void *malloc(size_t size) {
     }
 
     list_t* result = freelist[k_avail];
+
+    if (result == NULL) {
+        errno = ENOMEM;
+        return NULL;
+    }
     
     freelist[k_avail] = freelist[k_avail]->succ;
     result->reserved = 1;
@@ -197,11 +202,6 @@ void *malloc(size_t size) {
     if (result->succ != NULL) {
         result->succ->pred = NULL;
         result->succ = NULL;
-    }
-
-    if (result == NULL) {
-        errno = ENOMEM;
-        return NULL;
     }
     
     return result->data;
