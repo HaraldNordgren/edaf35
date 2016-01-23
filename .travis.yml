@@ -5,7 +5,7 @@ compiler:
   - clang
 
 install:
-    - if [ "$CC" = "gcc" ]; then export CC="gcc-4.8"; fi
+  - if [ "$CC" = "gcc" ]; then export CC="gcc-4.8"; fi
 
 addons:
   apt:
@@ -14,5 +14,7 @@ addons:
     packages:
       - gcc-4.8
       - clang
+    code_climate:
+      repo_token: 51552819e7e08581b6feb2b76115c65d92ccb6cb8607bf61b4f726a32f671c75
 
 script: make && make check
